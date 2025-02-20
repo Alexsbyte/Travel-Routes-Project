@@ -10,13 +10,40 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './tr-logo.png';
+import AuthModal from '@/features/auth/ModalForAuth/AuthModal';
+import { signOutThunk } from '@/entities/user';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((store) => store.user.user);
 
+  const openModal = (type: 'signin' | 'signup') => {
+    setAuthType(type);
+    setIsModalOpen(true);
+  };
+
+  const signOutHandler = async (): Promise<void> => {
+    try {
+      dispatch(signOutThunk());
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log('An unexpected error');
+      }
+    }
+  };
+
+  const handleSuccess = () => {
+    setIsModalOpen(false);
+  };
   return (
     <Box pb={120}>
       <header className={classes.header}>
@@ -30,8 +57,18 @@ export function Header(): React.JSX.Element {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            {user ? (
+              <Button variant="default" onClick={signOutHandler}>
+                Выйти
+              </Button>
+            ) : (
+              <>
+                <Button variant="default" onClick={() => openModal('signin')}>
+                  Войти
+                </Button>
+                <Button onClick={() => openModal('signup')}>Регистрация</Button>
+              </>
+            )}
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
@@ -70,12 +107,15 @@ export function Header(): React.JSX.Element {
 
           {/* <Divider my="sm" /> */}
 
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
+          <Group justify="center" grow pb="xl" px="md"></Group>
         </ScrollArea>
       </Drawer>
+      <AuthModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleSuccess}
+        type={authType}
+      />
     </Box>
   );
 }

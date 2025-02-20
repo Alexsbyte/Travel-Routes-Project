@@ -10,6 +10,6 @@ router
 
   .post("/signIn", UserController.signIn)
 
-  .get("/signOut", UserController.signOut);
+  .post("/signOut", UserController.signOut);
 
 module.exports = router;

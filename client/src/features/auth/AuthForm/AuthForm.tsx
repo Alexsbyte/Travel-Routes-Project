@@ -1,17 +1,13 @@
-import React, { useState, SyntheticEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/reduxHooks";
-import { unwrapResult } from "@reduxjs/toolkit";
-
-import { CLIENT_ROUTES } from "@/shared/enums/clientRoutes";
-import styles from "../ui/AuthForm.module.css";
-import { signInThunk, signUpThunk, UserValidator } from "@/entities/user";
+import React, { useState, SyntheticEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from '../ui/AuthForm.module.css';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 const inputsInitialState = {
-  email: "",
-  username: "",
-  password: "",
-  confirmPassword: "",
+  email: '',
+  username: '',
+  password: '',
+  confirmPassword: '',
 };
 
 type InputsType = {
@@ -22,14 +18,14 @@ type InputsType = {
 };
 
 interface Props {
-  type: "signin" | "signup";
+  type: 'signin' | 'signup';
+  handleSignIn: (data: { email: string; password: string }) => void;
+  handleSignUp: (data: { username: string; email: string; password: string }) => void;
 }
 
-export default function AuthForm({ type }: Props) {
+export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
   const [inputs, setInputs] = useState<InputsType>(inputsInitialState);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const loading = useAppSelector((state) => state.user.loading);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -37,35 +33,20 @@ export default function AuthForm({ type }: Props) {
 
   async function submitHandler(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const { email } = inputs;
-    const normalizedEmail = email.toLowerCase();
+    const { email, username, password } = inputs;
 
-    if (type === "signin") {
-      const { isValid, error: validateError } =
-        UserValidator.validateSignIn(inputs);
-      if (!isValid) {
-        console.error(validateError);
-        return;
-      }
-
-      const resultAction = await dispatch(
-        signInThunk({ email: normalizedEmail, password: inputs.password })
-      );
-      unwrapResult(resultAction);
+    if (type === 'signin') {
+      handleSignIn({ email: email.toLowerCase(), password });
     } else {
-      const { isValid, error: validationError } =
-        UserValidator.validateSignUp(inputs);
-      if (!isValid) {
-        console.error(validationError);
+      if (password !== inputs.confirmPassword) {
+        console.error('Пароли не совпадают');
         return;
       }
-
-      const resultAction = await dispatch(signUpThunk(inputs));
-      unwrapResult(resultAction);
+      handleSignUp({ username, email: email.toLowerCase(), password });
     }
 
     setInputs(inputsInitialState);
-    navigate(CLIENT_ROUTES.HOME);
+    navigate(CLIENT_ROUTES.HOME);  // можно перенаправить на главную страницу, если необходимо
   }
 
   return (
@@ -86,8 +67,16 @@ export default function AuthForm({ type }: Props) {
         onChange={onChangeHandler}
         required
       />
-      {type === "signup" && (
+      {type === 'signup' && (
         <>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Повторите пароль"
+            value={inputs.confirmPassword}
+            onChange={onChangeHandler}
+            required
+          />
           <input
             type="text"
             name="username"
@@ -96,18 +85,10 @@ export default function AuthForm({ type }: Props) {
             onChange={onChangeHandler}
             required
           />
-          <input
-            type="text"
-            name="confirmPassword"
-            placeholder="Повторите пароль"
-            value={inputs.confirmPassword}
-            onChange={onChangeHandler}
-            required
-          />
         </>
       )}
-      <button type="submit" disabled={loading}>
-        {type === "signin" ? "Войти" : "Зарегистрироваться"}
+      <button type="submit">
+        {type === 'signin' ? 'Войти' : 'Зарегистрироваться'}
       </button>
     </form>
   );

@@ -1,7 +1,10 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router/router';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider,  } from '@mantine/core';
 import '@mantine/core/styles.css';
+import { Provider } from 'react-redux';
+import store from './store/store';
+
 
 export function App() {
   const theme = createTheme({
@@ -32,8 +35,10 @@ export function App() {
   });
 
   return (
+    <Provider store={store}>
     <MantineProvider theme={theme} defaultColorScheme="light">
       <RouterProvider router={router} />
     </MantineProvider>
+    </Provider>
   );
 }

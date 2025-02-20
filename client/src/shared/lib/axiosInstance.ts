@@ -1,3 +1,4 @@
+
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -55,3 +56,74 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
+
+
+
+
+
+// import axios, {
+//   AxiosError,
+//   AxiosInstance,
+//   AxiosResponse,
+//   InternalAxiosRequestConfig,
+// } from "axios";
+
+// interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
+//   sent?: boolean;
+// }
+
+// export const axiosInstance: AxiosInstance = axios.create({
+//   baseURL: `${import.meta.env.VITE_API}`,
+//   headers: { "Content-Type": "application/json" },
+//   withCredentials: true,
+// });
+
+// let accessToken = "";
+
+// export function setAccessToken(token: string): void {
+//   accessToken = token;
+// }
+
+// axiosInstance.interceptors.request.use(
+//   (config: ExtendedAxiosRequestConfig): ExtendedAxiosRequestConfig => {
+//     if (!config.headers.Authorization) {
+//       config.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     return config;
+//   }
+// );
+
+// axiosInstance.interceptors.response.use(
+//   (response: AxiosResponse): AxiosResponse => response,
+//   async (error: AxiosError) => {
+//     const prevRequest: ExtendedAxiosRequestConfig | undefined = error.config;
+
+//     if (error.response?.status === 403 && prevRequest && !prevRequest.sent) {
+//       try {
+//         const { data: response } = await axiosInstance.get(
+//           "/auth/refreshTokens",
+//           { withCredentials: true }
+//         );
+
+//         setAccessToken(response.data.accessToken);
+
+//         prevRequest.sent = true;
+
+//         prevRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
+
+//         return axiosInstance(prevRequest);
+//       } catch (refreshError) {
+//         return Promise.reject(refreshError);
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+
+
+
+
+
+
