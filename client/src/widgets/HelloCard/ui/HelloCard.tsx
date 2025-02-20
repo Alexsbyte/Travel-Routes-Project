@@ -34,7 +34,7 @@ export function HelloCard(): React.JSX.Element {
             src="https://assets.weforum.org/article/image/0ZUBmNNVLRCfn3NdU55nQ00UF64m2ObtcDS0grx02fA.jpg"
           />
         </Carousel.Slide>
-        {/* Остальные слайды */}
+
       </Carousel>
       
       <div className={styles.separator}></div>
@@ -49,7 +49,6 @@ export function HelloCard(): React.JSX.Element {
           сформировала это место.
         </p>
       </div>
-
       {/* <div className={styles.separator}></div> */}
     </div>
   );
