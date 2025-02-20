@@ -11,6 +11,14 @@ const inputsInitialState = {
   email: "",
   username: "",
   password: "",
+  confirmPassword: "",
+};
+
+type InputsType = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 };
 
 interface Props {
@@ -18,7 +26,7 @@ interface Props {
 }
 
 export default function AuthForm({ type }: Props) {
-  const [inputs, setInputs] = useState(inputsInitialState);
+  const [inputs, setInputs] = useState<InputsType>(inputsInitialState);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.user.loading);
@@ -33,16 +41,20 @@ export default function AuthForm({ type }: Props) {
     const normalizedEmail = email.toLowerCase();
 
     if (type === "signin") {
-      const { isValid, error: validateError } = UserValidator.validateSignIn(inputs);
+      const { isValid, error: validateError } =
+        UserValidator.validateSignIn(inputs);
       if (!isValid) {
         console.error(validateError);
         return;
       }
 
-      const resultAction = await dispatch(signInThunk({ email: normalizedEmail, password: inputs.password }));
+      const resultAction = await dispatch(
+        signInThunk({ email: normalizedEmail, password: inputs.password })
+      );
       unwrapResult(resultAction);
     } else {
-      const { isValid, error: validationError } = UserValidator.validateSignUp(inputs);
+      const { isValid, error: validationError } =
+        UserValidator.validateSignUp(inputs);
       if (!isValid) {
         console.error(validationError);
         return;
@@ -58,10 +70,41 @@ export default function AuthForm({ type }: Props) {
 
   return (
     <form className={styles.authForm} onSubmit={submitHandler}>
-      <input type="email" name="email" placeholder="Email" value={inputs.email} onChange={onChangeHandler} required />
-      <input type="password" name="password" placeholder="Пароль" value={inputs.password} onChange={onChangeHandler} required />
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={inputs.email}
+        onChange={onChangeHandler}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Пароль"
+        value={inputs.password}
+        onChange={onChangeHandler}
+        required
+      />
       {type === "signup" && (
-        <input type="text" name="username" placeholder="Имя пользователя" value={inputs.username} onChange={onChangeHandler} required />
+        <>
+          <input
+            type="text"
+            name="username"
+            placeholder="Имя пользователя"
+            value={inputs.username}
+            onChange={onChangeHandler}
+            required
+          />
+          <input
+            type="text"
+            name="confirmPassword"
+            placeholder="Повторите пароль"
+            value={inputs.confirmPassword}
+            onChange={onChangeHandler}
+            required
+          />
+        </>
       )}
       <button type="submit" disabled={loading}>
         {type === "signin" ? "Войти" : "Зарегистрироваться"}

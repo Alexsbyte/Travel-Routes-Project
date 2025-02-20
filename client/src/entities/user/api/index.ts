@@ -1,22 +1,21 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
-import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
-import { ISignInData, ISignUpData, UserWithTokenType } from '../model';
-import { handleAxiosError } from '@/shared/utils/handleAxiosError';
-
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance, setAccessToken } from "@/shared/lib/axiosInstance";
+import { IApiResponseReject, IApiResponseSuccess } from "@/shared/types";
+import { ISignInData, ISignUpData, UserWithTokenType } from "../model";
+import { AxiosError } from "axios";
 
 enum AUTH_API_ROUTES {
-  REFRESH_TOKENS = '/auth/refreshTokens',
-  SIGN_UP = '/auth/signUp',
-  SIGN_IN = '/auth/signIn',
-  SIGN_OUT = '/auth/signOut',
+  REFRESH_TOKENS = "/auth/refreshTokens",
+  SIGN_UP = "/auth/signUp",
+  SIGN_IN = "/auth/signIn",
+  SIGN_OUT = "/auth/signOut",
 }
 
 enum USER_THUNKS_TYPES {
-  REFRESH_TOKENS = 'user/refreshTokens',
-  SIGN_UP = 'user/signUp',
-  SIGN_IN = 'user/signIn',
-  SIGN_OUT = 'user/signOut',
+  REFRESH_TOKENS = "user/refreshTokens",
+  SIGN_UP = "user/signUp",
+  SIGN_IN = "user/signIn",
+  SIGN_OUT = "user/signOut",
 }
 
 export const refreshTokensThunk = createAsyncThunk<
@@ -32,7 +31,8 @@ export const refreshTokensThunk = createAsyncThunk<
     setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data);
   }
 });
 
@@ -49,7 +49,8 @@ export const signUpThunk = createAsyncThunk<
     setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data);
   }
 });
 
@@ -66,7 +67,8 @@ export const signInThunk = createAsyncThunk<
     setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data);
   }
 });
 
@@ -80,9 +82,10 @@ export const signOutThunk = createAsyncThunk<
       AUTH_API_ROUTES.SIGN_OUT
     );
 
-    setAccessToken('');
+    setAccessToken("");
     return data;
   } catch (error) {
-    return rejectWithValue(handleAxiosError(error));
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data);
   }
 });

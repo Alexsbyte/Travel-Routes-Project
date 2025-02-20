@@ -10,7 +10,7 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, type }) => {
-  if (!isOpen) return null; // Не рендерим, если окно закрыто
+  if (!isOpen) return null;
 
   return (
     <div className={styles.modalOverlay}>
@@ -26,8 +26,6 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, type }) => {
 
 export default AuthModal;
 
-
-
 // const [isModalOpen, setIsModalOpen] = useState(false);
 // const [authType, setAuthType] = useState<"signin" | "signup">("signin");
 
@@ -36,10 +34,10 @@ export default AuthModal;
 //   setIsModalOpen(true);
 // };
 
-
-
-{/* <nav>
+{
+  /* <nav>
 <button onClick={() => openModal("signin")}>Войти</button>
 <button onClick={() => openModal("signup")}>Регистрация</button>
 <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type={authType} />
-</nav> */}
+</nav> */
+}

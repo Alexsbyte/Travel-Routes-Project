@@ -10,7 +10,7 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_API}api`,
+  baseURL: `${import.meta.env.VITE_API}`,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
