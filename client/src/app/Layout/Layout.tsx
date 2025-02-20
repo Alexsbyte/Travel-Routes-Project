@@ -1,9 +1,10 @@
+import { Footer } from '@/widgets';
+import { Header } from '@/widgets';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import { refreshTokensThunk } from "@/entities/user/api";
-import { useAppDispatch } from "@/shared/hooks/reduxHooks";
-
-
 import { JSX, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { useAppDispatch } from "@/shared/hooks/reduxHooks";
 
 export default function Layout(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -13,10 +14,9 @@ export default function Layout(): JSX.Element {
 
   return (
     <>
-  
-      <main>
-        <Outlet />
-      </main>
+      <Header />
+      <Outlet />
+      <Footer />
     </>
   );
 }
