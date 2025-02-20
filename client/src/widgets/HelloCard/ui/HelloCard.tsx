@@ -22,7 +22,7 @@ export function HelloCard(): React.JSX.Element {
 
   return (
 <>
-    <Carousel withIndicators>{slides}</Carousel>
+    <Carousel className={styles.carousel} withIndicators>{slides}</Carousel>
     <div className={styles.container}>
       <div className={styles.separator}></div>
       <div className={styles.description}>
@@ -35,7 +35,7 @@ export function HelloCard(): React.JSX.Element {
           сформировала это место.
         </p>
       </div>
-      {/* <div className={styles.separator}></div> */}
+
     </div></>
   );
 }

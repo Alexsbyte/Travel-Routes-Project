@@ -46,7 +46,9 @@ export function Header(): React.JSX.Element {
 
           <Group visibleFrom="sm">
             {user ? (
+
               <Button w={120} h={50} variant="default" onClick={signOutHandler}>
+
                 Выйти
               </Button>
             ) : (
@@ -62,6 +64,7 @@ export function Header(): React.JSX.Element {
                 <Button w={160} h={50} onClick={() => openModal('signup')}>
                   Регистрация
                 </Button>
+
               </>
             )}
           </Group>
