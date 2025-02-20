@@ -1,8 +1,9 @@
 import React from "react";
 import { Modal, Button } from "@mantine/core";
-import AuthForm from "../AuthForm/AuthForm";
 import { useAppDispatch } from "@/shared/hooks/reduxHooks";
 import { signInThunk, signUpThunk } from "@/entities/user";
+import { AuthForm } from "../../AuthForm";
+import styles from './AuthModal.module.css'
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,13 +12,13 @@ interface ModalProps {
   type: "signin" | "signup";
 }
 
-const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) => {
+export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) => {
   const dispatch = useAppDispatch();
 
   const handleSignIn = async (data: { email: string; password: string }) => {
     try {
       await dispatch(signInThunk(data)).unwrap();
-      onSuccess();  // Закрытие модального окна при успешном входе
+      onSuccess();  
     } catch (error) {
       console.log("Ошибка входа:", error);
     }
@@ -26,7 +27,7 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) =
   const handleSignUp = async (data: { username: string; email: string; password: string }) => {
     try {
       await dispatch(signUpThunk(data)).unwrap();
-      onSuccess();  // Закрытие модального окна при успешной регистрации
+      onSuccess(); 
     } catch (error) {
       console.log("Ошибка регистрации:", error);
     }
@@ -36,7 +37,7 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) =
     <Modal
       opened={isOpen}
       onClose={onClose}
-      title={type === "signin" ? "Вход в систему" : "Регистрация"}
+      title={<div className={styles.modalTitle}>{type === "signin" ? "Вход в систему" : "Регистрация"}</div>}
       centered
       overlayProps={{
         backgroundOpacity: 0.6,
@@ -44,17 +45,18 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) =
       }}
       transitionProps={{ transition: "fade", duration: 200 }}
       size="md"
+      className={styles.modalContainer}
     >
       <AuthForm 
         type={type} 
         handleSignIn={handleSignIn} 
         handleSignUp={handleSignUp} 
       />
-      <Button fullWidth mt="md" variant="outline" color="red" onClick={onClose}>
+      {/* <Button className={styles.closeButton}  onClick={onClose}>
         Закрыть
-      </Button>
+      </Button> */}
     </Modal>
   );
 };
 
-export default AuthModal;
+

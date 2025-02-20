@@ -3,9 +3,11 @@ import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
 import logo from './tr-logo.png';
-import AuthModal from '@/features/auth/ModalForAuth/AuthModal';
+
 import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
+import { AuthModal } from '@/features/auth/AuthModal';
+
 
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =

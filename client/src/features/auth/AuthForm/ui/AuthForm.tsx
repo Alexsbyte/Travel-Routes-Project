@@ -23,7 +23,7 @@ interface Props {
   handleSignUp: (data: { username: string; email: string; password: string }) => void;
 }
 
-export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
+export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
   const [inputs, setInputs] = useState<InputsType>(inputsInitialState);
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
     }
 
     setInputs(inputsInitialState);
-    navigate(CLIENT_ROUTES.HOME);  // можно перенаправить на главную страницу, если необходимо
+    navigate(CLIENT_ROUTES.HOME); // можно перенаправить на главную страницу, если необходимо
   }
 
   return (
@@ -60,6 +60,7 @@ export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
         required
       />
       <input
+      className={styles.input}
         type="password"
         name="password"
         placeholder="Пароль"
@@ -70,6 +71,7 @@ export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
       {type === 'signup' && (
         <>
           <input
+           className={styles.input}
             type="password"
             name="confirmPassword"
             placeholder="Повторите пароль"
@@ -78,6 +80,7 @@ export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
             required
           />
           <input
+           className={styles.input}
             type="text"
             name="username"
             placeholder="Имя пользователя"
@@ -87,9 +90,7 @@ export default function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
           />
         </>
       )}
-      <button type="submit">
-        {type === 'signin' ? 'Войти' : 'Зарегистрироваться'}
-      </button>
+      <button className={styles.button} type="submit">{type === 'signin' ? 'Войти' : 'Зарегистрироваться'}</button>
     </form>
   );
 }
