@@ -20,19 +20,21 @@ export function App() {
       ],
     },
     primaryColor: 'primary',
-    fontFamily: 'Inter, sans-serif',
+    // fontFamily: 'Inter, sans-serif',
     headings: {
-      fontFamily: 'Poppins, sans-serif',
+      // fontFamily: 'Exo 2, sans-serif',
       sizes: {
         h1: { fontSize: '32px', fontWeight: '700' },
         h2: { fontSize: '28px', fontWeight: '600' },
+        h3: { fontSize: '24px', fontWeight: '500' },
+        h4: { fontSize: '20px', fontWeight: '400' },
       },
     },
     radius: { sm: '8px', md: '12px', lg: '16px' },
   });
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="light">
+    <MantineProvider theme={theme}>
       <RouterProvider router={router} />
     </MantineProvider>
   );

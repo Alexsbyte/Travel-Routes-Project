@@ -1,13 +1,4 @@
-import {
-  Box,
-  Burger,
-  Button,
-  Drawer,
-  Group,
-  Image,
-  ScrollArea,
-  Text,
-} from '@mantine/core';
+import { Box, Burger, Button, Drawer, Group, Image, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import React from 'react';
@@ -23,14 +14,11 @@ export function Header(): React.JSX.Element {
         <Group justify="space-between" h="100%">
           {/* <MantineLogo size={30} /> */}
           <Group>
-            <Image src={logo} w={60} h="auto" />{' '}
-            <Text size="lg" fw={600}>
-              TRAVEL ROUTES
-            </Text>
+            <Image src={logo} w={70} h="auto" /> <h2>Travel Routes</h2>
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
+            <Button className={classes.buttonLogin}>Log in</Button>
             <Button>Sign up</Button>
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />

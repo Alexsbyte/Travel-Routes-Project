@@ -1,5 +1,4 @@
 import React from 'react';
-import { IconCopyright } from '@tabler/icons-react';
 import { Group } from '@mantine/core';
 import classes from './Footer.module.css';
 
@@ -29,7 +28,8 @@ export function Footer(): React.JSX.Element {
     <div className={classes.footer}>
       <div className={classes.inner}>
         <Group className={classes.links}>
-          Buffaloes team <IconCopyright />
+          Buffaloes team
+          {/* <IconCopyright /> */}
         </Group>
 
         {/* <Group gap="xs" justify="flex-end" wrap="nowrap">

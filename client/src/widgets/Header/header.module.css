@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap');
+@import url('../../app/light-mc.css');
+
 .header {
-  height: 60px;
+  font-family: 'Exo 2', sans-serif;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  height: 100px;
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
   border-bottom: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.buttonLogin {
+  color: var(--md-sys-color-primary);
 }
 
 .link {
