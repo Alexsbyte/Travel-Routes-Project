@@ -1,11 +1,8 @@
 import {
-  ActionIcon,
   Box,
-  Button,
   Card,
   Group,
   Image,
-  Menu,
   Paper,
   SimpleGrid,
   Space,
@@ -13,8 +10,8 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { IconDots, IconEye, IconTrash, IconMapPin } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+
+// import { useNavigate } from "react-router-dom";
 
 const images = [
   "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png",
@@ -26,9 +23,9 @@ export function Welcome(): React.JSX.Element {
   const theme = useMantineTheme();
   // const navigate = useNavigate();
 
-  const handler = () => {
-    navigate("/");
-  };
+  // const handler = () => {
+    // navigate("/");
+  // };
 
   return (
     <Box p="md">
