@@ -47,15 +47,15 @@ export function Header(): React.JSX.Element {
 
           <Group visibleFrom="sm">
             {user ? (
-              <Button  w={120} h={50}> variant="default" onClick={signOutHandler}>
+              <Button  w={120} h={50} variant="default" onClick={signOutHandler}>
                 Выйти
               </Button>
             ) : (
               <>
-                <Button w={120} h={50}> variant="default" onClick={() => openModal('signin')}>
+                <Button w={120} h={50} variant="default" onClick={() => openModal('signin')}>
                   Войти
                 </Button>
-                <Button  w={120} h={50}> onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button  w={120} h={50} onClick={() => openModal('signup')}>Регистрация</Button>
               </>
             )}
           </Group>

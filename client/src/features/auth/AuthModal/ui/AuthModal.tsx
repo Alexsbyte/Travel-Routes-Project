@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useAppDispatch } from "@/shared/hooks/reduxHooks";
 import { signInThunk, signUpThunk } from "@/entities/user";
 import { AuthForm } from "../../AuthForm";

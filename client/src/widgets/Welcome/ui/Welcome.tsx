@@ -1,10 +1,8 @@
+import { HelloCard } from "@/widgets/HelloCard";
 import {
   Box,
   Card,
-  Group,
-  Image,
   Paper,
-  SimpleGrid,
   Space,
   Text,
   Title,
@@ -13,11 +11,6 @@ import {
 
 // import { useNavigate } from "react-router-dom";
 
-const images = [
-  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png",
-  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png",
-  "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png",
-];
 
 export function Welcome(): React.JSX.Element {
   const theme = useMantineTheme();
@@ -64,47 +57,7 @@ export function Welcome(): React.JSX.Element {
       <Space h="xl" />
 
       <Card withBorder shadow="sm" radius="lg" style={{ overflow: "hidden" }}>
-        <Card.Section
-          withBorder
-          inheritPadding
-          py="xs"
-          bg={theme.colors.gray[0]}
-        >
-          <Group justify="space-between">
-            <Text fw={700} size="lg">
-              Мой первый маршрут!
-            </Text>
-          </Group>
-        </Card.Section>
-
-        <Text mt="sm" c="dimmed" size="sm">
-          <Text span inherit c="var(--mantine-color-anchor)">
-            200+ изображений загружено
-          </Text>
-          Посмотрите галерею.
-        </Text>
-
-        <Card.Section inheritPadding mt="sm" pb="md">
-          <SimpleGrid cols={3} spacing="md">
-            {images.map((image) => (
-              <Image
-                src={image}
-                key={image}
-                radius="md"
-                style={{
-                  transition: "transform 0.2s",
-                  ":hover": { transform: "scale(1.05)" },
-                }}
-              />
-            ))}
-          </SimpleGrid>
-        </Card.Section>
-
-        <Text mt="md" size="sm">
-          Пейзажи вокруг просто завораживают. Здесь можно насладиться
-          живописными полями и реками, а также попробовать местные блюда в
-          уютных кафе. Оценка: ⭐⭐⭐⭐⭐
-        </Text>
+          <HelloCard />
       </Card>
     </Box>
   );
