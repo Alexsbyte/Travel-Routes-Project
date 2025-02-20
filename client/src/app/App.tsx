@@ -1,4 +1,4 @@
-import { WelcomePage } from "../pages/WelcomePage/ui/WelcomePage";
+
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router/router';
 import { createTheme, MantineProvider,  } from '@mantine/core';
