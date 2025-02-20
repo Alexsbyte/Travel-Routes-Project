@@ -1,6 +1,9 @@
-import { createTheme, MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
 import { WelcomePage } from "../pages/WelcomePage/ui/WelcomePage";
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router/router';
+import { createTheme, MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
+
 
 export function App() {
   const theme = createTheme({
@@ -34,12 +37,9 @@ export function App() {
     <MantineProvider
       theme={theme}
       defaultColorScheme="light"
-      // cssVariablesResolver={cssVarResolver}
     >
       <>Hello</>;
       <WelcomePage />;
     </MantineProvider>
   );
 }
-
-export default App;
