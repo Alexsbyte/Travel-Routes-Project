@@ -14,12 +14,16 @@ export function Header(): React.JSX.Element {
         <Group justify="space-between" h="100%">
           {/* <MantineLogo size={30} /> */}
           <Group>
-            <Image src={logo} w={70} h="auto" /> <h2>Travel Routes</h2>
+            <Image src={logo} w={70} h="auto" /> <h1>Travel Routes</h1>
           </Group>
 
           <Group visibleFrom="sm">
-            <Button className={classes.buttonLogin}>Log in</Button>
-            <Button>Sign up</Button>
+            <Button className="login" w={120} h={50}>
+              Log in
+            </Button>
+            <Button w={120} h={50}>
+              Sign up
+            </Button>
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>

@@ -1,19 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap');
-@import url('../../app/light-mc.css');
+@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
+@import url('../../app/colors.css');
 
 .header {
-  font-family: 'Exo 2', sans-serif;
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  height: 100px;
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  border-bottom: 1px solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  background: var(--on-primary);
+  color: var(--primary);
+  padding: 12px 24px;
+  box-shadow: 0 4px 15px rgba(139, 85, 14, 0.308);
 }
 
-.buttonLogin {
-  color: var(--md-sys-color-primary);
+.header img {
+  border-radius: 8px;
+}
+
+.header h1 {
+  font-family: 'Eagle Lake', serif;
+  font-weight: 400;
+}
+
+.header button {
+  background: var(--primary);
+  color: var(--on-secondary);
+  border-color: var(--primary);
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.header button:hover {
+  background-color: var(--surface-variant);
+  color: var(--md-sys-color-on-variant);
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
 .link {
