@@ -1,12 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { message } from 'antd';
-import { UserType } from '../model';
+import { createSlice } from "@reduxjs/toolkit";
+import { UserType } from "../model";
 import {
   refreshTokensThunk,
   signUpThunk,
   signInThunk,
   signOutThunk,
-} from '../api';
+} from "../api";
 
 type UserState = {
   user: UserType | null;
@@ -23,12 +22,12 @@ const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState,
+  name: "user",
+  initialState, //* refreshTokensThunk
   reducers: {},
   extraReducers: (builder) => {
     builder
-      //* refreshTokensThunk
+
       .addCase(refreshTokensThunk.pending, (state) => {
         state.loading = true;
       })
@@ -53,13 +52,11 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.data.user;
         state.error = null;
-        message.success(action.payload.message);
       })
       .addCase(signUpThunk.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.error = action.payload!.error;
-        message.error(action.payload!.error);
       })
 
       //* signInThunk
@@ -70,30 +67,26 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.data.user;
         state.error = null;
-        message.success(action.payload.message);
       })
       .addCase(signInThunk.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.error = action.payload!.error;
-        message.error(action.payload!.error);
       })
 
       //* signOutThunk
       .addCase(signOutThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signOutThunk.fulfilled, (state, action) => {
+      .addCase(signOutThunk.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
         state.error = null;
-        message.success(action.payload.message);
       })
       .addCase(signOutThunk.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.error = action.payload!.error;
-        message.error(action.payload!.error);
       });
   },
 });

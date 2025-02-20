@@ -1,4 +1,4 @@
-export { UserCard } from './ui/UserCard';
+
 export { userReducer } from './slice';
 export {
   refreshTokensThunk,
