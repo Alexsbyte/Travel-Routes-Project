@@ -1,8 +1,17 @@
-import { Box, Burger, Button, Drawer, Group, ScrollArea } from '@mantine/core';
+import {
+  Box,
+  Burger,
+  Button,
+  Drawer,
+  Group,
+  Image,
+  ScrollArea,
+  Text,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './header.module.css';
 import React from 'react';
+import logo from './tr-logo.png';
 
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -12,13 +21,18 @@ export function Header(): React.JSX.Element {
     <Box pb={120}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <MantineLogo size={30} />
+          {/* <MantineLogo size={30} /> */}
+          <Group>
+            <Image src={logo} w={60} h="auto" />{' '}
+            <Text size="lg" fw={600}>
+              TRAVEL ROUTES
+            </Text>
+          </Group>
 
           <Group visibleFrom="sm">
             <Button variant="default">Log in</Button>
             <Button>Sign up</Button>
           </Group>
-
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>
