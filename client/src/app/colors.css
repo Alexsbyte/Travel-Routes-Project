@@ -1,0 +1,27 @@
+:root {
+  --primary: #ff6b00;
+  --on-primary: #ffffff;
+  --primary-container: #ff8f33;
+  --on-primary-container: #2e2e2e;
+
+  --secondary: #005b96;
+  --on-secondary: #ffffff;
+  --secondary-container: #009688;
+  --on-secondary-container: #ffffff;
+
+  --info: #4caf50;
+  --on-info: #ffffff;
+
+  --success: #6a994e;
+  --on-success: #ffffff;
+
+  --error: #e63946;
+  --on-error: #ffffff;
+
+  --background: #f8f9fa;
+  --on-background: #212529;
+  --surface: #fae3c6;
+  --on-surface: #333333;
+
+  --outline: #b0bec5;
+}

@@ -1,13 +1,4 @@
-import {
-  Box,
-  Burger,
-  Button,
-  Drawer,
-  Group,
-  Image,
-  ScrollArea,
-  Text,
-} from '@mantine/core';
+import { Box, Burger, Button, Drawer, Group, Image, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
@@ -48,25 +39,21 @@ export function Header(): React.JSX.Element {
     <Box pb={50}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          {/* <MantineLogo size={30} /> */}
           <Group>
-            <Image src={logo} w={60} h="auto" />{' '}
-            <Text size="lg" fw={600}>
-              TRAVEL ROUTES
-            </Text>
+            <Image src={logo} w={70} h="auto" /> <h1>Travel Routes</h1>
           </Group>
 
           <Group visibleFrom="sm">
             {user ? (
-              <Button variant="default" onClick={signOutHandler}>
+              <Button  w={120} h={50}> variant="default" onClick={signOutHandler}>
                 Выйти
               </Button>
             ) : (
               <>
-                <Button variant="default" onClick={() => openModal('signin')}>
+                <Button w={120} h={50}> variant="default" onClick={() => openModal('signin')}>
                   Войти
                 </Button>
-                <Button onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button  w={120} h={50}> onClick={() => openModal('signup')}>Регистрация</Button>
               </>
             )}
           </Group>
@@ -84,29 +71,6 @@ export function Header(): React.JSX.Element {
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
-          {/* <Divider my="sm" /> */}
-
-          {/* <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.colors.blue[6]} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a> */}
-
-          {/* <Divider my="sm" /> */}
-
           <Group justify="center" grow pb="xl" px="md"></Group>
         </ScrollArea>
       </Drawer>
