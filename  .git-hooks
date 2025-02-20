@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Navigate to the client folder where Vite is located
+cd client || { echo "Failed to navigate to the client folder"; exit 1; }
+
+# Run the Vite build
+echo "Running Vite build..."
+npm run build
+
+# Check the build result
+if [ $? -ne 0 ]; then
+  echo "Build failed. Commit aborted."
+  exit 1
+fi
+
+# If no errors, allow the commit
+echo "Build completed successfully. Commit allowed."
+exit 0
