@@ -8,7 +8,6 @@ import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
 
-
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -47,15 +46,22 @@ export function Header(): React.JSX.Element {
 
           <Group visibleFrom="sm">
             {user ? (
-              <Button  w={120} h={50}> variant="default" onClick={signOutHandler}>
+              <Button w={120} h={50} variant="default" onClick={signOutHandler}>
                 Выйти
               </Button>
             ) : (
               <>
-                <Button w={120} h={50}> variant="default" onClick={() => openModal('signin')}>
+                <Button
+                  w={120}
+                  h={50}
+                  variant="default"
+                  onClick={() => openModal('signin')}
+                >
                   Войти
                 </Button>
-                <Button  w={120} h={50}> onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button w={160} h={50} onClick={() => openModal('signup')}>
+                  Регистрация
+                </Button>
               </>
             )}
           </Group>
@@ -76,6 +82,7 @@ export function Header(): React.JSX.Element {
           <Group justify="center" grow pb="xl" px="md"></Group>
         </ScrollArea>
       </Drawer>
+
       <AuthModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
