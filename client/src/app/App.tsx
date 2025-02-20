@@ -1,14 +1,5 @@
-import { useState } from 'react'
-
-
 function App() {
-
-
-  return (
-    <>
-     
-    </>
-  )
+  return <>Hello</>;
 }
 
-export default App
+export default App;
