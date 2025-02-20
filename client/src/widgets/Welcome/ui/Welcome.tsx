@@ -21,7 +21,7 @@ const images = [
 ];
 
 export function Welcome(): React.JSX.Element {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handler = () => {
     navigate("/");
@@ -96,7 +96,7 @@ export function Welcome(): React.JSX.Element {
             живописными полями и реками, а также попробовать местные блюда в
             уютных кафе. Оценка: ⭐⭐⭐⭐⭐
           </Text>
-          <Button w={120} m={10} >
+          <Button w={120} m={10} onClick={handler}>
             Подробнее
           </Button>
         </Card>
