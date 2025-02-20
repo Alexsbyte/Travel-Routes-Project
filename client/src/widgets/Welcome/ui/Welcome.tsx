@@ -11,7 +11,7 @@ import {
   Space,
   Text,
 } from "@mantine/core";
-import { IconDots, IconEye, IconFileZip, IconTrash } from "@tabler/icons-react";
+import { IconDots, IconEye, IconTrash } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 const images = [
