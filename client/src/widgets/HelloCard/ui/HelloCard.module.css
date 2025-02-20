@@ -1,0 +1,29 @@
+.container {
+  width: 80vw;
+  margin: 0 auto;
+}
+
+.carouselImage {
+  width: 100%;
+  object-fit: cover;
+}
+
+.separator {
+  width: 95%;
+  height: 1px;
+  background-color: #000;
+  margin: 20px auto;
+}
+
+.description {
+  margin-top: 20px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 1rem;
+}
