@@ -32,6 +32,11 @@
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
+.avatar {
+  border: 2px solid var(--primary);
+  padding: 2px;
+}
+
 .link {
   display: flex;
   align-items: center;
