@@ -7,35 +7,39 @@ class RouteController {
   static async create(req, res) {
     const { title, description, category } = req.body;
     const { user } = res.locals;
-    const { isValid, error } = RouteValidator.validateCreate({
-      title,
-      description,
-      category,
-    });
 
-    if (!isValid) {
-      return res.status(400).json(formatResponse(400, 'Validation error', null, error));
-    }
+    // console.log(req.files);
 
-    try {
-      const newRoute = await RouteService.create({
-        title,
-        description,
-        category,
-        user_id: user.id,
-      });
+    res.end();
+    // const { isValid, error } = RouteValidator.validateCreate({
+    //   title,
+    //   description,
+    //   category,
+    // });
 
-      if (!newRoute) {
-        return res.status(400).json(formatResponse(400, 'Failed to create new route'));
-      }
+    // if (!isValid) {
+    //   return res.status(400).json(formatResponse(400, 'Validation error', null, error));
+    // }
 
-      const fullRoute = await RouteService.getById(newRoute.id);
-      console.log(colors.bgGreen('Route created successfully'));
+    // try {
+    //   const newRoute = await RouteService.create({
+    //     title,
+    //     description,
+    //     category,
+    //     user_id: user.id,
+    //   });
 
-      res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
-    } catch ({ message }) {
-      res.status(500).json(formatResponse(500, 'Internal server error', null, message));
-    }
+    //   if (!newRoute) {
+    //     return res.status(400).json(formatResponse(400, 'Failed to create new route'));
+    //   }
+
+    //   const fullRoute = await RouteService.getById(newRoute.id);
+    //   console.log(colors.bgGreen('Route created successfully'));
+
+    //   res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
+    // } catch ({ message }) {
+    //   res.status(500).json(formatResponse(500, 'Internal server error', null, message));
+    // }
   }
 
   static async getAll(req, res) {

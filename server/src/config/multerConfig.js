@@ -4,24 +4,29 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
+    console.log(file, '<<<<<<<<<<<MULTER');
+
     try {
-      const { email, user_id } = req.body;
+      const { email, title } = req.body;
       let preFixDirName = 'avatars';
 
-      if (user_id) {
+      if (file && file.fieldname === 'files') {
         preFixDirName = 'routes';
       }
 
       const dirPath = path.resolve(
         __dirname,
-        `../../public/images/${preFixDirName}/${email}`,
+        `../../public/images/${preFixDirName}/${email || title}`,
       );
 
       // Создаём директорию, и если она не существует
       fs.mkdirSync(dirPath, { recursive: true });
 
       // здесь cb - колбек, который возвращает значение для св-ва destination
-      cb(null, path.resolve(__dirname, `../../public/images/${preFixDirName}/${email}`)); // папка куда сохранять файлы
+      cb(
+        null,
+        path.resolve(__dirname, `../../public/images/${preFixDirName}/${email || title}`),
+      ); // папка куда сохранять файлы
     } catch (error) {
       cb(new Error('Ошибка создания папки или файла: ' + error.message));
     }
@@ -34,7 +39,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  console.log('<<<<<<<filter');
+  // console.log('<<<<<<<filter');
   const allowedTypes = /jpeg|jpg|png|gif/;
   const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimeType = allowedTypes.test(file.mimetype);
@@ -46,6 +51,6 @@ const fileFilter = (req, file, cb) => {
 
 module.exports = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 6 * 1024 * 1024 },
   fileFilter, // Максимальный размер файла 5MB
 }); // Обработка до 5 файлов (в поле 'photos')

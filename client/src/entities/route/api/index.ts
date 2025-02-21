@@ -31,6 +31,11 @@ export const createRouteThunk = createAsyncThunk<
     const { data } = await axiosInstance.post<IApiResponseSuccess<Route>>(
       '/api/routes',
       newRoute,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
 
     return data;
