@@ -1,6 +1,7 @@
 import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
 import { useState } from 'react';
+import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 
@@ -13,23 +14,28 @@ type InputsType = {
 const initialState = {
   title: '',
   description: '',
-  category: 'автомобильный',
+  category: '',
 };
 
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const [inputs, setInputs] = useState<InputsType>(initialState);
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  const form = useForm({
+    initialValues: initialState,
+    validate: {
+      title: (value: string) =>
+        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
+      description: (value: string) =>
+        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
+      category: (value: string) => {
+        if (!value || value?.trim().length === 0) {
+          return 'Выберите тип маршрута';
+        }
+      },
+    },
+  });
 
   const onChangePhotoForm = (newFiles: File[] | File | null) => {
     if (newFiles) {
@@ -46,15 +52,11 @@ export function RouteForm(): React.JSX.Element {
     }
   };
 
-  const createRoute = async () => {
-    if (!inputs.title.trim() || !inputs.description.trim()) {
-      alert('Пожалуйста, заполните все поля');
-      return;
-    }
+  const createRoute = (values: InputsType) => {
     try {
-      await dispatch(createRouteThunk(inputs));
-      console.log(inputs);
-      setInputs(initialState);
+      dispatch(createRouteThunk(values));
+      console.log(values);
+      form.reset();
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -75,22 +77,23 @@ export function RouteForm(): React.JSX.Element {
           ></iframe>
           <div className={style.formContainer}>
             <Space h="md" />
+
             <Input
-              onChange={handleInputChange}
-              name="title"
-              value={inputs.title}
+              {...form.getInputProps('title')}
               w={800}
               placeholder="Название маршрута"
             />
+            {form.errors.title && (
+              <div style={{ color: 'red', fontSize: '12px' }}>{form.errors.title}</div>
+            )}
             <Space h="md" />
             <Textarea
-              onChange={handleInputChange}
-              name="description"
-              value={inputs.description}
+              {...form.getInputProps('description')}
               placeholder="Описание маршрута"
             />
             <Space h="md" />
             <Select
+              {...form.getInputProps('category')}
               placeholder="Тип маршрута"
               data={['автомобильный', 'пеший', 'велосипедный']}
             />
@@ -104,7 +107,14 @@ export function RouteForm(): React.JSX.Element {
               placeholder="Выберите файл"
             />
             <Space h="md" />
-            <Button w={160} h={50} onClick={createRoute}>
+            <Button
+              w={160}
+              h={50}
+              onClick={(event) => {
+                event.preventDefault();
+                form.onSubmit(createRoute)();
+              }}
+            >
               Создать
             </Button>
           </div>
