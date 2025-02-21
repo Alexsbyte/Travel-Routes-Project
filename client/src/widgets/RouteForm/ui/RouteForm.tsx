@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Input, JsonInput, Select, Space } from '@mantine/core';
+import { Button, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
 import { useState } from 'react';
 
@@ -17,27 +17,19 @@ const initialState = {
 export function RouteForm(): React.JSX.Element {
   const [inputs, setInputs] = useState<InputsType>(initialState);
 
-  // Обработчик для обычного Input
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = event.target;
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setInputs((prevState) => ({
       ...prevState,
-      [name]: value,
-    }));
-  };
-
-  // Обработчик для JsonInput
-  const handleJsonInputChange = (value: string): void => {
-    setInputs((prevState) => ({
-      ...prevState,
-      description: value,
+      [event.target.name]: event.target.value,
     }));
   };
 
   const createRoute = () => {
     if (!inputs.title.trim() || !inputs.description.trim()) {
-      // alert('Пожалуйста, заполните все поля');
-      return <Alert withCloseButton closeButtonLabel="Dismiss" />;
+      alert('Пожалуйста, заполните все поля');
+      return;
     }
 
     console.log(inputs);
@@ -63,14 +55,15 @@ export function RouteForm(): React.JSX.Element {
             placeholder="Название маршрута"
           />
           <Space h="md" />
-          <JsonInput
-            onChange={handleJsonInputChange}
+          <Textarea
+            onChange={handleInputChange}
+            name="description"
             value={inputs.description}
             placeholder="Описание маршрута"
           />
           <Space h="md" />
           <Select
-            placeholder="Выбери тип маршрута"
+            placeholder="Тип маршрута"
             data={['автомобильный', 'пеший', 'велосипедный']}
           />
           <Space h="md" />
