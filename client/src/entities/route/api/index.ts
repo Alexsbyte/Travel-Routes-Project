@@ -24,7 +24,7 @@ export const getAllRoutesThunk = createAsyncThunk<
 
 export const createRouteThunk = createAsyncThunk<
   IApiResponseSuccess<Route>,
-  RawRouteData,
+  FormData,
   { rejectValue: IApiResponseReject }
 >(ROUTE_THUNKS_TYPES.CREATE, async (newRoute, { rejectWithValue }) => {
   try {

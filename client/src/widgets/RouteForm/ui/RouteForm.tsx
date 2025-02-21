@@ -38,6 +38,8 @@ export function RouteForm(): React.JSX.Element {
   });
 
   const onChangePhotoForm = (newFiles: File[] | File | null) => {
+    console.log(newFiles);
+
     if (newFiles) {
       // Если newFiles — это массив (multiple=true)
       if (Array.isArray(newFiles)) {
@@ -54,8 +56,15 @@ export function RouteForm(): React.JSX.Element {
 
   const createRoute = (values: InputsType) => {
     try {
-      dispatch(createRouteThunk(values));
-      console.log(values);
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description);
+      formData.append('category', values.category);
+      files.forEach((file) => {
+        formData.append('files', file);
+      });
+
+      dispatch(createRouteThunk(formData));
       form.reset();
     } catch (error) {
       if (error instanceof Error) {
