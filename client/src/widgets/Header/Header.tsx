@@ -1,4 +1,13 @@
-import { Box, Burger, Button, Drawer, Group, Image, ScrollArea } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Burger,
+  Button,
+  Drawer,
+  Group,
+  Image,
+  ScrollArea,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
@@ -53,10 +62,19 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="sm">
             {user ? (
               <>
+
                 <Button w={200} h={50} variant="default" onClick={createRouteHandler}>
                   Создать маршрут
-                </Button>
-                <Button w={120} h={50} variant="default" onClick={signOutHandler}>
+
+                <Avatar
+                  className={classes.avatar}
+                  src={`http://localhost:3000/images/avatars/${user.avatar}`}
+                  alt="User Avatar"
+                  radius="xl"
+                  size={50}
+                />
+
+                <Button w={100} h={50} variant="default" onClick={signOutHandler}>
                   Выйти
                 </Button>
               </>
