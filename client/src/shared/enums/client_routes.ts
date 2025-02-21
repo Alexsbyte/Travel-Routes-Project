@@ -2,4 +2,5 @@ export enum CLIENT_ROUTES {
   HOME = '/',
   AUTH = '/:type',
   SIGN_OUT = '/signOut',
+  ROUTE_FORM = '/createRoute',
 }
