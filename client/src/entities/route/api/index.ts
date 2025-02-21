@@ -29,7 +29,7 @@ export const createRouteThunk = createAsyncThunk<
 >(ROUTE_THUNKS_TYPES.CREATE, async (newRoute, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<Route>>(
-      '/routes',
+      '/api/routes',
       newRoute,
     );
 
