@@ -62,10 +62,9 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="sm">
             {user ? (
               <>
-
                 <Button w={200} h={50} variant="default" onClick={createRouteHandler}>
                   Создать маршрут
-
+                </Button>
                 <Avatar
                   className={classes.avatar}
                   src={`http://localhost:3000/images/avatars/${user.avatar}`}
