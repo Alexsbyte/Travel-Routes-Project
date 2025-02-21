@@ -1,15 +1,16 @@
-const router = require("express").Router();
-const UserController = require("../controllers/User.controller");
-const verifyRefreshToken = require("../middleware/verifyRefreshToken");
+const router = require('express').Router();
+const UserController = require('../controllers/User.controller');
+const verifyRefreshToken = require('../middleware/verifyRefreshToken');
+const upload = require('../config/multerConfig');
 
 router
 
-  .get("/refreshTokens", verifyRefreshToken, UserController.refreshTokens)
+  .get('/refreshTokens', verifyRefreshToken, UserController.refreshTokens)
 
-  .post("/signUp", UserController.signUp)
+  .post('/signUp', upload.single('avatar'), UserController.signUp)
 
-  .post("/signIn", UserController.signIn)
+  .post('/signIn', UserController.signIn)
 
-  .post("/signOut", UserController.signOut);
+  .post('/signOut', UserController.signOut);
 
 module.exports = router;

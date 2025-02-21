@@ -1,10 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
-import { ISignInData, ISignUpData, UserWithTokenType } from '../model';
-import { AxiosError } from "axios";
-
-
+import { ISignInData, UserWithTokenType } from '../model';
+import { AxiosError } from 'axios';
 
 enum AUTH_API_ROUTES {
   REFRESH_TOKENS = 'api/auth/refreshTokens',
@@ -26,9 +24,9 @@ export const refreshTokensThunk = createAsyncThunk<
   { rejectValue: IApiResponseReject }
 >(USER_THUNKS_TYPES.REFRESH_TOKENS, async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.get<
-      IApiResponseSuccess<UserWithTokenType>
-    >(AUTH_API_ROUTES.REFRESH_TOKENS);
+    const { data } = await axiosInstance.get<IApiResponseSuccess<UserWithTokenType>>(
+      AUTH_API_ROUTES.REFRESH_TOKENS,
+    );
 
     setAccessToken(data.data.accessToken);
     return data;
@@ -40,15 +38,23 @@ export const refreshTokensThunk = createAsyncThunk<
 
 export const signUpThunk = createAsyncThunk<
   IApiResponseSuccess<UserWithTokenType>,
-  ISignUpData,
+  FormData,
   { rejectValue: IApiResponseReject }
 >(USER_THUNKS_TYPES.SIGN_UP, async (userData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.post<
-      IApiResponseSuccess<UserWithTokenType>
-    >(AUTH_API_ROUTES.SIGN_UP, userData);
+    const { data } = await axiosInstance.post<IApiResponseSuccess<UserWithTokenType>>(
+      AUTH_API_ROUTES.SIGN_UP,
+      userData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
 
     setAccessToken(data.data.accessToken);
+    console.log(data);
+
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
@@ -62,9 +68,10 @@ export const signInThunk = createAsyncThunk<
   { rejectValue: IApiResponseReject }
 >(USER_THUNKS_TYPES.SIGN_IN, async (userData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.post<
-      IApiResponseSuccess<UserWithTokenType>
-    >(AUTH_API_ROUTES.SIGN_IN, userData);
+    const { data } = await axiosInstance.post<IApiResponseSuccess<UserWithTokenType>>(
+      AUTH_API_ROUTES.SIGN_IN,
+      userData,
+    );
 
     setAccessToken(data.data.accessToken);
     return data;
@@ -81,7 +88,7 @@ export const signOutThunk = createAsyncThunk<
 >(USER_THUNKS_TYPES.SIGN_OUT, async (_, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<null>>(
-      AUTH_API_ROUTES.SIGN_OUT
+      AUTH_API_ROUTES.SIGN_OUT,
     );
 
     setAccessToken('');

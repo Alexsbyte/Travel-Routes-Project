@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from '@mantine/core';
 import { useAppDispatch } from '@/shared/hooks/reduxHooks';
-import { signInThunk, signUpThunk } from '@/entities/user';
+import { ISignUpData, signInThunk, signUpThunk } from '@/entities/user';
 import { AuthForm } from '../../AuthForm';
 import styles from './AuthModal.module.css';
 
@@ -24,13 +24,18 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, ty
     }
   };
 
-  const handleSignUp = async (data: {
-    username: string;
-    email: string;
-    password: string;
-  }) => {
+  const handleSignUp = async (data: ISignUpData) => {
     try {
-      await dispatch(signUpThunk(data)).unwrap();
+      const formData = new FormData();
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('username', data.username);
+
+      if (data.avatar) {
+        formData.append('avatar', data.avatar as Blob);
+      }
+
+      await dispatch(signUpThunk(formData)).unwrap();
       onSuccess();
     } catch (error) {
       console.log('Ошибка регистрации:', error);
