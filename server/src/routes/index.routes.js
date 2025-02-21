@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const authRoutes = require("./user.routes");
+const routerRoutes = require("./router.routes");
 
 const formatResponse = require("../utils/formatResponse");
 
 router.use("/auth", authRoutes);
+router.use("/routes", routerRoutes);
 
 router.use("*", (req, res) => {
   res

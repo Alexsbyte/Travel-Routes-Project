@@ -1,7 +1,6 @@
 "use strict";
 const bcrypt = require('bcrypt');
 require('dotenv').config();
-console.log(`${process.env.ADMIN_PASSWORD}`);
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
