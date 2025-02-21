@@ -1,13 +1,11 @@
-
-
-import { userReducer } from "@/entities/user/slice";
-import { configureStore } from "@reduxjs/toolkit";
+import { userReducer } from '@/entities/user';
+import { configureStore } from '@reduxjs/toolkit';
+import { routeReducer } from '@/entities/route';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-
-
+    route: routeReducer,
   },
 });
 
