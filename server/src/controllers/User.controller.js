@@ -43,7 +43,7 @@ class UserController {
     const normalizedEmail = email.toLowerCase();
     let avatar = 'placeholder/placeholder.png';
 
-    if (req.file.filename) {
+    if (req.file?.filename) {
       avatar = normalizedEmail + '/' + req.file.filename;
     }
 

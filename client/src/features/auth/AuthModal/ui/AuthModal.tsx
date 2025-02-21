@@ -30,7 +30,10 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, ty
       formData.append('email', data.email);
       formData.append('password', data.password);
       formData.append('username', data.username);
-      formData.append('avatar', data.avatar as Blob);
+
+      if (data.avatar) {
+        formData.append('avatar', data.avatar as Blob);
+      }
 
       await dispatch(signUpThunk(formData)).unwrap();
       onSuccess();
