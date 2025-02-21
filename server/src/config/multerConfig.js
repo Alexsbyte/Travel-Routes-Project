@@ -1,14 +1,26 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    const dirName = req.headers.title;
+    const { email, user_id } = req.body;
+    let preFixDirName = 'avatars';
 
-    console.log(dirName, '<<<<<<<');
+    if (user_id) {
+      preFixDirName = 'routes';
+    }
+
+    const dirPath = path.resolve(
+      __dirname,
+      `../../public/images/${preFixDirName}/${email}`,
+    );
+
+    // Создаём директорию, и если она не существует
+    fs.mkdirSync(dirPath, { recursive: true });
 
     // здесь cb - колбек, который возвращает значение для св-ва destination
-    cb(null, path.resolve(__dirname, `../../public/images/${dirName}`)); // папка куда сохранять файлы
+    cb(null, path.resolve(__dirname, `../../public/images/${preFixDirName}/${email}`)); // папка куда сохранять файлы
   },
   filename(req, file, cb) {
     // здесь cb - колбек, который возвращает значение для св-ва filename

@@ -2,10 +2,12 @@ import React, { useState, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../ui/AuthForm.module.css';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { ISignInData, ISignUpData } from '@/entities/user';
 
 const inputsInitialState = {
   email: '',
   username: '',
+  avatar: null,
   password: '',
   confirmPassword: '',
 };
@@ -13,14 +15,15 @@ const inputsInitialState = {
 type InputsType = {
   username: string;
   email: string;
+  avatar: File | null;
   password: string;
   confirmPassword: string;
 };
 
 interface Props {
   type: 'signin' | 'signup';
-  handleSignIn: (data: { email: string; password: string }) => void;
-  handleSignUp: (data: { username: string; email: string; password: string }) => void;
+  handleSignIn: (data: ISignInData) => void;
+  handleSignUp: (data: ISignUpData) => void;
 }
 
 export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
@@ -33,7 +36,8 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
 
   async function submitHandler(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const { email, username, password } = inputs;
+    const { email, username, avatar, password } = inputs;
+    console.log(avatar);
 
     if (type === 'signin') {
       handleSignIn({ email: email.toLowerCase(), password });
@@ -42,7 +46,7 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
         console.error('Пароли не совпадают.');
         return;
       }
-      // handleSignUp({ username, email: email.toLowerCase(), password });
+      handleSignUp({ username, email: email.toLowerCase(), avatar, password });
     }
 
     setInputs(inputsInitialState);

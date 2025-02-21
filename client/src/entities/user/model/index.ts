@@ -5,6 +5,7 @@ export interface ISignInData {
 
 export interface ISignUpData extends ISignInData {
   username: string;
+  avatar?: File | null;
 }
 
 export type UserType = {
