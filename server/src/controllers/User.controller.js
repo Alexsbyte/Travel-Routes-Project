@@ -30,20 +30,22 @@ class UserController {
     console.log(11111, req.body);
     console.log(11111, req.file);
 
-    // const { isValid, error } = UserValidator.validateSignUp({
-    //   email,
-    //   username,
-    //   password,
-    // });
+    const { isValid, error } = UserValidator.validateSignUp({
+      email,
+      username,
+      password,
+    });
 
-    // if (!isValid) {
-    //   return res
-    //     .status(400)
-    //     .json(formatResponse(400, "Validation error", null, error));
-    // }
+    if (!isValid) {
+      return res.status(400).json(formatResponse(400, 'Validation error', null, error));
+    }
 
     const normalizedEmail = email.toLowerCase();
-    const avatar = normalizedEmail + '/' + req.file.filename;
+    let avatar = 'placeholder/placeholder.png';
+
+    if (req.file.filename) {
+      avatar = normalizedEmail + '/' + req.file.filename;
+    }
 
     try {
       const userFound = await UserService.getByEmail(normalizedEmail);
@@ -63,6 +65,7 @@ class UserController {
       const newUser = await UserService.create({
         email: normalizedEmail,
         username,
+        avatar,
         password: hashedPassword,
       });
       const plainUser = newUser.get({ plain: true });

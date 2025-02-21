@@ -37,7 +37,6 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
   async function submitHandler(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const { email, username, avatar, password } = inputs;
-    console.log(avatar);
 
     if (type === 'signin') {
       handleSignIn({ email: email.toLowerCase(), password });
