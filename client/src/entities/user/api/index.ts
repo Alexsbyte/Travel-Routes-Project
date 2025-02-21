@@ -3,13 +3,7 @@ import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
 import { ISignInData, UserWithTokenType } from '../model';
 import { AxiosError } from 'axios';
-
-enum AUTH_API_ROUTES {
-  REFRESH_TOKENS = 'api/auth/refreshTokens',
-  SIGN_UP = 'api/auth/signUp',
-  SIGN_IN = 'api/auth/signIn',
-  SIGN_OUT = 'api/auth/signOut',
-}
+import { AUTH_API_ROUTES } from '@/shared/enums/apiRoutes';
 
 enum USER_THUNKS_TYPES {
   REFRESH_TOKENS = 'user/refreshTokens',
