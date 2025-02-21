@@ -42,12 +42,21 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
         console.error('Пароли не совпадают');
         return;
       }
-      handleSignUp({ username, email: email.toLowerCase(), password });
+      // handleSignUp({ username, email: email.toLowerCase(), password });
     }
 
     setInputs(inputsInitialState);
     navigate(CLIENT_ROUTES.HOME); // можно перенаправить на главную страницу, если необходимо
   }
+
+  const onFileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      console.log(file);
+
+      setInputs((prev) => ({ ...prev, avatar: file }));
+    }
+  };
 
   return (
     <form className={styles.authForm} onSubmit={submitHandler}>
@@ -60,7 +69,7 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
         required
       />
       <input
-      className={styles.input}
+        className={styles.input}
         type="password"
         name="password"
         placeholder="Пароль"
@@ -71,7 +80,7 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
       {type === 'signup' && (
         <>
           <input
-           className={styles.input}
+            className={styles.input}
             type="password"
             name="confirmPassword"
             placeholder="Повторите пароль"
@@ -80,7 +89,7 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
             required
           />
           <input
-           className={styles.input}
+            className={styles.input}
             type="text"
             name="username"
             placeholder="Имя пользователя"
@@ -88,9 +97,18 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
             onChange={onChangeHandler}
             required
           />
+          <input
+            className={styles.input}
+            type="file"
+            name="avatar"
+            accept="image/*"
+            onChange={onFileChangeHandler}
+          />
         </>
       )}
-      <button className={styles.button} type="submit">{type === 'signin' ? 'Войти' : 'Зарегистрироваться'}</button>
+      <button className={styles.button} type="submit">
+        {type === 'signin' ? 'Войти' : 'Зарегистрироваться'}
+      </button>
     </form>
   );
 }

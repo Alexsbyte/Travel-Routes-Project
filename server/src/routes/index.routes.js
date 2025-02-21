@@ -1,14 +1,14 @@
-const router = require("express").Router();
-const authRoutes = require("./user.routes");
+const router = require('express').Router();
+const authRoutes = require('./user.routes');
+const uploadRouter = require('./api/uploads.routes');
 
-const formatResponse = require("../utils/formatResponse");
+const formatResponse = require('../utils/formatResponse');
 
-router.use("/auth", authRoutes);
+router.use('/auth', authRoutes);
+router.use('/uploads', uploadRouter);
 
-router.use("*", (req, res) => {
-  res
-    .status(404)
-    .json(formatResponse(404, "Not found", null, "Resource not found"));
+router.use('*', (req, res) => {
+  res.status(404).json(formatResponse(404, 'Not found', null, 'Resource not found'));
 });
 
 module.exports = router;
