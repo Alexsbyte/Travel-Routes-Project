@@ -39,7 +39,7 @@ export function AuthForm({ type, handleSignIn, handleSignUp }: Props) {
       handleSignIn({ email: email.toLowerCase(), password });
     } else {
       if (password !== inputs.confirmPassword) {
-        console.error('Пароли не совпадают');
+        console.error('Пароли не совпадают.');
         return;
       }
       // handleSignUp({ username, email: email.toLowerCase(), password });
