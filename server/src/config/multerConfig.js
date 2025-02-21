@@ -4,23 +4,27 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    const { email, user_id } = req.body;
-    let preFixDirName = 'avatars';
+    try {
+      const { email, user_id } = req.body;
+      let preFixDirName = 'avatars';
 
-    if (user_id) {
-      preFixDirName = 'routes';
+      if (user_id) {
+        preFixDirName = 'routes';
+      }
+
+      const dirPath = path.resolve(
+        __dirname,
+        `../../public/images/${preFixDirName}/${email}`,
+      );
+
+      // Создаём директорию, и если она не существует
+      fs.mkdirSync(dirPath, { recursive: true });
+
+      // здесь cb - колбек, который возвращает значение для св-ва destination
+      cb(null, path.resolve(__dirname, `../../public/images/${preFixDirName}/${email}`)); // папка куда сохранять файлы
+    } catch (error) {
+      cb(new Error('Ошибка создания папки или файла: ' + error.message));
     }
-
-    const dirPath = path.resolve(
-      __dirname,
-      `../../public/images/${preFixDirName}/${email}`,
-    );
-
-    // Создаём директорию, и если она не существует
-    fs.mkdirSync(dirPath, { recursive: true });
-
-    // здесь cb - колбек, который возвращает значение для св-ва destination
-    cb(null, path.resolve(__dirname, `../../public/images/${preFixDirName}/${email}`)); // папка куда сохранять файлы
   },
   filename(req, file, cb) {
     // здесь cb - колбек, который возвращает значение для св-ва filename
@@ -34,12 +38,9 @@ const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif/;
   const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimeType = allowedTypes.test(file.mimetype);
-  console.log('<<<<<<<filter2');
   if (extName && mimeType) {
-    console.log('<<<<<<<filter3');
     return cb(null, true);
   }
-  console.log('<<<<<<<filter4');
   cb(new Error('Только изображения форматов JPEG, PNG, GIF!'));
 };
 
@@ -48,11 +49,3 @@ module.exports = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter, // Максимальный размер файла 5MB
 }); // Обработка до 5 файлов (в поле 'photos')
-
-// // Создаем endpoint для загрузки файлов
-// app.post('/upload', upload.single('file'), (req, res) => {
-//   if (!req.file) {
-//     return res.status(400).json({ message: 'Файл не загружен' });
-//   }
-//   res.json({ message: 'Файл успешно загружен', filename: req.file.filename });
-// });

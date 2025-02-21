@@ -26,9 +26,10 @@ class UserController {
 
   static async signUp(req, res) {
     const { email, username, password } = req.body;
-    // console.log(11111, req.body);
-    // console.log(11111, req.file);
-    res;
+
+    console.log(11111, req.body);
+    console.log(11111, req.file);
+
     // const { isValid, error } = UserValidator.validateSignUp({
     //   email,
     //   username,
@@ -41,40 +42,41 @@ class UserController {
     //     .json(formatResponse(400, "Validation error", null, error));
     // }
 
-    // const normalizedEmail = email.toLowerCase();
+    const normalizedEmail = email.toLowerCase();
+    const avatar = normalizedEmail + '/' + req.file.filename;
 
     try {
-      // const userFound = await UserService.getByEmail(normalizedEmail);
-      // if (userFound) {
-      //   return res
-      //     .status(400)
-      //     .json(
-      //       formatResponse(
-      //         400,
-      //         "A user with this email already exists",
-      //         null,
-      //         "A user with this email already exists"
-      //       )
-      //     );
-      // }
-      // const hashedPassword = await bcrypt.hash(password, 10);
-      // const newUser = await UserService.create({
-      //   email: normalizedEmail,
-      //   username,
-      //   password: hashedPassword,
-      // });
-      // const plainUser = newUser.get({ plain: true });
-      // delete plainUser.password;
-      // const { accessToken, refreshToken } = generateTokens({ user: plainUser });
-      // res
-      //   .status(201)
-      //   .cookie("refreshToken", refreshToken, cookiesConfig)
-      //   .json(
-      //     formatResponse(201, "Login successful", {
-      //       user: plainUser,
-      //       accessToken,
-      //     })
-      //   );
+      const userFound = await UserService.getByEmail(normalizedEmail);
+      if (userFound) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              'A user with this email already exists',
+              null,
+              'A user with this email already exists',
+            ),
+          );
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await UserService.create({
+        email: normalizedEmail,
+        username,
+        password: hashedPassword,
+      });
+      const plainUser = newUser.get({ plain: true });
+      delete plainUser.password;
+      const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+      res
+        .status(201)
+        .cookie('refreshToken', refreshToken, cookiesConfig)
+        .json(
+          formatResponse(201, 'Login successful', {
+            user: plainUser,
+            accessToken,
+          }),
+        );
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
