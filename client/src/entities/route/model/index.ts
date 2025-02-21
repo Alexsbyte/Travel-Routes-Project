@@ -1,7 +1,7 @@
 export type RawRouteData = {
   title: string;
   description: string;
-  category: 'автомобильный' | 'пеший' | 'велосипедный';
+  category: string | 'автомобильный' | 'пеший' | 'велосипедный';
 };
 
 export type Route = {

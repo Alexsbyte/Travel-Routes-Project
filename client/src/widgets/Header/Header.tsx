@@ -1,4 +1,13 @@
-import { Box, Burger, Button, Drawer, Group, Image, ScrollArea } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Burger,
+  Button,
+  Drawer,
+  Group,
+  Image,
+  ScrollArea,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
@@ -7,6 +16,7 @@ import logo from './tr-logo.png';
 import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
+import { useNavigate } from 'react-router-dom';
 
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -15,6 +25,7 @@ export function Header(): React.JSX.Element {
   const [authType, setAuthType] = useState<'signin' | 'signup'>('signin');
   const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.user.user);
+  const navigate = useNavigate();
 
   const openModal = (type: 'signin' | 'signup') => {
     setAuthType(type);
@@ -33,6 +44,10 @@ export function Header(): React.JSX.Element {
     }
   };
 
+  const createRouteHandler = (): void => {
+    navigate('/createRoute');
+  };
+
   const handleSuccess = () => {
     setIsModalOpen(false);
   };
@@ -46,9 +61,22 @@ export function Header(): React.JSX.Element {
 
           <Group visibleFrom="sm">
             {user ? (
-              <Button w={120} h={50} variant="default" onClick={signOutHandler}>
-                Выйти
-              </Button>
+              <>
+                <Button w={200} h={50} variant="default" onClick={createRouteHandler}>
+                  Создать маршрут
+                </Button>
+                <Avatar
+                  className={classes.avatar}
+                  src={`http://localhost:3000/images/avatars/${user.avatar}`}
+                  alt="User Avatar"
+                  radius="xl"
+                  size={50}
+                />
+
+                <Button w={100} h={50} variant="default" onClick={signOutHandler}>
+                  Выйти
+                </Button>
+              </>
             ) : (
               <>
                 <Button

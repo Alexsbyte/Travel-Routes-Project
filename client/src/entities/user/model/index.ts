@@ -12,6 +12,7 @@ export type UserType = {
   id: number;
   email: string;
   username: string;
+  avatar: string;
   createdAt: Date;
   updatedAt: Date;
 };
