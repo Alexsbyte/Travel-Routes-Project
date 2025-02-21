@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { WelcomePage, RouteFormPage } from '@/pages';
+import { AuthGuard } from '@/shared/hocs/AuthGuard';
+import { PublicGuard } from '@/shared/hocs/PublicGuard';
 
 export const router = createBrowserRouter([
   {
@@ -9,12 +11,16 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: CLIENT_ROUTES.HOME,
+        path: CLIENT_ROUTES.WELCOME,
         element: <WelcomePage />,
       },
       {
         path: CLIENT_ROUTES.ROUTE_FORM,
-        element: <RouteFormPage />,
+        element: (
+          <AuthGuard>
+            <RouteFormPage />
+          </AuthGuard>
+        ),
       },
     ],
   },
