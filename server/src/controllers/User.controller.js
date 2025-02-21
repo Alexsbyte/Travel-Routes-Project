@@ -26,10 +26,6 @@ class UserController {
 
   static async signUp(req, res) {
     const { email, username, password } = req.body;
-
-    console.log(11111, req.body);
-    console.log(11111, req.file);
-
     const { isValid, error } = UserValidator.validateSignUp({
       email,
       username,
