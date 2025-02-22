@@ -1,3 +1,5 @@
+const { transliterate } = require('transliteration');
+const PhotoService = require('../services/Photo.service');
 const RouteService = require('../services/Route.service');
 const formatResponse = require('../utils/formatResponse');
 const RouteValidator = require('../utils/Route.validator');
@@ -8,9 +10,6 @@ class RouteController {
     const photos = req.files;
     const { title, description, category } = req.body;
     const { user } = res.locals;
-
-    console.log(title, '<<<<<<<<CONTROLLER');
-    console.log(req.files, '<<<<<<<<CONTROLLER');
 
     const { isValid, error } = RouteValidator.validateCreate({
       title,
@@ -35,10 +34,23 @@ class RouteController {
         return res.status(400).json(formatResponse(400, 'Failed to create new route'));
       }
 
-      const fullRoute = await RouteService.getById(newRoute.id);
-      console.log(colors.bgGreen('Route created successfully'));
+      const routeWithUser = await RouteService.getById(newRoute.id);
 
-      res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
+      const transTitle = transliterate(title);
+
+      const photosForDB = photos.map((photo) => ({
+        url: transTitle + '/' + photo.filename,
+        route_id: routeWithUser.id,
+      }));
+
+      const newPhotos = await PhotoService.createPhotos(photosForDB);
+
+      res.status(201).json(
+        formatResponse(201, 'Route with photos created successfully', {
+          fullRoute: routeWithUser,
+          newPhotos,
+        }),
+      );
     } catch ({ message }) {
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
     }
