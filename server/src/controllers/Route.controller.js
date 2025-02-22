@@ -9,6 +9,7 @@ class RouteController {
     const { user } = res.locals;
 
     console.log(title, '<<<<<<<<CONTROLLER');
+    console.log(req.files, '<<<<<<<<CONTROLLER');
 
     // console.log(req.files);
 

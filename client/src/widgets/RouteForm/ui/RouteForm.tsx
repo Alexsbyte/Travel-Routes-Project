@@ -59,6 +59,10 @@ export function RouteForm(): React.JSX.Element {
       },
       files: (value) => {
         const notSupported = value.find((file) => {
+          if (file.size > 5 * 1024 * 1024) {
+            return true;
+          }
+
           if (
             file.name.endsWith('png') ||
             file.name.endsWith('jpg') ||
@@ -70,15 +74,16 @@ export function RouteForm(): React.JSX.Element {
         });
 
         if (notSupported) {
-          return 'Поддерживаются только: jpg, jpeg, png';
+          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт';
         }
         if (value.length === 0) {
           return 'Это поле обязательно для заполнения';
-        } else if (value.length > 6) {
-          return 'Вы не можите добавить больше 6 фотографий';
-        } else {
-          return null;
         }
+        if (value.length > 6) {
+          return 'Вы не можите добавить больше 6 фотографий';
+        }
+
+        return null;
       },
     },
   });
