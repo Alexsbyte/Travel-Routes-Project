@@ -161,12 +161,26 @@ export function RouteForm(): React.JSX.Element {
             <Button
               w={160}
               h={50}
+              m={10}
               onClick={(event) => {
                 event.preventDefault();
                 form.onSubmit(createRoute)();
               }}
             >
               Создать
+            </Button>
+            <Button
+              w={160}
+              h={50}
+              m={10}
+              bg={'red'}
+              c={'white'}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate('/');
+              }}
+            >
+              Отмена
             </Button>
           </div>
         </Group>
