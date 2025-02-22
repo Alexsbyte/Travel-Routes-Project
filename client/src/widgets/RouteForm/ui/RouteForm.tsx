@@ -22,15 +22,34 @@ const initialState: InputsType = {
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const [files, setFiles] = useState<File[]>([]);
+  // const [files, setFiles] = useState<File[]>([]);
 
   const form = useForm({
     initialValues: initialState,
     validate: {
-      title: (value) =>
-        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
-      description: (value) =>
-        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
+      title: (value) => {
+        if (value.trim().length === 0) {
+          return 'Это поле обязательно для заполнения';
+        } else if (value.trim().length > 30) {
+          return `Это поле не должно быть длинее 30 символов, сейчас ${
+            value.trim().length
+          }`;
+        } else {
+          return null;
+        }
+      },
+
+      description: (value) => {
+        if (value.trim().length === 0) {
+          return 'Это поле обязательно для заполнения';
+        } else if (value.trim().length > 500) {
+          return `Это поле не должно быть длинее 500 символов, сейчас ${
+            value.trim().length
+          }`;
+        } else {
+          return null;
+        }
+      },
       category: (value) => {
         if (!value || value?.trim().length === 0) {
           return 'Выберите тип маршрута';
@@ -41,13 +60,13 @@ export function RouteForm(): React.JSX.Element {
       files: (value) => {
         const notSupported = value.find((file) => {
           if (
-            !file.name.endsWith('png') ||
-            !file.name.endsWith('jpg') ||
-            !file.name.endsWith('jpeg')
+            file.name.endsWith('png') ||
+            file.name.endsWith('jpg') ||
+            file.name.endsWith('jpeg')
           ) {
-            return true;
+            return false;
           }
-          return false;
+          return true;
         });
 
         if (notSupported) {
@@ -98,7 +117,7 @@ export function RouteForm(): React.JSX.Element {
 
       dispatch(createRouteThunk(formData));
       form.reset();
-      setFiles([]);
+      // setFiles([]);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -123,7 +142,7 @@ export function RouteForm(): React.JSX.Element {
             <Input
               {...form.getInputProps('title')}
               w={800}
-              placeholder="Название маршрута"
+              placeholder="Название маршрута (не более 30 смволов)"
             />
             {form.errors.title && (
               <div style={{ color: 'red', fontSize: '12px' }}>{form.errors.title}</div>
@@ -131,7 +150,7 @@ export function RouteForm(): React.JSX.Element {
             <Space h="md" />
             <Textarea
               {...form.getInputProps('description')}
-              placeholder="Описание маршрута"
+              placeholder="Описание маршрута (не более 500символов)"
             />
             <Space h="md" />
             <Select
@@ -147,7 +166,7 @@ export function RouteForm(): React.JSX.Element {
               // value={files}
               // onChange={onChangePhotoForm}
               accept="image/*" // Разрешаем только изображения
-              placeholder="Выберите файл"
+              placeholder="Выберите файл(до 6)"
             />
             <Space h="md" />
             <Button
