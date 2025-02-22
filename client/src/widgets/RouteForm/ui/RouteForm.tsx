@@ -39,6 +39,20 @@ export function RouteForm(): React.JSX.Element {
         }
       },
       files: (value) => {
+        const notSupported = value.find((file) => {
+          if (
+            !file.name.endsWith('png') ||
+            !file.name.endsWith('jpg') ||
+            !file.name.endsWith('jpeg')
+          ) {
+            return true;
+          }
+          return false;
+        });
+
+        if (notSupported) {
+          return 'Поддерживаются только: jpg, jpeg, png';
+        }
         if (value.length === 0) {
           return 'Это поле обязательно для заполнения';
         } else if (value.length > 6) {
