@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
+import { useNavigate } from 'react-router-dom';
 
 type InputsType = {
   title: string;
@@ -22,7 +23,7 @@ const initialState: InputsType = {
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  // const [files, setFiles] = useState<File[]>([]);
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: initialState,
@@ -88,23 +89,6 @@ export function RouteForm(): React.JSX.Element {
     },
   });
 
-  // const onChangePhotoForm = (newFiles: File[] | File | null) => {
-  //   console.log(newFiles);
-
-  //   if (newFiles) {
-  //     // Если newFiles — это массив (multiple=true)
-  //     if (Array.isArray(newFiles)) {
-  //       setFiles(newFiles);
-  //     }
-  //     // Если newFiles — это один файл (multiple=false)
-  //     else {
-  //       setFiles([newFiles]);
-  //     }
-  //   } else {
-  //     setFiles([]); // Если файл не выбран
-  //   }
-  // };
-
   const createRoute = (
     values: InputsType,
     e: FormEvent<HTMLFormElement> | undefined,
@@ -122,7 +106,7 @@ export function RouteForm(): React.JSX.Element {
 
       dispatch(createRouteThunk(formData));
       form.reset();
-      // setFiles([]);
+      navigate('/');
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
