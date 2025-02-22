@@ -1,6 +1,6 @@
 import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
@@ -8,13 +8,15 @@ import { createRouteThunk } from '@/entities/route';
 type InputsType = {
   title: string;
   description: string;
-  category: string | 'автомобильный' | 'пеший' | 'велосипедный';
+  category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
+  files: File[];
 };
 
-const initialState = {
+const initialState: InputsType = {
   title: '',
   description: '',
   category: '',
+  files: [],
 };
 
 export function RouteForm(): React.JSX.Element {
@@ -25,47 +27,64 @@ export function RouteForm(): React.JSX.Element {
   const form = useForm({
     initialValues: initialState,
     validate: {
-      title: (value: string) =>
+      title: (value) =>
         value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
-      description: (value: string) =>
+      description: (value) =>
         value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
-      category: (value: string) => {
+      category: (value) => {
         if (!value || value?.trim().length === 0) {
           return 'Выберите тип маршрута';
+        } else {
+          return null;
+        }
+      },
+      files: (value) => {
+        if (value.length === 0) {
+          return 'Это поле обязательно для заполнения';
+        } else if (value.length > 6) {
+          return 'Вы не можите добавить больше 6 фотографий';
+        } else {
+          return null;
         }
       },
     },
   });
 
-  const onChangePhotoForm = (newFiles: File[] | File | null) => {
-    console.log(newFiles);
+  // const onChangePhotoForm = (newFiles: File[] | File | null) => {
+  //   console.log(newFiles);
 
-    if (newFiles) {
-      // Если newFiles — это массив (multiple=true)
-      if (Array.isArray(newFiles)) {
-        setFiles(newFiles);
-      }
-      // Если newFiles — это один файл (multiple=false)
-      else {
-        setFiles([newFiles]);
-      }
-    } else {
-      setFiles([]); // Если файл не выбран
-    }
-  };
+  //   if (newFiles) {
+  //     // Если newFiles — это массив (multiple=true)
+  //     if (Array.isArray(newFiles)) {
+  //       setFiles(newFiles);
+  //     }
+  //     // Если newFiles — это один файл (multiple=false)
+  //     else {
+  //       setFiles([newFiles]);
+  //     }
+  //   } else {
+  //     setFiles([]); // Если файл не выбран
+  //   }
+  // };
 
-  const createRoute = (values: InputsType) => {
+  const createRoute = (
+    values: InputsType,
+    e: FormEvent<HTMLFormElement> | undefined,
+  ): void => {
+    e?.preventDefault();
     try {
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
       formData.append('category', values.category);
-      files.forEach((file) => {
+      values.files.forEach((file) => {
         formData.append('files', file);
       });
+      console.log(values);
 
       dispatch(createRouteThunk(formData));
       form.reset();
+      setFiles([]);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -104,14 +123,15 @@ export function RouteForm(): React.JSX.Element {
             <Select
               {...form.getInputProps('category')}
               placeholder="Тип маршрута"
-              data={['автомобильный', 'пеший', 'велосипедный']}
+              data={['', 'автомобильный', 'пеший', 'велосипедный']}
             />
             <Space h="md" />
             <FileInput
+              {...form.getInputProps('files')}
               w={200}
               multiple
-              value={files}
-              onChange={onChangePhotoForm}
+              // value={files}
+              // onChange={onChangePhotoForm}
               accept="image/*" // Разрешаем только изображения
               placeholder="Выберите файл"
             />

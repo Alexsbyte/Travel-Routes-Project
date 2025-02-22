@@ -8,6 +8,8 @@ class RouteController {
     const { title, description, category } = req.body;
     const { user } = res.locals;
 
+    console.log(title, '<<<<<<<<CONTROLLER');
+
     // console.log(req.files);
 
     res.end();

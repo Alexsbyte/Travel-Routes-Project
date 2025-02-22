@@ -1,13 +1,17 @@
 const multer = require('multer');
+const { transliterate } = require('transliteration');
 const path = require('path');
 const fs = require('fs');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    console.log(file, '<<<<<<<<<<<MULTER');
-
     try {
       const { email, title } = req.body;
+
+      const transTitle = transliterate(title);
+
+      console.log(transTitle, '<<<<<<<<<<<MULTER');
+
       let preFixDirName = 'avatars';
 
       if (file && file.fieldname === 'files') {
@@ -16,7 +20,7 @@ const storage = multer.diskStorage({
 
       const dirPath = path.resolve(
         __dirname,
-        `../../public/images/${preFixDirName}/${email || title}`,
+        `../../public/images/${preFixDirName}/${email || transTitle}`,
       );
 
       // Создаём директорию, и если она не существует
@@ -25,7 +29,10 @@ const storage = multer.diskStorage({
       // здесь cb - колбек, который возвращает значение для св-ва destination
       cb(
         null,
-        path.resolve(__dirname, `../../public/images/${preFixDirName}/${email || title}`),
+        path.resolve(
+          __dirname,
+          `../../public/images/${preFixDirName}/${email || transTitle}`,
+        ),
       ); // папка куда сохранять файлы
     } catch (error) {
       cb(new Error('Ошибка создания папки или файла: ' + error.message));
@@ -40,7 +47,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   // console.log('<<<<<<<filter');
-  const allowedTypes = /jpeg|jpg|png|gif/;
+  const allowedTypes = /jpeg|jpg|png/;
   const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimeType = allowedTypes.test(file.mimetype);
   if (extName && mimeType) {
