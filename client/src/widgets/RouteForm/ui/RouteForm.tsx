@@ -72,7 +72,7 @@ export function RouteForm(): React.JSX.Element {
         <Group justify="center" mt="xl" className={style.routeForm}>
           <h1>Создай свой маршрут</h1>
           <iframe
-            style={{ width: '1000px', height: '400px' }}
+            style={{ width: '1000px', height: '500px' }}
             src="https://yandex.ru/maps/"
           ></iframe>
           <div className={style.formContainer}>
