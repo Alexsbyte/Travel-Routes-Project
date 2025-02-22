@@ -5,44 +5,43 @@ const colors = require('ansi-colors');
 
 class RouteController {
   static async create(req, res) {
+    const photos = req.files;
     const { title, description, category } = req.body;
     const { user } = res.locals;
 
     console.log(title, '<<<<<<<<CONTROLLER');
     console.log(req.files, '<<<<<<<<CONTROLLER');
 
-    // console.log(req.files);
+    const { isValid, error } = RouteValidator.validateCreate({
+      title,
+      description,
+      category,
+      photos,
+    });
 
-    res.end();
-    // const { isValid, error } = RouteValidator.validateCreate({
-    //   title,
-    //   description,
-    //   category,
-    // });
+    if (!isValid) {
+      return res.status(400).json(formatResponse(400, 'Validation error', null, error));
+    }
 
-    // if (!isValid) {
-    //   return res.status(400).json(formatResponse(400, 'Validation error', null, error));
-    // }
+    try {
+      const newRoute = await RouteService.create({
+        title,
+        description,
+        category,
+        user_id: user.id,
+      });
 
-    // try {
-    //   const newRoute = await RouteService.create({
-    //     title,
-    //     description,
-    //     category,
-    //     user_id: user.id,
-    //   });
+      if (!newRoute) {
+        return res.status(400).json(formatResponse(400, 'Failed to create new route'));
+      }
 
-    //   if (!newRoute) {
-    //     return res.status(400).json(formatResponse(400, 'Failed to create new route'));
-    //   }
+      const fullRoute = await RouteService.getById(newRoute.id);
+      console.log(colors.bgGreen('Route created successfully'));
 
-    //   const fullRoute = await RouteService.getById(newRoute.id);
-    //   console.log(colors.bgGreen('Route created successfully'));
-
-    //   res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
-    // } catch ({ message }) {
-    //   res.status(500).json(formatResponse(500, 'Internal server error', null, message));
-    // }
+      res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
+    } catch ({ message }) {
+      res.status(500).json(formatResponse(500, 'Internal server error', null, message));
+    }
   }
 
   static async getAll(req, res) {
