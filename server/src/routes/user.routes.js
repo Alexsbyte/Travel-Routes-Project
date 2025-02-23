@@ -1,15 +1,17 @@
-const router = require("express").Router();
-const UserController = require("../controllers/User.controller");
-const verifyRefreshToken = require("../middleware/verifyRefreshToken");
+const router = require('express').Router();
+const UserController = require('../controllers/User.controller');
+const verifyRefreshToken = require('../middleware/verifyRefreshToken');
 
 router
 
-  .get("/refreshTokens", verifyRefreshToken, UserController.refreshTokens)
+  .get('/refreshTokens', verifyRefreshToken, UserController.refreshTokens)
 
-  .post("/signUp", UserController.signUp)
+  .post('/signUp', UserController.signUp)
 
-  .post("/signIn", UserController.signIn)
+  .get('/verify-email/:token', UserController.verifyEmail)
 
-  .post("/signOut", UserController.signOut);
+  .post('/signIn', UserController.signIn)
+
+  .post('/signOut', UserController.signOut);
 
 module.exports = router;

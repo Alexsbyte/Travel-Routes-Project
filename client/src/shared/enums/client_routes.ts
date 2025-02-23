@@ -1,5 +1,7 @@
 export enum CLIENT_ROUTES {
   HOME = '/',
-  AUTH = '/:type',
+  REGISTRATION = '/signUp',
+  AUTHORIZATION = '/signIn',
   SIGN_OUT = '/signOut',
+  VERIFY_EMAIL = '/verify-email',
 }

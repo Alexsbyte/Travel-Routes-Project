@@ -34,6 +34,10 @@ export function Header(): React.JSX.Element {
 
   const handleSuccess = () => {
     setIsModalOpen(false);
+    setTimeout(() => {
+      setAuthType('signin'); // Переключаем на вход
+      setIsModalOpen(true); 
+    }, 300); // Даем небольшую задержку, чтобы выглядело плавнее
   };
   return (
     <Box pb={50}>
@@ -89,7 +93,7 @@ export function Header(): React.JSX.Element {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleSuccess}
-        type={authType}
+        authType={authType}
       />
     </Box>
   );

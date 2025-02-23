@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { WelcomePage } from '@/pages/WelcomePage/ui/WelcomePage';
+import { VerifyEmail } from '@/features/auth/VerifyEmail';
 
 
 export const router = createBrowserRouter([
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
       {
         path: CLIENT_ROUTES.HOME,
         element: <WelcomePage />,
+      },
+      {
+        path: CLIENT_ROUTES.VERIFY_EMAIL,
+        element: <VerifyEmail />,
       },
     ],
   },

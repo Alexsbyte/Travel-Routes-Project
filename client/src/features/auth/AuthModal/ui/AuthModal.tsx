@@ -1,39 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useAppDispatch } from '@/shared/hooks/reduxHooks';
-import { signInThunk, signUpThunk } from '@/entities/user';
-import { AuthForm } from '../../AuthForm';
+
 import styles from './AuthModal.module.css';
+import { message as antMessage } from 'antd';
+import { ISignInData, ISignUpData, signInThunk, signUpThunk } from '@/entities/user';
+import { RegistrationForm } from '../../auth/ui/RegistrationForm';
+import { AuthorizationForm } from '../../auth/ui/AuthorizationForm';
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-  type: 'signin' | 'signup';
+  onClose: () => void
+  authType: 'signin' | 'signup'; // Используем authType
+  onSuccess: () => void; // Добавляем обработчик успеха
 }
 
-export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, type }) => {
+export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onSuccess}) => {
   const dispatch = useAppDispatch();
+  const [isSignUp, setIsSignUp] = useState(authType === 'signup'); // Инициализируем на основе authType
 
-  const handleSignIn = async (data: { email: string; password: string }) => {
+   // Синхронизация isSignUp с authType
+   useEffect(() => {
+    setIsSignUp(authType === 'signup');
+  }, [authType]);
+
+
+  const handleSignUp = async (data: ISignUpData) => {
     try {
-      await dispatch(signInThunk(data)).unwrap();
-      onSuccess();
+      await dispatch(signUpThunk(data)).unwrap();
+      antMessage.success('Регистрация успешна! Проверьте почту для подтверждения.');
+      setIsSignUp(false); // После регистрации переключаем на авторизацию
+      onSuccess(); // Вызываем onSuccess для закрытия модального окна
     } catch (error) {
-      console.log('Ошибка входа:', error);
+      antMessage.error(error instanceof Error ? error.message : 'Ошибка регистрации');
     }
   };
 
-  const handleSignUp = async (data: {
-    username: string;
-    email: string;
-    password: string;
-  }) => {
+
+  const handleSignIn = async (data: ISignInData) => {
     try {
-      await dispatch(signUpThunk(data)).unwrap();
-      onSuccess();
+      await dispatch(signInThunk(data)).unwrap();
+      antMessage.success('Авторизация успешна!');
+      onClose(); // Закрываем модальное окно после успешного входа
     } catch (error) {
-      console.log('Ошибка регистрации:', error);
+      antMessage.error(error instanceof Error ? error.message : 'Ошибка авторизации');
+      onClose(); // Закрываем окно даже при ошибке
     }
   };
 
@@ -41,24 +52,18 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, ty
     <Modal
       opened={isOpen}
       onClose={onClose}
-      title={
-        <div className={styles.modalTitle}>
-          {type === 'signin' ? 'Вход в систему' : 'Регистрация'}
-        </div>
-      }
+      title={<div className={styles.modalTitle}>{isSignUp ? 'Регистрация' : 'Вход в систему'}</div>}
       centered
-      overlayProps={{
-        backgroundOpacity: 0.6,
-        blur: 3,
-      }}
+      overlayProps={{ backgroundOpacity: 0.6, blur: 3 }}
       transitionProps={{ transition: 'fade', duration: 200 }}
       size="md"
       className={styles.modalContainer}
     >
-      <AuthForm type={type} handleSignIn={handleSignIn} handleSignUp={handleSignUp} />
-      {/* <Button className={styles.closeButton}  onClick={onClose}>
-        Закрыть
-      </Button> */}
+      {isSignUp ? (
+        <RegistrationForm handleSignUp={handleSignUp} onSwitch={() => setIsSignUp(false)} />
+      ) : (
+        <AuthorizationForm handleSignIn={handleSignIn} onSwitch={() => setIsSignUp(true)} />
+      )}
     </Modal>
   );
 };
