@@ -7,6 +7,7 @@ export type RawRouteData = {
 export type Route = {
   id: number;
   user_id: number;
+  user: { username: string; email: string };
   createdAt: string;
   updatedAt: string;
 } & RawRouteData;

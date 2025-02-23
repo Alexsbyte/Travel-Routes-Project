@@ -1,62 +1,112 @@
 import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
-import { useState } from 'react';
+import { FormEvent} from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
+import { useNavigate } from 'react-router-dom';
 
 type InputsType = {
   title: string;
   description: string;
-  category: string | 'автомобильный' | 'пеший' | 'велосипедный';
+  category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
+  files: File[];
 };
 
-const initialState = {
+const initialState: InputsType = {
   title: '',
   description: '',
   category: '',
+  files: [],
 };
 
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const [files, setFiles] = useState<File[]>([]);
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: initialState,
     validate: {
-      title: (value: string) =>
-        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
-      description: (value: string) =>
-        value.trim().length === 0 ? 'Это поле обязательно для заполнения' : null,
-      category: (value: string) => {
+      title: (value) => {
+        if (value.trim().length === 0) {
+          return 'Это поле обязательно для заполнения';
+        } else if (value.trim().length > 30) {
+          return `Это поле не должно быть длинее 30 символов, сейчас ${
+            value.trim().length
+          }`;
+        } else {
+          return null;
+        }
+      },
+
+      description: (value) => {
+        if (value.trim().length === 0) {
+          return 'Это поле обязательно для заполнения';
+        } else if (value.trim().length > 500) {
+          return `Это поле не должно быть длинее 500 символов, сейчас ${
+            value.trim().length
+          }`;
+        } else {
+          return null;
+        }
+      },
+      category: (value) => {
         if (!value || value?.trim().length === 0) {
           return 'Выберите тип маршрута';
+        } else {
+          return null;
         }
+      },
+      files: (value) => {
+        const notSupported = value.find((file) => {
+          if (file.size > 5 * 1024 * 1024) {
+            return true;
+          }
+
+          if (
+            file.name.endsWith('png') ||
+            file.name.endsWith('jpg') ||
+            file.name.endsWith('jpeg')
+          ) {
+            return false;
+          }
+          return true;
+        });
+
+        if (notSupported) {
+          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт';
+        }
+        if (value.length === 0) {
+          return 'Это поле обязательно для заполнения';
+        }
+        if (value.length > 6) {
+          return 'Вы не можите добавить больше 6 фотографий';
+        }
+
+        return null;
       },
     },
   });
 
-  const onChangePhotoForm = (newFiles: File[] | File | null) => {
-    if (newFiles) {
-      // Если newFiles — это массив (multiple=true)
-      if (Array.isArray(newFiles)) {
-        setFiles(newFiles);
-      }
-      // Если newFiles — это один файл (multiple=false)
-      else {
-        setFiles([newFiles]);
-      }
-    } else {
-      setFiles([]); // Если файл не выбран
-    }
-  };
-
-  const createRoute = (values: InputsType) => {
+  const createRoute = (
+    values: InputsType,
+    e: FormEvent<HTMLFormElement> | undefined,
+  ): void => {
+    e?.preventDefault();
     try {
-      dispatch(createRouteThunk(values));
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description);
+      formData.append('category', values.category);
+      values.files.forEach((file) => {
+        formData.append('files', file);
+      });
       console.log(values);
+
+      dispatch(createRouteThunk(formData));
       form.reset();
+      navigate('/');
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -81,7 +131,7 @@ export function RouteForm(): React.JSX.Element {
             <Input
               {...form.getInputProps('title')}
               w={800}
-              placeholder="Название маршрута"
+              placeholder="Название маршрута (не более 30 смволов)"
             />
             {form.errors.title && (
               <div style={{ color: 'red', fontSize: '12px' }}>{form.errors.title}</div>
@@ -89,33 +139,48 @@ export function RouteForm(): React.JSX.Element {
             <Space h="md" />
             <Textarea
               {...form.getInputProps('description')}
-              placeholder="Описание маршрута"
+              placeholder="Описание маршрута (не более 500символов)"
             />
             <Space h="md" />
             <Select
               {...form.getInputProps('category')}
               placeholder="Тип маршрута"
-              data={['автомобильный', 'пеший', 'велосипедный']}
+              data={['', 'автомобильный', 'пеший', 'велосипедный']}
             />
             <Space h="md" />
             <FileInput
+              {...form.getInputProps('files')}
               w={200}
               multiple
-              value={files}
-              onChange={onChangePhotoForm}
+              // value={files}
+              // onChange={onChangePhotoForm}
               accept="image/*" // Разрешаем только изображения
-              placeholder="Выберите файл"
+              placeholder="Выберите файл(до 6)"
             />
             <Space h="md" />
             <Button
               w={160}
               h={50}
+              m={10}
               onClick={(event) => {
                 event.preventDefault();
                 form.onSubmit(createRoute)();
               }}
             >
               Создать
+            </Button>
+            <Button
+              w={160}
+              h={50}
+              m={10}
+              bg={'red'}
+              c={'white'}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate('/');
+              }}
+            >
+              Отмена
             </Button>
           </div>
         </Group>
