@@ -1,6 +1,6 @@
 class RouteValidator {
   static validateCreate(data) {
-    const { title, description, category, photos } = data;
+    const { title, description, category, photos, points} = data;
 
     if (!title || typeof title !== 'string' || title.trim() === '') {
       return {
@@ -46,6 +46,26 @@ class RouteValidator {
         return {
           isValid: false,
           error: 'Each photo must be less than 5MB.',
+        };
+      }
+    }
+
+    if (!points || !Array.isArray(points) || points.length === 0) {
+      return {
+        isValid: false,
+        error: 'Points must be a non-empty array.',
+      };
+    }
+
+    for (const point of points) {
+      if (
+        !point ||
+        typeof point.latitude !== 'number' ||
+        typeof point.longitude !== 'number'
+      ) {
+        return {
+          isValid: false,
+          error: 'Each point must have valid latitude and longitude as numbers.',
         };
       }
     }
