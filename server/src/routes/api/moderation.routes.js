@@ -31,7 +31,7 @@ async function checkProfanity(text) {
       return false;
     }
     const profanityScore = result.scores[0];
-    return profanityScore > 0.74;
+    return profanityScore > 0.69;
   } catch (error) {
     console.error('Ошибка Hugging Face:', error?.response?.data || error.message);
     return false; // В случае ошибки пропускаем
@@ -46,11 +46,11 @@ router.post('/', verifyAccessToken, async (req, res) => {
     const isProfane = await checkProfanity(title + ' ' + description);
     if (isProfane) {
       return res
-        .status(406)
-        .json(formatResponse(406, 'Текст содержит нецензурные выражения'));
+        .status(400)
+        .json(formatResponse(400, null, null, 'Текст содержит нецензурные выражения'));
     }
 
-    res.status(200).json(formatResponse(200, 'Текст прошел проверку', isProfane));
+    res.status(200).json(formatResponse(200, 'Текст прошел проверку', !isProfane));
   } catch (error) {
     console.log(error);
 

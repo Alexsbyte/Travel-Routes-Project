@@ -1,11 +1,13 @@
 import { userReducer } from '@/entities/user';
 import { configureStore } from '@reduxjs/toolkit';
 import { routeReducer } from '@/entities/route';
+import { moderationReducer } from '@/entities/moderation/slice/ModerationSlice';
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     route: routeReducer,
+    moderation: moderationReducer,
   },
 });
 

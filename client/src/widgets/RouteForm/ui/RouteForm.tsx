@@ -7,6 +7,7 @@ import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
 import { IApiResponseSuccess } from '@/shared/types';
+import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
 
 type InputsType = {
   title: string;
@@ -25,6 +26,7 @@ const initialState: InputsType = {
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+  const moderation = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
 
   const form = useForm({
@@ -97,6 +99,10 @@ export function RouteForm(): React.JSX.Element {
   ): Promise<void> => {
     e?.preventDefault();
     try {
+      dispatch(
+        checkModerationThunk({ title: values.title, description: values.description }),
+      );
+
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
@@ -104,17 +110,8 @@ export function RouteForm(): React.JSX.Element {
       values.files.forEach((file) => {
         formData.append('files', file);
       });
-      console.log(values);
 
-      const response = await axiosInstance.post<IApiResponseSuccess<boolean>>(
-        '/api/moderations',
-        {
-          title: values.title,
-          description: values.description,
-        },
-      );
-
-      console.log(response);
+      console.log(moderation);
 
       // dispatch(createRouteThunk(formData));
       // form.reset();
