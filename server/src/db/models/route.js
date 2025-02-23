@@ -17,11 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   });
-  Route.associate = function (models) {
-    Route.belongsTo(models.User, {
+  Route.associate = function ({User, Point}) {
+    Route.belongsTo(User, {
       foreignKey: 'user_id',
       as: 'user',
     });
+    Route.hasMany(Point, { foreignKey: 'route_id', as: 'points' });
   };
 
   return Route;
