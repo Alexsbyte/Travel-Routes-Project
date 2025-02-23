@@ -1,6 +1,6 @@
 import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
-import { FormEvent, useState } from 'react';
+import { FormEvent} from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
