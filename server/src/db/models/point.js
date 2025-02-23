@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Point.init({
     route_id: DataTypes.INTEGER,
     description: DataTypes.STRING,
-    latitude: DataTypes.DECIMAL,
-    longitude: DataTypes.DECIMAL
+    latitude: DataTypes.FLOAT,
+    longitude: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'Point',

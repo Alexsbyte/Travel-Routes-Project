@@ -19,11 +19,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       latitude: {
-        type: Sequelize.DECIMAL(10,8),
+        type: Sequelize.FLOAT(10,6),
         allowNull: false,
       },
       longitude: {
-        type: Sequelize.DECIMAL(10,8),
+        type: Sequelize.FLOAT(10,6),
         allowNull: false,
       },
       createdAt: {
