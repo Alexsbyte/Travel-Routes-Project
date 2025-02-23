@@ -57,7 +57,11 @@ export function Welcome(): React.JSX.Element {
           мира, наполненную яркими историями и полезными советами.
         </Text>
         <Space h="md" />
-        <Button variant="white" className={style.button} onClick={handler}>
+        <Button
+          variant="white"
+          className={`${style.button} ${style.customButton}`}
+          onClick={handler}
+        >
           Начать путешествие
         </Button>
       </Paper>
