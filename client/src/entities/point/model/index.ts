@@ -1,7 +1,7 @@
 export type Point = {
     id: number;
     route_id: number;
-    title: string;
+    desc: string;
     latitude: number;
     longitude: number;
   };
