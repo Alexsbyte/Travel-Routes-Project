@@ -13,6 +13,7 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthModal } from '@/features/auth/AuthModal';
+import style from './Welcome.module.css';
 
 export function Welcome(): React.JSX.Element {
   const { user } = useAppSelector((state) => state.user);
@@ -52,11 +53,11 @@ export function Welcome(): React.JSX.Element {
           только планировать свои маршруты, но и делиться ими с другими путешественниками,
           а также открывать для себя уникальные пути, созданные такими же искателями
           приключений, как и вы. Добавляйте свои любимые маршруты, рассказывайте о своих
-          открытиях и // находите новые идеи для будущих поездок. Вместе мы создаём карту
-          мира, // наполненную яркими историями и полезными советами.
+          открытиях и находите новые идеи для будущих поездок. Вместе мы создаём карту
+          мира, наполненную яркими историями и полезными советами.
         </Text>
         <Space h="md" />
-        <Button variant="white" color="blue" onClick={handler}>
+        <Button variant="white" className={style.button} onClick={handler}>
           Начать путешествие
         </Button>
       </Paper>
