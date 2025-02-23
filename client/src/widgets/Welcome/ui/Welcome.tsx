@@ -1,15 +1,37 @@
+import { useAppSelector } from '@/shared/hooks/reduxHooks';
 import { HelloCard } from '@/widgets/HelloCard';
-import { Box, Card, Paper, Space, Text, Title, useMantineTheme } from '@mantine/core';
-
-// import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Card,
+  Paper,
+  Space,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthModal } from '@/features/auth/AuthModal';
 
 export function Welcome(): React.JSX.Element {
+  const { user } = useAppSelector((state) => state.user);
   const theme = useMantineTheme();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [isAuthModal, setIsAuthModal] = useState(false);
 
-  // const handler = () => {
-  // navigate("/");
-  // };
+  const handler = () => {
+    if (!user) {
+      setIsAuthModal(true);
+    } else {
+      navigate('/');
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setIsAuthModal(false); // Закрываем модальное окно после успешной авторизации
+    navigate('/'); // Перенаправляем пользователя на главную страницу
+  };
 
   return (
     <Box p="md">
@@ -34,14 +56,9 @@ export function Welcome(): React.JSX.Element {
           мира, // наполненную яркими историями и полезными советами.
         </Text>
         <Space h="md" />
-        {/* <Button
-          rightSection={<IconMapPin size={18} />}
-          variant="white"
-          color="blue"
-          onClick={handler}
-        >
+        <Button variant="white" color="blue" onClick={handler}>
           Начать путешествие
-        </Button> */}
+        </Button>
       </Paper>
 
       <Space h="xl" />
@@ -49,6 +66,13 @@ export function Welcome(): React.JSX.Element {
       <Card withBorder shadow="sm" radius="lg" style={{ overflow: 'hidden' }}>
         <HelloCard />
       </Card>
+
+      <AuthModal
+        isOpen={isAuthModal}
+        onClose={() => setIsAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+        type="signin"
+      />
     </Box>
   );
 }
