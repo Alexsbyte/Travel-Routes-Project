@@ -8,8 +8,3 @@ export enum AUTH_API_ROUTES {
 export enum ROUTE_API_ROUTES {
   GET_ALL = 'api/routes',
 }
-
-export enum POINTS_API_ROUTES {
-  GET_ALL_AND_ADD_POINTS = '/routes/:id/points',
-  UPDATE_DELETE_POINT = '/points/:id',
-}
