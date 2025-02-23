@@ -5,6 +5,8 @@ import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '@/shared/lib/axiosInstance';
+import { IApiResponseSuccess } from '@/shared/types';
 
 type InputsType = {
   title: string;
@@ -89,10 +91,10 @@ export function RouteForm(): React.JSX.Element {
     },
   });
 
-  const createRoute = (
+  const createRoute = async (
     values: InputsType,
     e: FormEvent<HTMLFormElement> | undefined,
-  ): void => {
+  ): Promise<void> => {
     e?.preventDefault();
     try {
       const formData = new FormData();
@@ -104,9 +106,19 @@ export function RouteForm(): React.JSX.Element {
       });
       console.log(values);
 
-      dispatch(createRouteThunk(formData));
-      form.reset();
-      navigate('/');
+      const response = await axiosInstance.post<IApiResponseSuccess<boolean>>(
+        '/api/moderations',
+        {
+          title: values.title,
+          description: values.description,
+        },
+      );
+
+      console.log(response);
+
+      // dispatch(createRouteThunk(formData));
+      // form.reset();
+      // navigate('/');
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
