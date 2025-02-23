@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@mantine/carousel": "^7.17.0",
     "@mantine/core": "^7.17.0",
     "@mantine/form": "^7.17.0",
