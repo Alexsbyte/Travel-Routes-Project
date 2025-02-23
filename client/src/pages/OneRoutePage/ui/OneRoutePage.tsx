@@ -1,66 +1,74 @@
-import { getAllRoutesThunk } from '@/entities/route'; 
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import React, { useEffect } from 'react';
+import styles from './OneRoutePage.module.css';
+import { Image } from 'antd';
+import { Carousel } from 'antd';
 import { useParams } from 'react-router-dom';
-import { Carousel } from 'antd'; // Подключаем карусель из antd
-import { Image } from 'antd'; // Для изображений в карусели
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
+import React, { useEffect, useState } from 'react';
+import { getAllRoutesThunk } from '@/entities/route';
+import { OneRouteItem } from '@/widgets/OneRouteItem';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
-  const routes = useAppSelector(store => store.route.routes);
+  const routes = useAppSelector((store) => store.route.routes);
   const dispatch = useAppDispatch();
+  const [showGallery, setShowGallery] = useState(false);
 
   useEffect(() => {
     dispatch(getAllRoutesThunk());
   }, [dispatch]);
 
-  const route = routes.find(route => route.id.toString() === `${id}`);
+  const route = routes.find((route) => route.id.toString() === `${id}`);
 
   if (!route) {
     return <div>Маршрут не найден</div>;
   }
 
-  // Пример изображений для карусели (галерея)
   const images = [
-    'https://via.placeholder.com/500x300?text=Image+1',
-    'https://via.placeholder.com/500x300?text=Image+2',
-    'https://via.placeholder.com/500x300?text=Image+3',
+    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png',
+    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png',
+    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png',
   ];
 
   return (
-    <>
-      <h1>{route.title}</h1>
-      <p>{route.description}</p>
-      <div>
-        <strong>Категория:</strong> {route.category}
-      </div>
-      <div>
-        <strong>Поделился:</strong> {route.user.username}
-      </div>
-
-      {/* Блок с картой и галереей */}
-      <div style={{ marginTop: '20px' }}>
-        <div style={{ height: '300px', backgroundColor: '#f0f0f0', marginBottom: '20px' }}>
-          {/* Заглушка для карты, в будущем сюда будет вставлена карта */}
+    <div className={styles.routePage}>
+      {/* Карта и галерея */}
+      <div className={styles.mapGalleryContainer}>
+        <div className={styles.map}>
           <h3>Здесь будет карта</h3>
         </div>
 
-        {/* Переключатель галереи */}
-        <h3>Галерея</h3>
-        <Carousel autoplay={false} dots={true} arrows={true}>
-          {images.map((url, index) => (
-            <div key={index}>
-              <Image src={url} alt={`Gallery image ${index + 1}`} />
-            </div>
-          ))}
-        </Carousel>
+        <button
+          className={styles.toggleGallery}
+          onClick={() => setShowGallery(!showGallery)}
+        >
+          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
+        </button>
+
+        {/* Галерея накладывается на карту */}
+        <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
+          <Carousel
+            draggable={true}
+            autoplay={false}
+            dots={true}
+            arrows={false}
+            className={styles.carousel}
+          >
+            {images.map((url, index) => (
+              <div key={index}>
+                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
+              </div>
+            ))}
+          </Carousel>
+        </div>
       </div>
 
+      <OneRouteItem route={route} />
+
       {/* Блок с комментариями */}
-      <div style={{ marginTop: '20px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+      <div className={styles.commentsSection}>
         <h3>Комментарии</h3>
-        {/* В будущем сюда можно добавить список комментариев */}
+        {/* Здесь будут комментарии */}
       </div>
-    </>
+    </div>
   );
 }

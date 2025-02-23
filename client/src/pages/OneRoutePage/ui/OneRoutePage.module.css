@@ -1,0 +1,103 @@
+/* Общие стили */
+.routePage {
+  padding: 20px;
+  background-color: var(--background);
+  width: 60%; /* Компонент занимает 60% ширины страницы */
+  margin: 0 auto; /* Выравнивание по центру */
+}
+
+/* Контейнер для карты и галереи */
+.mapGalleryContainer {
+  position: relative;
+  margin-bottom: 20px;
+  max-width: 100%; /* Ограничиваем максимальную ширину контейнера */
+  height: 400px; /* Ограничиваем высоту карты и галереи */
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.map {
+  width: 100%; /* Карта занимает всю ширину контейнера */
+  height: 100%; /* Карта занимает всю высоту контейнера */
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.toggleGallery {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 2
+}
+
+.toggleGallery:hover {
+  background-color: var(--primary-container);
+}
+
+/* Стили для карусели */
+.carouselWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none; /* Делает карусель неактивной, когда она скрыта */
+}
+
+.carouselWrapper.show {
+  opacity: 1;
+  pointer-events: auto; /* Включаем интерактивность при показе */
+}
+
+.carousel {
+  width: 100%;
+  height: 100%; /* Галерея будет растягиваться по размеру контейнера */
+  border-radius: 8px;
+}
+
+
+
+.commentsSection {
+  padding: 20px;
+  background-color: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.commentsSection h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--on-surface);
+}
+
+/* Медиазапросы для мобильных устройств */
+@media (max-width: 768px) {
+  .routeTitle {
+    font-size: 24px;
+  }
+
+  .routeCategory {
+    font-size: 14px;
+  }
+
+  .routeDescription {
+    font-size: 12px;
+  }
+
+  .commentsSection {
+    padding: 15px;
+  }
+}
