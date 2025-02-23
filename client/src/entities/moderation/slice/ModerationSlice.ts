@@ -16,7 +16,11 @@ const initialState: ModerationState = {
 const moderationSlice = createSlice({
   name: 'moderation',
   initialState,
-  reducers: {},
+  reducers: {
+    setError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(checkModerationThunk.pending, (state) => {
@@ -36,4 +40,5 @@ const moderationSlice = createSlice({
   },
 });
 
+export const setError = moderationSlice.actions;
 export const moderationReducer = moderationSlice.reducer;

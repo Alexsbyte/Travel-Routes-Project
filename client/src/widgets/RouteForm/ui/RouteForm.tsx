@@ -1,6 +1,16 @@
-import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
+import {
+  Button,
+  FileInput,
+  Group,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Text,
+  Textarea,
+} from '@mantine/core';
 import style from './RouteForm.module.css';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
@@ -8,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
 import { IApiResponseSuccess } from '@/shared/types';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
+import { setError } from '@/entities/moderation/slice/ModerationSlice';
 
 type InputsType = {
   title: string;
@@ -24,10 +35,17 @@ const initialState: InputsType = {
 };
 
 export function RouteForm(): React.JSX.Element {
+  const [opened, setOpened] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const moderation = useAppSelector((state) => state.moderation);
+  const { success, error } = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      setOpened(true);
+    }
+  }, [error, dispatch]);
 
   const form = useForm({
     initialValues: initialState,
@@ -111,7 +129,7 @@ export function RouteForm(): React.JSX.Element {
         formData.append('files', file);
       });
 
-      console.log(moderation);
+      console.log(error, success);
 
       // dispatch(createRouteThunk(formData));
       // form.reset();
@@ -136,7 +154,6 @@ export function RouteForm(): React.JSX.Element {
           ></iframe>
           <div className={style.formContainer}>
             <Space h="md" />
-
             <Input
               {...form.getInputProps('title')}
               w={800}
@@ -192,6 +209,15 @@ export function RouteForm(): React.JSX.Element {
               Отмена
             </Button>
           </div>
+          <Modal
+            opened={opened}
+            onClose={() => {
+              setOpened(false);
+            }}
+            title="Проверка введеного текста"
+          >
+            {error && <Text color="red">{error}</Text>}
+          </Modal>
         </Group>
       )}
     </>
