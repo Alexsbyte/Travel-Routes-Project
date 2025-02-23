@@ -25,13 +25,18 @@ export const getAllRoutesThunk = createAsyncThunk<
 
 export const createRouteThunk = createAsyncThunk<
   IApiResponseSuccess<Route>,
-  RawRouteData,
+  FormData,
   { rejectValue: IApiResponseReject }
 >(ROUTE_THUNKS_TYPES.CREATE, async (newRoute, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<Route>>(
       ROUTE_API_ROUTES.GET_ALL,
       newRoute,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
 
     return data;

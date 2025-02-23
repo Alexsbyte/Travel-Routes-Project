@@ -1,16 +1,23 @@
+const { transliterate } = require('transliteration');
+const PhotoService = require('../services/Photo.service');
 const RouteService = require('../services/Route.service');
 const formatResponse = require('../utils/formatResponse');
 const RouteValidator = require('../utils/Route.validator');
 const colors = require('ansi-colors');
+const PointService = require('../services/Point.service');
 
 class RouteController {
   static async create(req, res) {
-    const { title, description, category } = req.body;
+    const photos = req.files;
+    const { title, description, category,points } = req.body;
     const { user } = res.locals;
+
     const { isValid, error } = RouteValidator.validateCreate({
       title,
       description,
       category,
+      photos,
+      points
     });
 
     if (!isValid) {
@@ -29,10 +36,34 @@ class RouteController {
         return res.status(400).json(formatResponse(400, 'Failed to create new route'));
       }
 
-      const fullRoute = await RouteService.getById(newRoute.id);
-      console.log(colors.bgGreen('Route created successfully'));
+      const routeWithUser = await RouteService.getById(newRoute.id);
 
-      res.status(201).json(formatResponse(201, 'Route created successfully', fullRoute));
+      
+      const pointWithIdRout = points.map(point => ({...point, route_id:newRoute.id}))
+
+      const allPointsRoute = await PointService.bulkCreate(pointWithIdRout)
+
+      if(!allPointsRoute) {
+        return res.status(400).json(formatResponse(400, 'Failed to create point for route'));
+      }
+
+
+      
+      const transTitle = transliterate(title);
+
+      const photosForDB = photos.map((photo) => ({
+        url: transTitle + '/' + photo.filename,
+        route_id: routeWithUser.id,
+      }));
+
+      const newPhotos = await PhotoService.createPhotos(photosForDB);
+
+      res.status(201).json(
+        formatResponse(201, 'Route with photos created successfully', {
+          fullRoute: routeWithUser,
+          newPhotos,
+        }),
+      );
     } catch ({ message }) {
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
     }
