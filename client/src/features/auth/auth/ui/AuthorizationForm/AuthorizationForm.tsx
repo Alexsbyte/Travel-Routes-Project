@@ -47,7 +47,9 @@ export function AuthorizationForm({
           className={styles.input}
           placeholder="Email address"
           required
+          
         />
+    
       </div>
       <div className={styles.passwordContainer}>
         <input
@@ -57,7 +59,7 @@ export function AuthorizationForm({
           placeholder="Password"
           required
         />
-        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+            <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
         </span>
       </div>

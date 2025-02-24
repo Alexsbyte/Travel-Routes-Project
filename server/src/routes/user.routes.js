@@ -8,7 +8,7 @@ router
 
   .post('/signUp', UserController.signUp)
 
-  .get('/verify-email/:token', UserController.verifyEmail)
+  .get('/verify-email', UserController.verifyEmail)
 
   .post('/signIn', UserController.signIn)
 

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       isAdmin: DataTypes.BOOLEAN,
       isVerified: DataTypes.BOOLEAN,
+      // resetTokenExpiry: DataTypes.DATE,
       verificationToken: {
         type: DataTypes.STRING,
         allowNull: true,

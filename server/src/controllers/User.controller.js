@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt');
-const UserService = require('../services//User.service');
+const UserService = require('../services/User.service');
 const formatResponse = require('../utils/formatResponse');
 const UserValidator = require('../utils/User.validator');
 const cookiesConfig = require('../config/cookiesConfig');
 const generateTokens = require('../utils/generateTokens');
 const crypto = require('crypto');
+// const nodemailer = require('nodemailer');
 const sendEmail = require('../utils/sendEmail');
 
 class UserController {
@@ -58,7 +59,9 @@ class UserController {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
+
       const verificationToken = crypto.randomBytes(32).toString('hex');
+      // const resetTokenExpiry = Date.now() + 3600000;
 
       const newUser = await UserService.create({
         email: normalizedEmail,
@@ -66,23 +69,41 @@ class UserController {
         password: hashedPassword,
         isVerified: false,
         verificationToken,
+        // verificationTokenExpiry: resetTokenExpiry, // ✅ Сохраняем срок действия
       });
 
-      const plainUser = newUser.get({ plain: true });
-      delete plainUser.password;
+      // const plainUser = newUser.get({ plain: true });
+      // delete plainUser.password;
+      // const { accessToken, refreshToken } = generateTokens({ user: plainUser });
 
-      const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+      const confirmLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
 
-      const confirmLink = `${process.env.CLIENT_URL}/verify-email?=${verificationToken}`;
       const emailSent = await sendEmail(
         email,
         'Подтверждение email',
-        `<p>Ваш email успешно подтвержден! Теперь вы можете <a href=${confirmLink}/">войти в систему</a>.</p>
-`,
+        `Здравствуйте!  
+Для подтверждения вашего email перейдите по ссылке: ${confirmLink}  
+Если вы не регистрировались, проигнорируйте это письмо.`,
+        `<p>Перейдите по ссылке, чтобы подтвердить вашу почту: <a href="${confirmLink}">${confirmLink}</a></p>`,
       );
 
+      // const confirmLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
+      // const emailSent = await sendEmail(
+      //   email,
+      //   'Подтверждение email',
+      //   `Перейдите по ссылке, чтобы подтвердить вашу почту ${confirmLink} \n войти в систему.`
+      // );
+
+      // const mailOptions = {
+      //   to: normalizedEmail,
+      //   from: process.env.EMAIL_USER,
+      //   subject: 'Подтверждение email',
+      //   text: `Перейдите по ссылке, чтобы подтвердить вашу почту:\n\n
+      //   ${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`,
+      // };
+      // await transporter.sendMail(mailOptions);
       if (!emailSent) {
-        console.error("Error details:", emailSent); 
+        console.error('Error details:', emailSent);
         return res
           .status(400)
           .json(formatResponse(400, 'Error sending email', null, 'Error sending email'));
@@ -90,12 +111,13 @@ class UserController {
 
       res
         .status(201)
-        .cookie('refreshToken', refreshToken, cookiesConfig)
+        // .cookie('refreshToken', refreshToken, cookiesConfig)
         .json(
-          formatResponse(201, 'Проверьте вашу почту, чтобы подтвердить свой аккаунт', {
-            user: plainUser,
-            accessToken,
-          }),
+          formatResponse(
+            201,
+            'Проверьте вашу почту, чтобы подтвердить свой аккаунт',
+            newUser,
+          ),
         );
     } catch ({ message }) {
       console.error(message);
@@ -104,8 +126,8 @@ class UserController {
   }
 
   static async verifyEmail(req, res) {
-    // const { token } = req.query;
-    const { token } = req.params;
+    const { token } = req.query;
+    // const { token } = req.params;
 
     if (!token) {
       return res.status(400).json(formatResponse(400, 'Token is required'));
@@ -114,15 +136,21 @@ class UserController {
     try {
       const user = await UserService.getByToken(token);
       if (!user) {
-        return res.status(404).json(formatResponse(404, 'Token expired or invalid'));
+        return res.status(400).json(formatResponse(400, 'Token expired or invalid'));
       }
 
-      await UserService.update(user.id, { isVerified: true, verificationToken: null });
+      await UserService.update(user.id, {
+        isVerified: true,
+        verificationToken: null,
+        verificationTokenExpiry: null,
+      });
 
       res.status(200).json(formatResponse(200, 'Email verified successfully'));
-    } catch ({ message }) {
-      console.error(message);
-      res.status(500).json(formatResponse(500, 'Internal server error', null, message));
+    } catch (error) {
+      console.error('Ошибка:', error);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Internal server error', null, error.message));
     }
   }
 
@@ -137,7 +165,6 @@ class UserController {
     if (!isValid) {
       return res.status(400).json(formatResponse(400, 'Validation error', null, error));
     }
-
     const normalizedEmail = email.toLowerCase();
 
     try {
@@ -155,18 +182,18 @@ class UserController {
             ),
           );
       }
-      if (!user.isVerified) {
-        return res
-          .status(401)
-          .json(
-            formatResponse(
-              401,
-              'Please verify your email first.',
-              null,
-              'Email not verified',
-            ),
-          );
-      }
+      // if (!user.isVerified) {
+      //   return res
+      //     .status(401)
+      //     .json(
+      //       formatResponse(
+      //         401,
+      //         'Please verify your email first.',
+      //         null,
+      //         'Email not verified',
+      //       ),
+      //     );
+      // }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {

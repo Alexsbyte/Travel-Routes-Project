@@ -6,6 +6,8 @@ import logo from './tr-logo.png';
 import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 export function Header(): React.JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -39,6 +41,20 @@ export function Header(): React.JSX.Element {
       setIsModalOpen(true); 
     }, 300); // Даем небольшую задержку, чтобы выглядело плавнее
   };
+
+
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
+  
+  // При наличии токена автоматически открываем модальное окно авторизации
+  React.useEffect(() => {
+    if (token) {
+      navigate(CLIENT_ROUTES.HOME); // Перенаправляем на главную страницу
+      openModal('signin'); // Открываем окно авторизации
+    }
+  }, [token, navigate]);
+
   return (
     <Box pb={50}>
       <header className={classes.header}>

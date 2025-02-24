@@ -15,7 +15,7 @@ interface ModalProps {
   onSuccess: () => void; // Добавляем обработчик успеха
 }
 
-export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onSuccess}) => {
+export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType}) => {
   const dispatch = useAppDispatch();
   const [isSignUp, setIsSignUp] = useState(authType === 'signup'); // Инициализируем на основе authType
 
@@ -29,8 +29,9 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onS
     try {
       await dispatch(signUpThunk(data)).unwrap();
       antMessage.success('Регистрация успешна! Проверьте почту для подтверждения.');
-      setIsSignUp(false); // После регистрации переключаем на авторизацию
-      onSuccess(); // Вызываем onSuccess для закрытия модального окна
+      onClose();
+      //  setIsSignUp(false); // После регистрации переключаем на авторизацию
+      // onSuccess(); // Вызываем onSuccess для закрытия модального окна
     } catch (error) {
       antMessage.error(error instanceof Error ? error.message : 'Ошибка регистрации');
     }
@@ -41,10 +42,10 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onS
     try {
       await dispatch(signInThunk(data)).unwrap();
       antMessage.success('Авторизация успешна!');
-      onClose(); // Закрываем модальное окно после успешного входа
+      onClose(); 
     } catch (error) {
       antMessage.error(error instanceof Error ? error.message : 'Ошибка авторизации');
-      onClose(); // Закрываем окно даже при ошибке
+      onClose(); 
     }
   };
 
@@ -56,7 +57,7 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onS
       centered
       overlayProps={{ backgroundOpacity: 0.6, blur: 3 }}
       transitionProps={{ transition: 'fade', duration: 200 }}
-      size="md"
+       size="lg"
       className={styles.modalContainer}
     >
       {isSignUp ? (

@@ -72,13 +72,18 @@ export function RegistrationForm({
           className={styles.input}
           placeholder="Password"
         />
+        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+        </span>
+      </div>
+      <div className={styles.passwordContainer}>
         <input
           type={showPassword ? 'text' : 'password'}
           {...register('confirmPassword', { required: 'Подтвердите пароль' })}
           className={styles.input}
           placeholder="Confirm password"
         />
-        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+           <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
         </span>
       </div>

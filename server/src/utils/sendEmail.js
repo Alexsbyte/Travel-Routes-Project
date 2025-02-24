@@ -1,48 +1,37 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: 'sandbox.smtp.mailtrap.io', 
-  port: 587, 
+  // host: "smtp.mail.ru",
+  // port: 465,
+  // secure: true,
+
+  service: 'Mail.ru',
   auth: {
-    user: 'd8c6efbbae7a9e', 
-    pass: '586382f307d151', 
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-
-async function sendEmail(to, subject, html) {
+async function sendEmail(to, subject, text, html) {
   const mailOptions = {
-    from: 'final_buf@bk.ru', 
+    from: process.env.EMAIL_USER,
     to,
     subject,
+    text,
     html,
+    headers: {
+      'Content-Type': 'text/html; charset=UTF-8',
+    },
   };
 
   try {
     const info = await transporter.sendMail(mailOptions);
     console.log('Message sent: %s', info.messageId);
-    return true;  
+    return true;
   } catch (error) {
     console.error('Error occurred:', error);
-    return false;  
+    return false;
   }
 }
 
-
 module.exports = sendEmail;
-
-// // Пример отправки письма
-// const mailOptions = {
-//   from: 'your_email@example.com',
-//   to: 'recipient_email@example.com', // Почта получателя
-//   subject: 'Подтверждение регистрации',
-//   text: 'Ваш код подтверждения: 123456',
-// };
-
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if (error) {
-//     console.log('Ошибка отправки:', error);
-//   } else {
-//     console.log('Письмо отправлено:', info.response);
-//   }
-// });
