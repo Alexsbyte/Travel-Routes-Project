@@ -7,6 +7,7 @@ router
 
   .get('/refreshTokens', verifyRefreshToken, UserController.refreshTokens)
 
+  .get('/verify-email', UserController.verifyEmail)
   .post('/signUp', upload.single('avatar'), UserController.signUp)
 
   .post('/signIn', UserController.signIn)

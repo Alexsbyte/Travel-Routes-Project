@@ -5,6 +5,7 @@ export interface ISignInData {
 
 export interface ISignUpData extends ISignInData {
   username: string;
+  confirmPassword: string;
   avatar?: File | null;
 }
 
@@ -21,3 +22,6 @@ export type UserWithTokenType = {
   user: UserType;
   accessToken: string;
 };
+
+
+

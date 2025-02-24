@@ -12,7 +12,7 @@ export class UserValidator {
     if (!username || typeof username !== 'string' || username.trim() === '') {
       return {
         isValid: false,
-        error: 'Username is required and must be a non-empty string.',
+        error: 'Введите корректный логин',
       };
     }
 
@@ -24,8 +24,7 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error:
-          'Email is required, must be a non-empty string, and must be a valid email address.',
+        error: 'Введите корректную почту',
       };
     }
 
@@ -37,8 +36,7 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error:
-          'Password is required, must be a non-empty string, contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.',
+        error: 'Введите корректный пароль',
       };
     }
 
@@ -59,14 +57,19 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error: 'Email is required and must be a valid email address.',
+        error: 'Введите корректную почту',
       };
     }
 
-    if (!password || typeof password !== 'string' || password.trim() === '') {
+    if (
+      !password ||
+      typeof password !== 'string' ||
+      password.trim() === '' ||
+      !this.validatePassword(password)
+    ) {
       return {
         isValid: false,
-        error: 'Password is required and must not be an empty string.',
+        error: 'Введите корректный пароль',
       };
     }
 

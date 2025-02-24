@@ -123,7 +123,7 @@ export function Welcome(): React.JSX.Element {
           isOpen={isAuthModal}
           onClose={() => setIsAuthModal(false)}
           onSuccess={handleAuthSuccess}
-          type="signin"
+          authType="signin"
         />
       </div>
       {/* <HelloCard /> */}

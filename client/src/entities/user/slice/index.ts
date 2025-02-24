@@ -1,17 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { UserType } from "../model";
+import { createSlice } from '@reduxjs/toolkit';
+import { UserType } from '../model';
 import {
   refreshTokensThunk,
   signUpThunk,
   signInThunk,
   signOutThunk,
-} from "../api";
+  verifyEmailThunk,
+} from '../api';
 
 type UserState = {
   user: UserType | null;
   error: string | null;
   loading: boolean;
   isInitialized: boolean;
+  emailVerified: boolean; // устанавливаем состояние для подтверждения
 };
 
 const initialState: UserState = {
@@ -19,11 +21,12 @@ const initialState: UserState = {
   error: null,
   loading: false,
   isInitialized: false,
+  emailVerified: false,
 };
 
 const userSlice = createSlice({
-  name: "user",
-  initialState, //* refreshTokensThunk
+  name: 'user',
+  initialState, 
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -87,6 +90,20 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.error = action.payload!.error;
+      })
+      //* verifyEmailThunk
+      .addCase(verifyEmailThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(verifyEmailThunk.fulfilled, (state) => {
+        state.loading = false;
+        state.emailVerified = true; // установили статус как подтвержденный
+        state.error = null;
+      })
+      .addCase(verifyEmailThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.emailVerified = false;
+        state.error = action.payload ? action.payload!.error : 'Unknown error';
       });
   },
 });
