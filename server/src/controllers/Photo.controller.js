@@ -17,9 +17,7 @@ class PhotoController {
       const fullPhoto = await PhotoService.getById(newPhoto.id);
 
       res.status(201).json(formatResponse(201, 'Photo created successfully', fullPhoto));
-    } catch ({ message }) {
-      res.status(500).json(formatResponse(500, 'Internal server error', null, message));
-    }
+    } catch ({ message }) {}
   }
 
   static async getAll(req, res) {
