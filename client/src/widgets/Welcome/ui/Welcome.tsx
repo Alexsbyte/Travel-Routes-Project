@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
-// import { HelloCard } from '@/widgets/HelloCard';
+import { HelloCard } from '@/widgets/HelloCard';
 import { Button, Title, useMantineTheme } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -46,15 +46,15 @@ export function Welcome(): React.JSX.Element {
           fontWeight: '300',
           margin: '0 0 30 0',
         }}
+        className={style.title}
       >
         Добро пожаловать в мир путешествий!
       </Title>
 
       <div className={style.container} style={{ position: 'relative' }}>
         <img
-          src="../../../../public/vecteezy_young-tourist-couple-watching-spectacular-mountain-scenery_10621909.jpg"
-          width="100%"
-          height="800px"
+          className={style.img}
+          src="/vecteezy_young-tourist-couple-watching-spectacular-mountain-scenery_10621909.jpg"
         />
         <div
           style={{
@@ -68,7 +68,9 @@ export function Welcome(): React.JSX.Element {
             fontFamily: 'PT Sans',
             textAlign: 'end',
             borderRadius: '8px',
+            lineHeight: '1.2',
           }}
+          className={style.mainText}
         >
           Создай маршрут путешествия
         </div>
@@ -107,15 +109,29 @@ export function Welcome(): React.JSX.Element {
         <h2 className={style.font}>Категории маршрутов</h2>
         <div className={style.svg}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src="/вело.svg" width="100px" />
+            <img src="/bicycle.svg" width="100px" className={style.icon} />
             <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Велосипедный</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src="/вело.svg" width="100px" />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '20px',
+            }}
+          >
+            <img src="/person-walking.svg" width="80px" className={style.icon} />
             <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Пеший</h3>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src="/вело.svg" width="100px" />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginTop: '10px',
+            }}
+          >
+            <img src="/car-front-fill.svg" width="90px" className={style.icon} />
             <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Автомобильный</h3>
           </div>
         </div>
@@ -123,10 +139,10 @@ export function Welcome(): React.JSX.Element {
           isOpen={isAuthModal}
           onClose={() => setIsAuthModal(false)}
           onSuccess={handleAuthSuccess}
-          type="signin"
+          authType="signin"
         />
       </div>
-      {/* <HelloCard /> */}
+      <HelloCard />
     </>
   );
 }

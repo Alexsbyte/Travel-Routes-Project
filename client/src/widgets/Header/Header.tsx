@@ -15,11 +15,10 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
 import logo from './tr-logo.png';
-
 import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 export function Header(): React.JSX.Element {
@@ -61,7 +60,23 @@ export function Header(): React.JSX.Element {
 
   const handleSuccess = () => {
     setIsModalOpen(false);
+    setTimeout(() => {
+      setAuthType('signin'); // Переключаем на вход
+      setIsModalOpen(true);
+    }, 300); // Даем небольшую задержку, чтобы выглядело плавнее
   };
+
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
+
+  // При наличии токена автоматически открываем модальное окно авторизации
+  React.useEffect(() => {
+    if (token) {
+      navigate(CLIENT_ROUTES.HOME); // Перенаправляем на главную страницу
+      openModal('signin'); // Открываем окно авторизации
+    }
+  }, [token, navigate]);
+
   return (
     <Box pb={30}>
       <header className={classes.header}>
@@ -188,7 +203,7 @@ export function Header(): React.JSX.Element {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleSuccess}
-        type={authType}
+        authType={authType}
       />
     </Box>
   );

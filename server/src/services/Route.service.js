@@ -1,4 +1,4 @@
-const { Route, User } = require("../db/models");
+const { Route, User, Photo, Point } = require('../db/models');
 
 class RouteService {
   static async create(data) {
@@ -7,21 +7,45 @@ class RouteService {
 
   static async getAll() {
     return await Route.findAll({
-      include: [{
-        model: User,
-        as: 'user',
-        attributes: ['username', 'email'], 
-      }]
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['username', 'email'],
+        },
+        {
+          model: Photo,
+          as: 'photos',
+          attributes: ['url'],
+        },
+        {
+          model: Point,
+          as: 'points',
+          attributes: ['description', 'latitude', 'longitude'],
+        },
+      ],
     });
   }
 
   static async getById(id) {
     return await Route.findByPk(id, {
-      include: [{
-        model: User,
-        as: 'user',
-        attributes: ['username', 'email'], 
-      }]
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['username', 'email'],
+        },
+        {
+          model: Photo,
+          as: 'photos',
+          attributes: ['url'],
+        },
+        {
+          model: Point,
+          as: 'points',
+          attributes: ['description', 'latitude', 'longitude'],
+        },
+      ],
     });
   }
 
@@ -30,7 +54,7 @@ class RouteService {
     if (route) {
       return await route.update(data);
     }
-    throw new Error("Route not found");
+    throw new Error('Route not found');
   }
 
   static async delete(id) {
@@ -38,7 +62,7 @@ class RouteService {
     if (route) {
       return await route.destroy();
     }
-    throw new Error("Route not found");
+    throw new Error('Route not found');
   }
 
   static async getRoutesByUser(userId) {
