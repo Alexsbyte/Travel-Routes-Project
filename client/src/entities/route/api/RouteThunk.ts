@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
 import { AxiosError } from 'axios';
 import { ROUTE_THUNKS_TYPES } from '@/shared/enums/route_routes';
-import { ArrayRoutesType, RawRouteData, Route } from '../model';
+import { ArrayRoutesType, RawRouteData, Route } from '../model/RouteTypes';
 import { ROUTE_API_ROUTES } from '@/shared/enums/apiRoutes';
 
 export const getAllRoutesThunk = createAsyncThunk<

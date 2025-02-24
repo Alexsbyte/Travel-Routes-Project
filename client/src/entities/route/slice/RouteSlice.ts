@@ -4,8 +4,8 @@ import {
   createRouteThunk,
   deleteRouteThunk,
   updateRouteThunk,
-} from '../api';
-import { Route } from '../model';
+} from '../api/RouteThunk';
+import { Route } from '../model/RouteTypes';
 import { message } from 'antd';
 
 
