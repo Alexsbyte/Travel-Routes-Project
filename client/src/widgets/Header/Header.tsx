@@ -6,6 +6,7 @@ import {
   Drawer,
   Group,
   Image,
+  Menu,
   ScrollArea,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -61,24 +62,29 @@ export function Header(): React.JSX.Element {
 
           <Group visibleFrom="sm">
             {user ? (
-              <>
+              <Group>
                 <Button w={200} h={50} variant="default" onClick={createRouteHandler}>
                   Создать маршрут
                 </Button>
-                <Avatar
-                  className={classes.avatar}
-                  src={`http://localhost:3000/images/avatars/${user.avatar}`}
-                  alt="User Avatar"
-                  radius="xl"
-                  size={50}
-                />
-
-                <Button w={100} h={50} variant="default" onClick={signOutHandler}>
-                  Выйти
-                </Button>
-              </>
+                <Menu withArrow>
+                  <Menu.Target>
+                    <Avatar
+                      className={classes.avatar}
+                      src={`http://localhost:3000/images/avatars/${user.avatar}`}
+                      alt="User Avatar"
+                      radius="xl"
+                      size={66}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item>
+                    <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
             ) : (
-              <>
+              <Group>
                 <Button
                   w={120}
                   h={50}
@@ -90,7 +96,7 @@ export function Header(): React.JSX.Element {
                 <Button w={160} h={50} onClick={() => openModal('signup')}>
                   Регистрация
                 </Button>
-              </>
+              </Group>
             )}
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
