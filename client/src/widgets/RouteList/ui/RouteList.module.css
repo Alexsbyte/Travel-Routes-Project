@@ -10,7 +10,7 @@
 
 /* Карточка */
 .card {
-  width: calc(25% - 8px); /* Фиксированная ширина карточки с уменьшенным gap */
+  /* width: calc(25% - 8px); Фиксированная ширина карточки с уменьшенным gap */
   border: 1px solid #ddd;
   border-radius: 20px;
   overflow: hidden;
@@ -23,6 +23,13 @@
 
 .card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notFoundMessage {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  margin-top: 20px;
 }
 
 /* Адаптивность */

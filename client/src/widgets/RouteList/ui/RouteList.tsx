@@ -15,10 +15,10 @@ export function RouteList(): React.JSX.Element {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!loading && routes.length > 0) {
+    if (!loading) {
       setIsLoaded(true);
     }
-  }, [loading, routes]);
+  }, [loading]);
 
   return (
     <div className={styles.container}>
@@ -27,8 +27,14 @@ export function RouteList(): React.JSX.Element {
           <Spin size="large" />
         </div>
       )}
-      
-      {isLoaded && (
+
+      {isLoaded && routes.length === 0 && (
+        <div className={styles.notFoundMessage}>
+          Маршруты не найдены
+        </div>
+      )}
+
+      {isLoaded && routes.length > 0 && (
         routes.map((route) => (
           <div className={styles.card} key={route.id}>
             <RouteItem route={route} />
