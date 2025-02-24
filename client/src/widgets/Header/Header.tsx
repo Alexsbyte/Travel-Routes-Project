@@ -9,8 +9,9 @@ import {
   Menu,
   Divider,
   ScrollArea,
+  Flex,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './header.module.css';
 import React, { useState } from 'react';
 import logo from './tr-logo.png';
@@ -21,6 +22,9 @@ import { AuthModal } from '@/features/auth/AuthModal';
 import { useNavigate } from 'react-router-dom';
 
 export function Header(): React.JSX.Element {
+  const isMobile = useMediaQuery('(max-width: 48em)');
+  // const isTablet = useMediaQuery('(min-width: 48em) and (max-width: 64em)');
+
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,7 +75,7 @@ export function Header(): React.JSX.Element {
                   <Menu.Target>
                     <Avatar
                       className={classes.avatar}
-                      src={`http://localhost:3000/images/avatars/${user.avatar}`}
+                      src={`${import.meta.env.VITE_API}images/avatars/${user.avatar}`}
                       alt="User Avatar"
                       radius="xl"
                       size={66}
@@ -104,7 +108,12 @@ export function Header(): React.JSX.Element {
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px)" mx="sm">
-          <Group>
+          <Flex
+            direction={isMobile ? 'column' : 'row'}
+            gap="md"
+            justify={isMobile ? 'center' : 'space-around'}
+            align="center"
+          >
             <Button
               onClick={() => {
                 navigate('/welcome');
@@ -160,7 +169,7 @@ export function Header(): React.JSX.Element {
                 </Button>
               </Group>
             )}
-          </Group>
+          </Flex>
         </ScrollArea>
       </Drawer>
 
