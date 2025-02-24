@@ -3,6 +3,8 @@ import { Carousel } from 'antd';
 import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
 import { Route } from '../../model';
+import { Link } from 'react-router-dom';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type Props = {
   route: Route;
@@ -17,7 +19,6 @@ const images = [
 ];
 
 export function RouteItem({ route }: Props): React.JSX.Element {
-
   const slides = images.map((url) => (
     <div key={url}>
       <Image preview={false} src={url} alt={`Route image ${url}`} />
@@ -59,7 +60,9 @@ export function RouteItem({ route }: Props): React.JSX.Element {
       {/* Описание */}
       <div className={styles.separator}></div>
       <div className={styles.description}>
-        <h3 className={styles.title}>{route.title}</h3>
+        <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}>
+          <h3 className={styles.title}>{route.title}</h3>
+        </Link>
         <div className={styles.separator}></div>
         <p className={styles.text}>{route.description}</p>
       </div>
