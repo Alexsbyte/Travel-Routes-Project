@@ -6,13 +6,14 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import React, { useEffect, useState } from 'react';
 import { getAllRoutesThunk } from '@/entities/route';
 import { OneRouteItem } from '@/widgets/OneRouteItem';
+import { usePageTitle } from '@/shared/hooks/pageTitle';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
   const routes = useAppSelector((store) => store.route.routes);
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
-
+  usePageTitle()
   useEffect(() => {
     dispatch(getAllRoutesThunk());
   }, [dispatch]);
