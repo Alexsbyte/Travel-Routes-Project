@@ -23,24 +23,22 @@ export function RouteList(): React.JSX.Element {
   return (
     <div className={styles.container}>
       {!isLoaded && (
-        <div className={styles.carouselContainer}> 
+        <div className={styles.carouselContainer}>
           <Spin size="large" />
         </div>
       )}
 
       {isLoaded && routes.length === 0 && (
-        <div className={styles.notFoundMessage}>
-          Маршруты не найдены
-        </div>
+        <div className={styles.notFoundMessage}>Маршруты не найдены</div>
       )}
 
-      {isLoaded && routes.length > 0 && (
+      {isLoaded &&
+        routes.length > 0 &&
         routes.map((route) => (
           <div className={styles.card} key={route.id}>
             <RouteItem route={route} />
           </div>
-        ))
-      )}
+        ))}
     </div>
   );
 }
