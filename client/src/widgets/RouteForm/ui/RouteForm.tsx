@@ -1,16 +1,19 @@
-import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
+import { Box, Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
 import style from './RouteForm.module.css';
 import { FormEvent} from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
+import { YandexMap } from '@/widgets/Map/ui/YandexMap';
+import { clearPoints, Point } from '@/entities/point';
 
 type InputsType = {
   title: string;
   description: string;
   category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
   files: File[];
+  points: Point[]
 };
 
 const initialState: InputsType = {
@@ -18,13 +21,14 @@ const initialState: InputsType = {
   description: '',
   category: '',
   files: [],
+  points: []
 };
 
 export function RouteForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
-
+  const {points} = useAppSelector(state => state.points)
   const form = useForm({
     initialValues: initialState,
     validate: {
@@ -95,17 +99,22 @@ export function RouteForm(): React.JSX.Element {
   ): void => {
     e?.preventDefault();
     try {
+      console.log(points);
+      
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
       formData.append('category', values.category);
+      formData.append('points', JSON.stringify(points))
       values.files.forEach((file) => {
         formData.append('files', file);
       });
       console.log(values);
-
+      
       dispatch(createRouteThunk(formData));
+      dispatch(clearPoints())
       form.reset();
+      
       navigate('/');
     } catch (error) {
       if (error instanceof Error) {
@@ -121,10 +130,11 @@ export function RouteForm(): React.JSX.Element {
       {user && (
         <Group justify="center" mt="xl" className={style.routeForm}>
           <h1>Создай свой маршрут</h1>
-          <iframe
-            style={{ width: '1000px', height: '500px' }}
-            src="https://yandex.ru/maps/"
-          ></iframe>
+  
+          <Box  my="xl" w={900} h={500} >
+            <YandexMap/>
+          </Box>
+          
           <div className={style.formContainer}>
             <Space h="md" />
 
