@@ -3,6 +3,7 @@ import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { WelcomePage, RouteFormPage, HomePage, RoutesPage } from '@/pages';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
+import { OneRoutePage } from '@/pages/OneRoutePage/ui/OneRoutePage';
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +29,10 @@ export const router = createBrowserRouter([
       {
         path: CLIENT_ROUTES.ROUTE,
         element: <RoutesPage />,
+      },{      
+        path: `${ CLIENT_ROUTES.ROUTE_PAGE}/:id`,
+        element: <OneRoutePage />,
       },
-      
     ],
   },
 ]);

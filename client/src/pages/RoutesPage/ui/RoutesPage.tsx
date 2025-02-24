@@ -3,6 +3,7 @@ import { getAllRoutesThunk } from '@/entities/route';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { RouteList } from '@/widgets';
 import { Filter } from '@/widgets/RouteList/utils/filter';
+import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 
 export function RoutesPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -28,15 +29,13 @@ export function RoutesPage(): React.JSX.Element {
 
   return (
     <div>
-      <Filter onFilterChange={handleFilterChange} />
+      
       <div style={{ display: 'flex' }}>
         <div style={{ width: '70%' }}>
-        <iframe
-            style={{ width: '1000px', height: '400px' }}
-            src="https://yandex.ru/maps/"
-          ></iframe>
+            <p style={{ width: '100%' , height: '700px' , padding: '40px'}} ><YandexMap/></p>
         </div>
         <div style={{ width: '30%' }}>
+        <Filter onFilterChange={handleFilterChange} />
           <RouteList filteredRoutes={filteredRoutes} />
         </div>
       </div>
