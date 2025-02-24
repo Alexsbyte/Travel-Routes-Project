@@ -20,6 +20,7 @@ import { signOutThunk } from '@/entities/user';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
 import { useNavigate } from 'react-router-dom';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 export function Header(): React.JSX.Element {
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -74,8 +75,8 @@ export function Header(): React.JSX.Element {
             {user ? (
               <Group>
                 <Button onClick={createRouteHandler}>Создать маршрут</Button>
-                <Button onClick={() => navigate('/welcome')}>Главная</Button>
-                <Button onClick={() => navigate('/routes')}>Маршруты</Button>
+                <Button onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>Главная</Button>
+                <Button onClick={() => navigate(CLIENT_ROUTES.HOME)}>Маршруты</Button>
                 <Menu withArrow width={180}>
                   <Menu.Target>
                     <Avatar
@@ -87,8 +88,8 @@ export function Header(): React.JSX.Element {
                       style={{ cursor: 'pointer' }}
                     />
                   </Menu.Target>
-                  <Menu.Dropdown bd={'2 solid orange'}>
-                    <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item>
+                  <Menu.Dropdown bd={'2 solid blue'}>
+                    {/* <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item> */}
                     <Divider />
                     <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
                   </Menu.Dropdown>
@@ -106,6 +107,7 @@ export function Header(): React.JSX.Element {
       </header>
 
       <Drawer
+        className={classes.drawer}
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
@@ -120,16 +122,18 @@ export function Header(): React.JSX.Element {
             align="center"
           >
             <Button
+              className={classes.buttons}
               onClick={() => {
-                navigate('/welcome');
+                navigate(CLIENT_ROUTES.WELCOME);
                 closeDrawer();
               }}
             >
               Главная
             </Button>
             <Button
+              className={classes.buttons}
               onClick={() => {
-                navigate('/routes');
+                navigate(CLIENT_ROUTES.HOME);
                 closeDrawer();
               }}
             >
@@ -137,15 +141,17 @@ export function Header(): React.JSX.Element {
             </Button>
             {user ? (
               <>
-                <Button
+                {/* <Button
+                  className={classes.buttons}
                   onClick={() => {
                     navigate('/profile');
                     closeDrawer();
                   }}
                 >
                   Профиль
-                </Button>
+                </Button> */}
                 <Button
+                  className={classes.buttons}
                   onClick={() => {
                     signOutHandler();
                     closeDrawer();

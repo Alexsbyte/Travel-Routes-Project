@@ -4,12 +4,11 @@ import { routeReducer } from '@/entities/route';
 import { pointsReducer } from '@/entities/point/slice';
 import { moderationReducer } from '@/entities/moderation/slice/ModerationSlice';
 
-
 const store = configureStore({
   reducer: {
     user: userReducer,
     route: routeReducer,
-    points: pointsReducer
+    points: pointsReducer,
     moderation: moderationReducer,
   },
 });
