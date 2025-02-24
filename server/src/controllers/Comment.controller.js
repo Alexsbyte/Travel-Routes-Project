@@ -2,7 +2,7 @@ const CommentService = require('../services/Comment.service');
 const formatResponse = require('../utils/formatResponse');
 
 class CommentController {
-  static async getOneRouteItem(req, res) {
+  static async getOneRouteComment(req, res) {
     try {
       const { route_id } = req.params;
       const comments = await CommentService.getByRouteId(route_id);
