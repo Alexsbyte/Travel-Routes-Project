@@ -2,7 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
 @import url('../../../app/colors.css');
 
-.customButton.button {
+.customButton.buttonGreen {
+  height: 55px;
+  background: var(--primary-container);
+  border-color: var(--primary-container);
+  color: var(--on-primary);
+  border: none;
+  font-size: 16px;
+  padding: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.buttonGreen:hover {
+  background: var(--on-primary);
+  color: var(--primary-container);
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}
+
+.customButton.buttonBlue {
   height: 55px;
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: var(--on-primary);
@@ -12,18 +29,47 @@
   transition: background-color 0.3s ease;
 }
 
-.button {
-  height: 55px;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: var(--on-primary);
-  border: none;
-  font-size: 16px;
-  padding: 18px;
-  transition: background-color 0.3s ease;
-}
-
-.button:hover {
+.buttonBlue:hover {
   background: var(--on-primary);
   color: #007bff;
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}
+
+.container {
+  display: 'flex';
+  justify-content: 'center';
+  width: 100%;
+}
+
+.mainText {
+  width: '800px';
+  border: '2px solid red';
+  position: 'absolute';
+  top: '50%';
+  right: '30px';
+  color: 'white';
+  font-size: '70px';
+  font-weight: 'bold';
+  font-family: 'EagleLake';
+  text-align: 'end';
+  border-radius: '8px';
+}
+
+.description {
+  display: 'flex';
+  flex-direction: 'column';
+  align-items: 'center';
+}
+
+.font {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  font-family: 'PT Sans';
+}
+
+.svg {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
 }
