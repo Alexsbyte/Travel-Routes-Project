@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FileInput,
   Group,
@@ -9,20 +10,25 @@ import {
   Text,
   Textarea,
 } from '@mantine/core';
+
 import style from './RouteForm.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
+import { YandexMap } from '@/widgets/Map/ui/YandexMap';
+import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
 import { setError } from '@/entities/moderation/slice/ModerationSlice';
+
 
 type InputsType = {
   title: string;
   description: string;
   category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
   files: File[];
+  points: Point[]
 };
 
 const initialState: InputsType = {
@@ -30,6 +36,7 @@ const initialState: InputsType = {
   description: '',
   category: '',
   files: [],
+  points: []
 };
 
 export function RouteForm(): React.JSX.Element {
@@ -38,12 +45,14 @@ export function RouteForm(): React.JSX.Element {
   const { user } = useAppSelector((state) => state.user);
   const { success, error } = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
+  const {points} = useAppSelector(state => state.points)
 
   useEffect(() => {
     if (error) {
       setOpened(true);
     }
   }, [error, dispatch]);
+
 
   const form = useForm({
     initialValues: initialState,
@@ -123,19 +132,20 @@ export function RouteForm(): React.JSX.Element {
       if (!success) {
         return;
       }
-
+      
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
       formData.append('category', values.category);
+      formData.append('points', JSON.stringify(points))
       values.files.forEach((file) => {
         formData.append('files', file);
       });
 
-      console.log(error, success);
-
       dispatch(createRouteThunk(formData));
+      dispatch(clearPoints())
       form.reset();
+      
       navigate('/');
     } catch (error) {
       if (error instanceof Error) {
@@ -151,10 +161,11 @@ export function RouteForm(): React.JSX.Element {
       {user && (
         <Group justify="center" mt="xl" className={style.routeForm}>
           <h1>Создай свой маршрут</h1>
-          <iframe
-            style={{ width: '1000px', height: '400px' }}
-            src="https://yandex.ru/maps/"
-          ></iframe>
+  
+          <Box  my="xl" w={900} h={500} >
+            <YandexMap/>
+          </Box>
+          
           <div className={style.formContainer}>
             <Space h="md" />
             <Input

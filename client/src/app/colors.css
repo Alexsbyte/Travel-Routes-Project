@@ -1,7 +1,7 @@
 :root {
-  --primary: #ff6b00;
+  --primary: linear-gradient(135deg, #007bff, #0056b3);
   --on-primary: #ffffff;
-  --primary-container: #ff8f33;
+  --primary-container: linear-gradient(135deg, #149263, #0f704d);
   --on-primary-container: #2e2e2e;
 
   --secondary: #005b96;

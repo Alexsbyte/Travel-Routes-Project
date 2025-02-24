@@ -50,25 +50,6 @@ class RouteValidator {
       }
     }
 
-    if (!points || !Array.isArray(points) || points.length === 0) {
-      return {
-        isValid: false,
-        error: 'Points must be a non-empty array.',
-      };
-    }
-
-    for (const point of points) {
-      if (
-        !point ||
-        typeof point.latitude !== 'number' ||
-        typeof point.longitude !== 'number'
-      ) {
-        return {
-          isValid: false,
-          error: 'Each point must have valid latitude and longitude as numbers.',
-        };
-      }
-    }
 
     return {
       isValid: true,
