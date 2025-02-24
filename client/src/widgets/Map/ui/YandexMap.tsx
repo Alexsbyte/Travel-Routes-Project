@@ -24,7 +24,7 @@ export function YandexMap() {
     setViewPoint(point);
   };
 
-  const handlePointRightClick = (point: IPoint, e: any) => {
+  const handlePointRightClick = (point: IPoint, e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault(); // Предотвращаем стандартное контекстное меню браузера
     setEditPoint(point);
     setEditComment(point.description ?? "");
@@ -63,7 +63,7 @@ export function YandexMap() {
             geometry={[point.latitude, point.longitude]}
             options={{ draggable: false }}
             onClick={() => handlePointLeftClick(point)}
-            onContextMenu={(e) => handlePointRightClick(point, e)}
+            onContextMenu={(e:React.MouseEvent<HTMLDivElement>) => handlePointRightClick(point, e)}
           />
         ))}
 
