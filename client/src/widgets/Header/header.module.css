@@ -27,8 +27,8 @@
 }
 
 .header button:hover {
-  background-color: var(--surface-variant);
-  color: var(--md-sys-color-on-variant);
+  background: var(--on-primary);
+  color: #007bff;
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 

@@ -44,6 +44,10 @@ export function Header(): React.JSX.Element {
     }
   };
 
+  const redirectToHomPage = (): void => {
+    navigate('/');
+  };
+
   const createRouteHandler = (): void => {
     navigate('/createRoute');
   };
@@ -52,11 +56,12 @@ export function Header(): React.JSX.Element {
     setIsModalOpen(false);
   };
   return (
-    <Box pb={50}>
+    <Box pb={30}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <Group>
-            <Image src={logo} w={70} h="auto" /> <h1>Travel Routes</h1>
+          <Group onClick={redirectToHomPage}>
+            <Image src={logo} w={70} h="auto" />
+            <h1>Travel Routes</h1>
           </Group>
 
           <Group visibleFrom="sm">
