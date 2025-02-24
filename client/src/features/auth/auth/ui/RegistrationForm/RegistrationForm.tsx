@@ -54,7 +54,7 @@ export function RegistrationForm({
           type="text"
           {...register('username', { required: 'Введите имя пользователя' })}
           className={styles.input}
-          placeholder="Name"
+          placeholder="Введите логин"
         />
       </div>
       <div>
@@ -62,7 +62,7 @@ export function RegistrationForm({
           type="email"
           {...register('email', { required: 'Введите email' })}
           className={styles.input}
-          placeholder="Email address"
+          placeholder="Введите почту"
         />
       </div>
       <div className={styles.passwordContainer}>
@@ -70,7 +70,7 @@ export function RegistrationForm({
           type={showPassword ? 'text' : 'password'}
           {...register('password', { required: 'Введите пароль' })}
           className={styles.input}
-          placeholder="Password"
+          placeholder="Введите пароль"
         />
         <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
@@ -81,7 +81,7 @@ export function RegistrationForm({
           type={showPassword ? 'text' : 'password'}
           {...register('confirmPassword', { required: 'Подтвердите пароль' })}
           className={styles.input}
-          placeholder="Confirm password"
+          placeholder="Повторите пароль"
         />
            <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}

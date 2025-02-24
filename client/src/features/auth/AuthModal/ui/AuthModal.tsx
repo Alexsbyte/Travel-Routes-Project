@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useAppDispatch } from '@/shared/hooks/reduxHooks';
-
 import styles from './AuthModal.module.css';
 import { message as antMessage } from 'antd';
 import { ISignInData, ISignUpData, signInThunk, signUpThunk } from '@/entities/user';
@@ -11,15 +10,14 @@ import { AuthorizationForm } from '../../auth/ui/AuthorizationForm';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void
-  authType: 'signin' | 'signup'; // Используем authType
-  onSuccess: () => void; // Добавляем обработчик успеха
+  authType: 'signin' | 'signup'; 
+  onSuccess?: () => void;
 }
 
-export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType}) => {
+export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onSuccess}) => {
   const dispatch = useAppDispatch();
   const [isSignUp, setIsSignUp] = useState(authType === 'signup'); // Инициализируем на основе authType
 
-   // Синхронизация isSignUp с authType
    useEffect(() => {
     setIsSignUp(authType === 'signup');
   }, [authType]);
@@ -27,11 +25,18 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType}) =>
 
   const handleSignUp = async (data: ISignUpData) => {
     try {
-      await dispatch(signUpThunk(data)).unwrap();
+      const formData = new FormData();
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('username', data.username);
+
+      if (data.avatar) {
+        formData.append('avatar', data.avatar as Blob);
+      }
+      await dispatch(signUpThunk(formData)).unwrap();
       antMessage.success('Регистрация успешна! Проверьте почту для подтверждения.');
+      onSuccess?.(); // ✅ Вызываем, если передан
       onClose();
-      //  setIsSignUp(false); // После регистрации переключаем на авторизацию
-      // onSuccess(); // Вызываем onSuccess для закрытия модального окна
     } catch (error) {
       antMessage.error(error instanceof Error ? error.message : 'Ошибка регистрации');
     }
@@ -48,6 +53,7 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType}) =>
       onClose(); 
     }
   };
+
 
   return (
     <Modal

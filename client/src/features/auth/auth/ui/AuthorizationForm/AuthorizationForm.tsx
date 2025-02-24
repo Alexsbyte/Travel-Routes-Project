@@ -45,7 +45,7 @@ export function AuthorizationForm({
           type="email"
           {...register('email', { required: 'Введите email' })}
           className={styles.input}
-          placeholder="Email address"
+          placeholder="Введите почту"
           required
           
         />
@@ -56,7 +56,7 @@ export function AuthorizationForm({
           type={showPassword ? 'text' : 'password'}
           {...register('password', { required: 'Введите пароль' })}
           className={styles.input}
-          placeholder="Password"
+          placeholder="Введите пароль"
           required
         />
             <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>

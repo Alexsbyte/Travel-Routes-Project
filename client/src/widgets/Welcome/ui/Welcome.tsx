@@ -1,64 +1,132 @@
-import { HelloCard } from "@/widgets/HelloCard";
-import {
-  Box,
-  Card,
-  Paper,
-  Space,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
-
-// import { useNavigate } from "react-router-dom";
-
+import { useAppSelector } from '@/shared/hooks/reduxHooks';
+// import { HelloCard } from '@/widgets/HelloCard';
+import { Button, Title, useMantineTheme } from '@mantine/core';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { AuthModal } from '@/features/auth/AuthModal';
+import style from './Welcome.module.css';
 
 export function Welcome(): React.JSX.Element {
+  const { user } = useAppSelector((state) => state.user);
   const theme = useMantineTheme();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [isAuthModal, setIsAuthModal] = useState(false);
 
-  // const handler = () => {
-    // navigate("/");
-  // };
+  const redirectToHomePage = () => {
+    if (!user) {
+      setIsAuthModal(true);
+    } else {
+      navigate(CLIENT_ROUTES.HOME);
+    }
+  };
+
+  const redirectToCreateRoute = () => {
+    if (!user) {
+      setIsAuthModal(true);
+    } else {
+      navigate(CLIENT_ROUTES.ROUTE_FORM);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setIsAuthModal(false); // Закрываем модальное окно после успешной авторизации
+    navigate('/createRoute'); // Перенаправляем пользователя на главную страницу
+  };
 
   return (
-    <Box p="md">
-      <Paper
-        shadow="xl"
-        radius="lg"
-        p="xl"
+    <>
+      <Title
+        order={2}
         style={{
-          background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[5]})`,
-          color: theme.white,
+          marginBottom: theme.spacing.md,
+          textAlign: 'center',
+          fontFamily: 'PT Sans',
+          fontSize: '50px',
+          fontWeight: '300',
+          margin: '0 0 30 0',
         }}
       >
-        <Title order={2} style={{ marginBottom: theme.spacing.md }}>
-          Добро пожаловать в мир путешествий! 🌍✨
-        </Title>
-        <Text size="lg">
-          Наш сайт — это пространство для вдохновения и обмена идеями. Здесь вы
-          можете не только планировать свои маршруты, но и делиться ими с
-          другими путешественниками, а также открывать для себя уникальные пути,
-          созданные такими же искателями приключений, как и вы. Добавляйте свои
-          любимые маршруты, рассказывайте о своих открытиях и // находите новые
-          идеи для будущих поездок. Вместе мы создаём карту мира, // наполненную
-          яркими историями и полезными советами.
-        </Text>
-        <Space h="md" />
-        {/* <Button
-          rightSection={<IconMapPin size={18} />}
-          variant="white"
-          color="blue"
-          onClick={handler}
+        Добро пожаловать в мир путешествий!
+      </Title>
+
+      <div className={style.container} style={{ position: 'relative' }}>
+        <img
+          src="../../../../public/vecteezy_young-tourist-couple-watching-spectacular-mountain-scenery_10621909.jpg"
+          width="100%"
+          height="800px"
+        />
+        <div
+          style={{
+            width: '800px',
+            position: 'absolute',
+            top: '50%',
+            right: '50px',
+            color: 'white',
+            fontSize: '70px',
+            fontWeight: 'bold',
+            fontFamily: 'PT Sans',
+            textAlign: 'end',
+            borderRadius: '8px',
+          }}
         >
-          Начать путешествие
-        </Button> */}
-      </Paper>
-
-      <Space h="xl" />
-
-      <Card withBorder shadow="sm" radius="lg" style={{ overflow: "hidden" }}>
-          <HelloCard />
-      </Card>
-    </Box>
+          Создай маршрут путешествия
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '85%',
+            right: '60px',
+          }}
+        >
+          <Button
+            variant="white"
+            className={`${style.buttonBlue} ${style.customButton}`}
+            onClick={redirectToHomePage}
+          >
+            Начать путешествие
+          </Button>
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '85%',
+            right: '280px',
+          }}
+        >
+          <Button
+            variant="white"
+            className={`${style.buttonGreen} ${style.customButton}`}
+            onClick={redirectToCreateRoute}
+          >
+            Построить маршрут
+          </Button>
+        </div>
+      </div>
+      <div className={style.description}>
+        <h2 className={style.font}>Категории маршрутов</h2>
+        <div className={style.svg}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src="/вело.svg" width="100px" />
+            <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Велосипедный</h3>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src="/вело.svg" width="100px" />
+            <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Пеший</h3>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src="/вело.svg" width="100px" />
+            <h3 style={{ fontFamily: 'PT Sans', fontSize: '25px' }}>Автомобильный</h3>
+          </div>
+        </div>
+        <AuthModal
+          isOpen={isAuthModal}
+          onClose={() => setIsAuthModal(false)}
+          onSuccess={handleAuthSuccess}
+          authType="signin"
+        />
+      </div>
+      {/* <HelloCard /> */}
+    </>
   );
 }

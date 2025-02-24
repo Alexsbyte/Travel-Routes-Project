@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
-import { ISignInData, ISignUpData, UserWithTokenType } from '../model';
+import { ISignInData, UserWithTokenType } from '../model';
 import { AxiosError } from 'axios';
 
 enum AUTH_API_ROUTES {
@@ -40,16 +40,23 @@ export const refreshTokensThunk = createAsyncThunk<
 
 export const signUpThunk = createAsyncThunk<
   IApiResponseSuccess<UserWithTokenType>,
-  ISignUpData,
+  FormData,
   { rejectValue: IApiResponseReject }
 >(USER_THUNKS_TYPES.SIGN_UP, async (userData, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<UserWithTokenType>>(
       AUTH_API_ROUTES.SIGN_UP,
       userData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
 
     setAccessToken(data.data.accessToken);
+    console.log(data);
+
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;

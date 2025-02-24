@@ -1,0 +1,22 @@
+/* Стили для текста и комментариев */
+.routeTitle {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--on-surface);
+    margin-bottom: 10px;
+  }
+  
+  .routeCategory {
+    font-size: 16px;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+  
+  .routeDescription {
+    color: var(--on-surface);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }

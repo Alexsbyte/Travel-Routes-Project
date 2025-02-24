@@ -1,10 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
 @import url('../../app/colors.css');
 
 .header {
-  background: var(--on-primary);
-  color: var(--primary);
+  /* background: var(--on-primary);
+  color: var(--primary); */
   padding: 12px 24px;
   box-shadow: 0 4px 15px rgba(139, 85, 14, 0.308);
 }
@@ -15,10 +13,15 @@
 
 .header h1 {
   font-family: 'Eagle Lake', serif;
-  font-weight: 400;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-.header button {
+.drawer {
+}
+
+.header button,
+.drawer .buttons {
   background: var(--primary);
   color: var(--on-secondary);
   border-color: var(--primary);
@@ -28,55 +31,14 @@
   transition: background-color 0.3s ease;
 }
 
-.header button:hover {
-  background-color: var(--surface-variant);
-  color: var(--md-sys-color-on-variant);
+.header button:hover,
+.avatar:hover {
+  background: var(--on-primary);
+  color: #007bff;
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
-.link {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  text-decoration: none;
-  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-  font-weight: 500;
-  font-size: var(--mantine-font-size-sm);
-
-  @media (max-width: $mantine-breakpoint-sm) {
-    height: 42px;
-    width: 100%;
-  }
-
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
-    );
-  }
-}
-
-.subLink {
-  width: 100%;
-  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
-  border-radius: var(--mantine-radius-md);
-
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-7)
-    );
-  }
-}
-
-.dropdownFooter {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
-  margin: calc(var(--mantine-spacing-md) * -1);
-  margin-top: var(--mantine-spacing-sm);
-  padding: var(--mantine-spacing-md) calc(var(--mantine-spacing-md) * 2);
-  padding-bottom: var(--mantine-spacing-xl);
-  border-top: 1px solid
-    light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+.avatar {
+  border: 2px solid var(--primary);
+  padding: 2px;
 }
