@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { getAllRoutesThunk, RouteItem } from '@/entities/route';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import { Spin } from 'antd';
+import React from 'react';
+import { Route, RouteItem } from '@/entities/route';
 import styles from './RouteList.module.css';
+import { useAppSelector } from '@/shared/hooks/reduxHooks';
 
-export function RouteList(): React.JSX.Element {
-  const dispatch = useAppDispatch();
-  const routes = useAppSelector((store) => store.route.routes);
+interface RouteListProps {
+  filteredRoutes: Route[];
+}
+
+export function RouteList({ filteredRoutes }: RouteListProps): React.JSX.Element {
   const loading = useAppSelector((store) => store.route.loading);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    dispatch(getAllRoutesThunk());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!loading) {
-      setIsLoaded(true);
-    }
-  }, [loading]);
 
   return (
     <div className={styles.container}>
-      {!isLoaded && (
-        <div className={styles.carouselContainer}>
-          <Spin size="large" />
-        </div>
-      )}
-
-      {isLoaded && routes.length === 0 && (
+      {!loading && filteredRoutes.length === 0 && (
         <div className={styles.notFoundMessage}>Маршруты не найдены</div>
       )}
 
-      {isLoaded &&
-        routes.length > 0 &&
-        routes.map((route) => (
+      {filteredRoutes.length > 0 &&
+        filteredRoutes.map((route) => (
           <div className={styles.card} key={route.id}>
             <RouteItem route={route} />
           </div>
