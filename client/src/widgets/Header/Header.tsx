@@ -7,6 +7,7 @@ import {
   Group,
   Image,
   Menu,
+  Divider,
   ScrollArea,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -63,21 +64,10 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button
-                  bg={'orange'}
-                  c={'white'}
-                  variant="default"
-                  onClick={createRouteHandler}
-                >
-                  Создать маршрут
-                </Button>
-                <Button bg={'white'} c={'orange'} onClick={() => navigate('/welcome')}>
-                  Главная
-                </Button>
-                <Button bg={'white'} c={'orange'} onClick={() => navigate('/routes')}>
-                  Маршруты
-                </Button>
-                <Menu withArrow>
+                <Button onClick={createRouteHandler}>Создать маршрут</Button>
+                <Button onClick={() => navigate('/welcome')}>Главная</Button>
+                <Button onClick={() => navigate('/routes')}>Маршруты</Button>
+                <Menu withArrow width={180}>
                   <Menu.Target>
                     <Avatar
                       className={classes.avatar}
@@ -88,29 +78,21 @@ export function Header(): React.JSX.Element {
                       style={{ cursor: 'pointer' }}
                     />
                   </Menu.Target>
-                  <Menu.Dropdown>
+                  <Menu.Dropdown bd={'2 solid orange'}>
                     <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item>
+                    <Divider />
                     <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
               </Group>
             ) : (
               <Group>
-                <Button
-                  w={120}
-                  h={50}
-                  variant="default"
-                  onClick={() => openModal('signin')}
-                >
-                  Войти
-                </Button>
-                <Button w={160} h={50} onClick={() => openModal('signup')}>
-                  Регистрация
-                </Button>
+                <Button onClick={() => openModal('signin')}>Войти</Button>
+                <Button onClick={() => openModal('signup')}>Регистрация</Button>
               </Group>
             )}
           </Group>
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
         </Group>
       </header>
 
@@ -118,15 +100,12 @@ export function Header(): React.JSX.Element {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
-        // padding="md"
         title="Навигация"
         zIndex={1000000}
       >
-        <ScrollArea h="calc(100vh - 80px)" mx="-md">
-          <Group grow pb="xl" px="md">
+        <ScrollArea h="calc(100vh - 80px)" mx="sm">
+          <Group>
             <Button
-              bg="white"
-              c="orange"
               onClick={() => {
                 navigate('/welcome');
                 closeDrawer();
@@ -135,8 +114,6 @@ export function Header(): React.JSX.Element {
               Главная
             </Button>
             <Button
-              bg="white"
-              c="orange"
               onClick={() => {
                 navigate('/routes');
                 closeDrawer();
@@ -144,11 +121,9 @@ export function Header(): React.JSX.Element {
             >
               Маршруты
             </Button>
-            {user && (
+            {user ? (
               <>
                 <Button
-                  bg="orange"
-                  c="white"
                   onClick={() => {
                     navigate('/profile');
                     closeDrawer();
@@ -157,8 +132,6 @@ export function Header(): React.JSX.Element {
                   Профиль
                 </Button>
                 <Button
-                  bg="red"
-                  c="white"
                   onClick={() => {
                     signOutHandler();
                     closeDrawer();
@@ -167,6 +140,25 @@ export function Header(): React.JSX.Element {
                   Выйти
                 </Button>
               </>
+            ) : (
+              <Group>
+                <Button
+                  onClick={() => {
+                    openModal('signin');
+                    closeDrawer();
+                  }}
+                >
+                  Войти
+                </Button>
+                <Button
+                  onClick={() => {
+                    closeDrawer();
+                    openModal('signup');
+                  }}
+                >
+                  Регистрация
+                </Button>
+              </Group>
             )}
           </Group>
         </ScrollArea>
