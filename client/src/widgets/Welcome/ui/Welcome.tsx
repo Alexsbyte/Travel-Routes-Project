@@ -52,9 +52,8 @@ export function Welcome(): React.JSX.Element {
 
       <div className={style.container} style={{ position: 'relative' }}>
         <img
-          src="../../../../public/vecteezy_young-tourist-couple-watching-spectacular-mountain-scenery_10621909.jpg"
-          width="100%"
-          height="800px"
+          className={style.img}
+          src="/vecteezy_young-tourist-couple-watching-spectacular-mountain-scenery_10621909.jpg"
         />
         <div
           style={{
@@ -68,6 +67,7 @@ export function Welcome(): React.JSX.Element {
             fontFamily: 'PT Sans',
             textAlign: 'end',
             borderRadius: '8px',
+            lineHeight: '1.2',
           }}
         >
           Создай маршрут путешествия
