@@ -4,11 +4,12 @@ const RouteService = require('../services/Route.service');
 const formatResponse = require('../utils/formatResponse');
 const RouteValidator = require('../utils/Route.validator');
 const colors = require('ansi-colors');
+const PointService = require('../services/Point.service');
 
 class RouteController {
   static async create(req, res) {
     const photos = req.files;
-    const { title, description, category } = req.body;
+    const { title, description, category,points } = req.body;
     const { user } = res.locals;
 
     const { isValid, error } = RouteValidator.validateCreate({
@@ -16,6 +17,7 @@ class RouteController {
       description,
       category,
       photos,
+      points
     });
 
     if (!isValid) {
@@ -36,6 +38,17 @@ class RouteController {
 
       const routeWithUser = await RouteService.getById(newRoute.id);
 
+      
+      const pointWithIdRout = points.map(point => ({...point, route_id:newRoute.id}))
+
+      const allPointsRoute = await PointService.bulkCreate(pointWithIdRout)
+
+      if(!allPointsRoute) {
+        return res.status(400).json(formatResponse(400, 'Failed to create point for route'));
+      }
+
+
+      
       const transTitle = transliterate(title);
 
       const photosForDB = photos.map((photo) => ({
