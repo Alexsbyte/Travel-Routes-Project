@@ -4,7 +4,7 @@ import { createTheme, MantineProvider,  } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Provider } from 'react-redux';
 import store from './store/store';
-
+import '@ant-design/v5-patch-for-react-19';
 
 
 export function App() {
