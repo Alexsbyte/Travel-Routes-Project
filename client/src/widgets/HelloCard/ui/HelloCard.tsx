@@ -21,21 +21,17 @@ export function HelloCard(): React.JSX.Element {
 
   return (
     <>
-      <Carousel className={styles.carousel} withIndicators>
-        {slides}
-      </Carousel>
       <div className={styles.container}>
-        <div className={styles.separator}></div>
+        <Carousel className={styles.carousel} withIndicators>
+          {slides}
+        </Carousel>
         <div className={styles.description}>
-          <h3 className={styles.title}>
-            Туристический маршрут "Загадки древних городов"
-          </h3>
-          <div className={styles.separator}></div>
-          <p className={styles.text}>
-            Этот маршрут проведет вас через скрытые уголки древних городов, где история
-            встречается с архитектурным наследием. Вы сможете исследовать уникальные
-            памятники и узнать о культуре, которая сформировала это место.
-          </p>
+          <h3>Конструктор маршрутов:</h3>
+          <ul>
+            <li>Добавь свои любимые маршруты</li>
+            <li>Загрузи фотографии, опиши ключевые точки</li>
+            <li>Комментируй маршруты других</li>
+          </ul>
         </div>
       </div>
     </>
