@@ -16,8 +16,7 @@ class RouteController {
       title,
       description,
       category,
-      photos,
-      points
+      photos
     });
 
     if (!isValid) {
@@ -38,8 +37,8 @@ class RouteController {
 
       const routeWithUser = await RouteService.getById(newRoute.id);
 
-      
-      const pointWithIdRout = points.map(point => ({...point, route_id:newRoute.id}))
+      const objPoints =  await JSON.parse(points)
+      const pointWithIdRout = objPoints.map(point => ({latitude: point.latitude, longitude: point.longitude,description: point.description, route_id:newRoute.id}))
 
       const allPointsRoute = await PointService.bulkCreate(pointWithIdRout)
 
@@ -59,11 +58,7 @@ class RouteController {
       const newPhotos = await PhotoService.createPhotos(photosForDB);
 
       res.status(201).json(
-        formatResponse(201, 'Route with photos created successfully', {
-          fullRoute: routeWithUser,
-          newPhotos,
-        }),
-      );
+        formatResponse(201, 'Route with photos created successfully', routeWithUser ))
     } catch ({ message }) {
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
     }
