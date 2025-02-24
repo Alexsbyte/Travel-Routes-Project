@@ -1,3 +1,4 @@
+import { usePageTitle } from '@/shared/hooks/pageTitle';
 import React, { useEffect, useState } from 'react';
 import { getAllRoutesThunk } from '@/entities/route';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
@@ -6,6 +7,8 @@ import { Filter } from '@/widgets/RouteList/utils/filter';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 
 export function RoutesPage(): React.JSX.Element {
+
+  usePageTitle()
   const dispatch = useAppDispatch();
   const routes = useAppSelector((store) => store.route.routes);
   const [filteredRoutes, setFilteredRoutes] = useState(routes);
@@ -44,3 +47,4 @@ export function RoutesPage(): React.JSX.Element {
 };
 
 export default RoutesPage;
+
