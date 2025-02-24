@@ -1,10 +1,22 @@
-import { Button, FileInput, Group, Input, Select, Space, Textarea } from '@mantine/core';
+import {
+  Button,
+  FileInput,
+  Group,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Text,
+  Textarea,
+} from '@mantine/core';
 import style from './RouteForm.module.css';
-import { FormEvent} from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
+import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
+import { setError } from '@/entities/moderation/slice/ModerationSlice';
 
 type InputsType = {
   title: string;
@@ -21,9 +33,17 @@ const initialState: InputsType = {
 };
 
 export function RouteForm(): React.JSX.Element {
+  const [opened, setOpened] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
+  const { success, error } = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      setOpened(true);
+    }
+  }, [error, dispatch]);
 
   const form = useForm({
     initialValues: initialState,
@@ -89,12 +109,21 @@ export function RouteForm(): React.JSX.Element {
     },
   });
 
-  const createRoute = (
+  const createRoute = async (
     values: InputsType,
     e: FormEvent<HTMLFormElement> | undefined,
-  ): void => {
+  ): Promise<void> => {
     e?.preventDefault();
     try {
+      dispatch(setError.setError());
+      dispatch(
+        checkModerationThunk({ title: values.title, description: values.description }),
+      );
+
+      if (!success) {
+        return;
+      }
+
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
@@ -102,7 +131,8 @@ export function RouteForm(): React.JSX.Element {
       values.files.forEach((file) => {
         formData.append('files', file);
       });
-      console.log(values);
+
+      console.log(error, success);
 
       dispatch(createRouteThunk(formData));
       form.reset();
@@ -127,7 +157,6 @@ export function RouteForm(): React.JSX.Element {
           ></iframe>
           <div className={style.formContainer}>
             <Space h="md" />
-
             <Input
               {...form.getInputProps('title')}
               w={800}
@@ -152,9 +181,7 @@ export function RouteForm(): React.JSX.Element {
               {...form.getInputProps('files')}
               w={200}
               multiple
-              // value={files}
-              // onChange={onChangePhotoForm}
-              accept="image/*" // Разрешаем только изображения
+              accept="image/*"
               placeholder="Выберите файл(до 6)"
             />
             <Space h="md" />
@@ -170,11 +197,10 @@ export function RouteForm(): React.JSX.Element {
               Создать
             </Button>
             <Button
+              className="cancel"
               w={160}
               h={50}
               m={10}
-              bg={'red'}
-              c={'white'}
               onClick={(event) => {
                 event.preventDefault();
                 navigate('/');
@@ -183,6 +209,15 @@ export function RouteForm(): React.JSX.Element {
               Отмена
             </Button>
           </div>
+          <Modal
+            opened={opened}
+            onClose={() => {
+              setOpened(false);
+            }}
+            title="Проверка введеного текста"
+          >
+            {error && <Text c="red">{error}</Text>}
+          </Modal>
         </Group>
       )}
     </>
