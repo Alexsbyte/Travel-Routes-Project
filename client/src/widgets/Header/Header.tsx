@@ -60,11 +60,22 @@ export function Header(): React.JSX.Element {
             <Image src={logo} w={70} h="auto" /> <h1>Travel Routes</h1>
           </Group>
 
-          <Group visibleFrom="sm">
+          <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button w={200} h={50} variant="default" onClick={createRouteHandler}>
+                <Button
+                  bg={'orange'}
+                  c={'white'}
+                  variant="default"
+                  onClick={createRouteHandler}
+                >
                   Создать маршрут
+                </Button>
+                <Button bg={'white'} c={'orange'} onClick={() => navigate('/welcome')}>
+                  Главная
+                </Button>
+                <Button bg={'white'} c={'orange'} onClick={() => navigate('/routes')}>
+                  Маршруты
                 </Button>
                 <Menu withArrow>
                   <Menu.Target>
@@ -107,13 +118,57 @@ export function Header(): React.JSX.Element {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="sm"
+        // padding="md"
+        title="Навигация"
         zIndex={1000000}
       >
-        <ScrollArea h="calc(100vh - 80px" mx="-md">
-          <Group justify="center" grow pb="xl" px="md"></Group>
+        <ScrollArea h="calc(100vh - 80px)" mx="-md">
+          <Group grow pb="xl" px="md">
+            <Button
+              bg="white"
+              c="orange"
+              onClick={() => {
+                navigate('/welcome');
+                closeDrawer();
+              }}
+            >
+              Главная
+            </Button>
+            <Button
+              bg="white"
+              c="orange"
+              onClick={() => {
+                navigate('/routes');
+                closeDrawer();
+              }}
+            >
+              Маршруты
+            </Button>
+            {user && (
+              <>
+                <Button
+                  bg="orange"
+                  c="white"
+                  onClick={() => {
+                    navigate('/profile');
+                    closeDrawer();
+                  }}
+                >
+                  Профиль
+                </Button>
+                <Button
+                  bg="red"
+                  c="white"
+                  onClick={() => {
+                    signOutHandler();
+                    closeDrawer();
+                  }}
+                >
+                  Выйти
+                </Button>
+              </>
+            )}
+          </Group>
         </ScrollArea>
       </Drawer>
 
