@@ -34,13 +34,25 @@
   gap: 8px;
 }
 
+.fullSizeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slideContainer {
+  width: 100%;
+  height: 178px; /* Высота слайда */
+  overflow: hidden;
+}
+
+
 /* Стиль для карусели */
 .carousel {
   margin-bottom: 10px; /* Убираем лишний отступ снизу */
   height: 180px; /* Высота карусели */
   border-radius: 8px;
 }
-
 
 /* Описание */
 .description {

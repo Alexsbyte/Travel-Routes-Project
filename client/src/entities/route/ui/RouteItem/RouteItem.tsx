@@ -2,25 +2,29 @@ import React from 'react';
 import { Carousel } from 'antd';
 import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
-import { Route } from '../../model';
+import { Route } from '../../model/RouteTypes';
 
 type Props = {
   route: Route;
 };
 
-const images = [
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-5.png',
-];
-
 export function RouteItem({ route }: Props): React.JSX.Element {
+  const getImageUrl = (url: string): string => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    } else {
+      return `${import.meta.env.VITE_API}images/routes/${url}`;
+    } 
+  };
 
-  const slides = images.map((url) => (
-    <div key={url}>
-      <Image preview={false} src={url} alt={`Route image ${url}`} />
+  const slides = route.photos.map((photo) => (
+    <div key={photo.url} className={styles.slideContainer}>
+      <Image
+        className={styles.fullSizeImage}
+        preview={false}
+        src={getImageUrl(photo.url)}
+        alt={`Route image ${photo.url}`}
+      />
     </div>
   ));
 
@@ -30,7 +34,6 @@ export function RouteItem({ route }: Props): React.JSX.Element {
       <div className={styles.sharedBy}>
         Поделился: <strong>{route.user.username}</strong>
       </div>
-
       {/* Теги */}
       <div className={styles.tags}>
         {route.category.split(',').map((category, index) => (
@@ -39,23 +42,23 @@ export function RouteItem({ route }: Props): React.JSX.Element {
           </Tag>
         ))}
       </div>
-
       {/* Карусель */}
-      <Carousel
-        dots
-        autoplay={false}
-        arrows={false}
-        swipeToSlide={true}
-        slidesToScroll={1}
-        touchMove={true}
-        speed={500}
-        draggable={true}
-        easing="ease-in-out"
-        className={styles.carousel}
-      >
-        {slides}
-      </Carousel>
-
+      <div>
+        <Carousel
+          dots
+          autoplay={false}
+          arrows={false}
+          swipeToSlide={true}
+          slidesToScroll={1}
+          touchMove={true}
+          speed={500}
+          draggable={true}
+          easing="ease-in-out"
+          className={styles.carousel}
+        >
+          {slides}
+        </Carousel>
+      </div>
       {/* Описание */}
       <div className={styles.separator}></div>
       <div className={styles.description}>

@@ -7,4 +7,5 @@ export enum CLIENT_ROUTES {
   ROUTE_FORM = '/createRoute',
   ROUTE_PAGE = '/route',
   VERIFY_EMAIL = '/verify-email',
+
 }
