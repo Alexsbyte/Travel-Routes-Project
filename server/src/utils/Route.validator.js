@@ -1,6 +1,6 @@
 class RouteValidator {
   static validateCreate(data) {
-    const { title, description, category, photos } = data;
+    const { title, description, category, photos, points} = data;
 
     if (!title || typeof title !== 'string' || title.trim() === '') {
       return {
@@ -49,6 +49,7 @@ class RouteValidator {
         };
       }
     }
+
 
     return {
       isValid: true,
