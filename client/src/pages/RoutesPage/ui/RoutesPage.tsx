@@ -15,7 +15,6 @@ export function RoutesPage(): React.JSX.Element {
   }, [dispatch]);
 
   useEffect(() => {
-    // Фильтрация маршрутов при изменении выбранной категории или маршрутов
     if (selectedCategory) {
       setFilteredRoutes(routes.filter(route => route.category === selectedCategory));
     } else {
@@ -29,7 +28,7 @@ export function RoutesPage(): React.JSX.Element {
 
   return (
     <div>
-      <Filter onFilterChange={handleFilterChange} /> {/* Отрисовка Filter здесь */}
+      <Filter onFilterChange={handleFilterChange} />
       <div style={{ display: 'flex' }}>
         <div style={{ width: '70%' }}>
         <iframe

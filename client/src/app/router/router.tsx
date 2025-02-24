@@ -1,9 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
-import { WelcomePage, RouteFormPage, HomePage } from '@/pages';
+import { WelcomePage, RouteFormPage, HomePage, RoutesPage } from '@/pages';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
-import { RouteList } from '@/widgets';
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         path: CLIENT_ROUTES.ROUTE,
-        element: <RouteList />,
+        element: <RoutesPage />,
       },
       
     ],
