@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
 import { AxiosError } from 'axios';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
-import { ApiResponse, ModerationPayload } from '../model/types';
+import { ModerationPayload } from '../model/types';
 
 export const checkModerationThunk = createAsyncThunk<
   IApiResponseSuccess<boolean>,

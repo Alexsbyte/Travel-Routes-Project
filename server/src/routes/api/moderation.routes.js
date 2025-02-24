@@ -25,13 +25,12 @@ async function checkProfanity(text) {
     );
 
     const result = response.data;
-    console.log('Модерация:', result);
 
     if (result.labels[0] === 'not profanity') {
       return false;
     }
     const profanityScore = result.scores[0];
-    return profanityScore > 0.69;
+    return profanityScore > 0.66;
   } catch (error) {
     console.error('Ошибка Hugging Face:', error?.response?.data || error.message);
     return false; // В случае ошибки пропускаем
@@ -41,9 +40,9 @@ async function checkProfanity(text) {
 router.post('/', verifyAccessToken, async (req, res) => {
   try {
     const { title, description } = req.body;
-    console.log(title, description);
 
     const isProfane = await checkProfanity(title + ' ' + description);
+
     if (isProfane) {
       return res
         .status(400)

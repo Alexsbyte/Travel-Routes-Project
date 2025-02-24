@@ -15,8 +15,6 @@ import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '@/shared/lib/axiosInstance';
-import { IApiResponseSuccess } from '@/shared/types';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
 import { setError } from '@/entities/moderation/slice/ModerationSlice';
 
@@ -117,9 +115,14 @@ export function RouteForm(): React.JSX.Element {
   ): Promise<void> => {
     e?.preventDefault();
     try {
+      dispatch(setError.setError());
       dispatch(
         checkModerationThunk({ title: values.title, description: values.description }),
       );
+
+      if (!success) {
+        return;
+      }
 
       const formData = new FormData();
       formData.append('title', values.title);
@@ -131,9 +134,9 @@ export function RouteForm(): React.JSX.Element {
 
       console.log(error, success);
 
-      // dispatch(createRouteThunk(formData));
-      // form.reset();
-      // navigate('/');
+      dispatch(createRouteThunk(formData));
+      form.reset();
+      navigate('/');
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -178,9 +181,7 @@ export function RouteForm(): React.JSX.Element {
               {...form.getInputProps('files')}
               w={200}
               multiple
-              // value={files}
-              // onChange={onChangePhotoForm}
-              accept="image/*" // Разрешаем только изображения
+              accept="image/*"
               placeholder="Выберите файл(до 6)"
             />
             <Space h="md" />
@@ -196,11 +197,10 @@ export function RouteForm(): React.JSX.Element {
               Создать
             </Button>
             <Button
+              className="cancel"
               w={160}
               h={50}
               m={10}
-              bg={'red'}
-              c={'white'}
               onClick={(event) => {
                 event.preventDefault();
                 navigate('/');
@@ -216,7 +216,7 @@ export function RouteForm(): React.JSX.Element {
             }}
             title="Проверка введеного текста"
           >
-            {error && <Text color="red">{error}</Text>}
+            {error && <Text c="red">{error}</Text>}
           </Modal>
         </Group>
       )}
