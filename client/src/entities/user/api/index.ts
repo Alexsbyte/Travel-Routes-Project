@@ -3,13 +3,21 @@ import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
 import { ISignInData, UserWithTokenType } from '../model';
 import { AxiosError } from 'axios';
-import { AUTH_API_ROUTES } from '@/shared/enums/apiRoutes';
+
+enum AUTH_API_ROUTES {
+  REFRESH_TOKENS = 'api/auth/refreshTokens',
+  SIGN_UP = 'api/auth/signUp',
+  SIGN_IN = 'api/auth/signIn',
+  SIGN_OUT = 'api/auth/signOut',
+  VERIFY_EMAIL = 'api/auth/verify-email',
+}
 
 enum USER_THUNKS_TYPES {
   REFRESH_TOKENS = 'user/refreshTokens',
   SIGN_UP = 'user/signUp',
   SIGN_IN = 'user/signIn',
   SIGN_OUT = 'user/signOut',
+  VERIFY_EMAIL = 'user/verify-email',
 }
 
 export const refreshTokensThunk = createAsyncThunk<
@@ -90,5 +98,21 @@ export const signOutThunk = createAsyncThunk<
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
     return rejectWithValue(err.response!.data);
+  }
+});
+
+export const verifyEmailThunk = createAsyncThunk<
+  IApiResponseSuccess<null | { message: string }>,
+  string, // токен из юрл
+  { rejectValue: IApiResponseReject }
+>(USER_THUNKS_TYPES.VERIFY_EMAIL, async (token, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.get<IApiResponseSuccess<null>>(
+      `${AUTH_API_ROUTES.VERIFY_EMAIL}/${token}`,
+    );
+    return data;
+  } catch (error) {
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data || { error: 'Unknown error' });
   }
 });
