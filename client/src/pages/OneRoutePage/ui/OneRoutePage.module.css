@@ -70,18 +70,6 @@
 
 
 
-.commentsSection {
-  padding: 20px;
-  background-color: var(--surface);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.commentsSection h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: var(--on-surface);
-}
 
 /* Медиазапросы для мобильных устройств */
 @media (max-width: 768px) {
@@ -101,3 +89,5 @@
     padding: 15px;
   }
 }
+
+

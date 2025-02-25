@@ -29,6 +29,7 @@ class CommentService {
 
   static async delete(comment_id) {
     const comment = await this.getById(comment_id);
+    if (!comment) return null;
     if (comment) {
       await comment.destroy();
     }

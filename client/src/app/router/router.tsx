@@ -10,6 +10,11 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
+import { CommentSection } from '@/widgets/CommentSection';
+
+
+
+
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: CLIENT_ROUTES.VERIFY_EMAIL,
         element: <VerifyEmail />,
+      },
+      {
+        path: CLIENT_ROUTES.COMMENT_FORM,
+        element: <CommentSection  />,
       },
       {
         path: CLIENT_ROUTES.ROUTE_FORM,

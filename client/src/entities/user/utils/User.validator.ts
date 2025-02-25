@@ -24,7 +24,7 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error: 'Введите корректную почту',
+        error: 'Введите корректный адрес электронной почты',
       };
     }
 
@@ -36,7 +36,7 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error: 'Введите корректный пароль',
+        error: 'Пароль должен быть не менее 8 символов, содержать хотя бы одну заглавную букву, а также цифры, символы и строчные буквы.',
       };
     }
 
@@ -57,7 +57,7 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error: 'Введите корректную почту',
+        error: 'Неверный логин или пароль',
       };
     }
 
@@ -69,7 +69,8 @@ export class UserValidator {
     ) {
       return {
         isValid: false,
-        error: 'Введите корректный пароль',
+        error:
+          'Неверный логин или пароль',
       };
     }
 
