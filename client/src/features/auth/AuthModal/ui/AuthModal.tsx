@@ -44,6 +44,7 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, onSuccess, ty
 
   return (
     <Modal
+      display={!isOpen ? 'none' : 'block'}
       opened={isOpen}
       onClose={onClose}
       title={

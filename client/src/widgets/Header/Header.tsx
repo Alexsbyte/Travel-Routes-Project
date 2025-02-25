@@ -74,9 +74,15 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button onClick={createRouteHandler}>Создать маршрут</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>Главная</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.HOME)}>Маршруты</Button>
+                <Button h={55} onClick={createRouteHandler}>
+                  Создать маршрут
+                </Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>
+                  Главная
+                </Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
+                  Маршруты
+                </Button>
                 <Menu withArrow width={180}>
                   <Menu.Target>
                     <Avatar
@@ -97,8 +103,12 @@ export function Header(): React.JSX.Element {
               </Group>
             ) : (
               <Group>
-                <Button onClick={() => openModal('signin')}>Войти</Button>
-                <Button onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button h={55} onClick={() => openModal('signin')}>
+                  Войти
+                </Button>
+                <Button h={55} onClick={() => openModal('signup')}>
+                  Регистрация
+                </Button>
               </Group>
             )}
           </Group>

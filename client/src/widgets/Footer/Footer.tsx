@@ -15,11 +15,11 @@ export function Footer(): React.JSX.Element {
     { href: 'https://github.com/Alexsbyte', label: 'Alexsbyte' },
     { href: 'https://github.com/VoroninVladimirN93', label: 'VoroninVladimirN93' },
     { href: 'https://github.com/EkaterinaMkh', label: 'EkaterinaMkh' },
-    { href: 'https://github.com/sensdoo-dev', label: 'sensdoo-dev' },
+    { href: 'https://github.com/sensdoo-dev', label: 'Sensdoo' },
   ];
 
   return (
-    <Box bg={rgba('gray', 0.07)} component="footer" mt={30}>
+    <Box bg={rgba('gray', 0.07)} component="footer" mt={50}>
       <Flex direction="column" align="center" px="md">
         {isPad && (
           <button
@@ -37,7 +37,12 @@ export function Footer(): React.JSX.Element {
             align="center"
             px="md"
           >
-            <Flex direction={{ base: 'column', md: 'row' }} align="center" gap="xs">
+            <Flex
+              direction={{ base: 'column', md: 'row' }}
+              align="center"
+              gap="xs"
+              mt={10}
+            >
               {links.map((link) => (
                 <a
                   key={link.href}
