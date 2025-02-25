@@ -31,46 +31,46 @@ export function OneRoutePage(): React.JSX.Element {
   ];
 
   return (
-    <div className={styles.routePage}>
-      {/* Карта и галерея */}
-      <div className={styles.mapGalleryContainer}>
-        <div className={styles.map}>
-          <h3>Здесь будет карта</h3>
-        </div>
+    <>
+      <div className={styles.routePage}>
+        {/* Карта и галерея */}
+        <div className={styles.mapGalleryContainer}>
+          <div className={styles.map}>
+            <h3>Здесь будет карта</h3>
+          </div>
 
-        <button
-          className={styles.toggleGallery}
-          onClick={() => setShowGallery(!showGallery)}
-        >
-          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
-        </button>
-
-        {/* Галерея накладывается на карту */}
-        <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
-          <Carousel
-            draggable={true}
-            autoplay={false}
-            dots={true}
-            arrows={false}
-            className={styles.carousel}
+          <button
+            className={styles.toggleGallery}
+            onClick={() => setShowGallery(!showGallery)}
           >
-            {images.map((url, index) => (
-              <div key={index}>
-                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
-              </div>
-            ))}
-          </Carousel>
+            {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
+          </button>
+
+          {/* Галерея накладывается на карту */}
+          <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
+            <Carousel
+              draggable={true}
+              autoplay={false}
+              dots={true}
+              arrows={false}
+              className={styles.carousel}
+            >
+              {images.map((url, index) => (
+                <div key={index}>
+                  <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
+                </div>
+              ))}
+            </Carousel>
+          </div>
         </div>
-      </div>
 
-      <OneRouteItem route={route} />
-      <CommentSection routeId={Number(id)}/>
+        <OneRouteItem route={route} />
 
-      {/* Блок с комментариями */}
-      <div className={styles.commentsSection}>
-        <h3>Комментарии</h3>
-        {/* Здесь будут комментарии */}
+        {/* Блок с комментариями */}
       </div>
-    </div>
+      <div>
+        <CommentSection routeId={Number(id)} />
+      </div>
+    </>
   );
 }

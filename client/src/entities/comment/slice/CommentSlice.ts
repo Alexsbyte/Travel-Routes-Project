@@ -8,19 +8,19 @@ import {
 } from '../api/CommentThunk';
 
 interface CommentsState {
-  comment: CommentType[];
+  comments: CommentType[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CommentsState = {
-  comment: [],
+  comments: [],
   loading: false,
   error: null,
 };
 
-export const commentSlice = createSlice({
-  name: 'comment',
+export const commentsSlice = createSlice({
+  name: 'comments',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -94,4 +94,4 @@ export const commentSlice = createSlice({
   },
 });
 
-export const commentReducer = commentSlice.reducer;
+export const commentsReducer = commentsSlice.reducer;

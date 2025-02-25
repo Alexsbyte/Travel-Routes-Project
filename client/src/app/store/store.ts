@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { routeReducer } from '@/entities/route';
 import { pointsReducer } from '@/entities/point/slice';
 import { moderationReducer } from '@/entities/moderation/slice/ModerationSlice';
-import { commentReducer } from '@/entities/comment/slice/CommentSlice';
+import { commentsReducer } from '@/entities/comment/slice/CommentSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,7 +11,7 @@ const store = configureStore({
     route: routeReducer,
     points: pointsReducer,
     moderation: moderationReducer,
-    comment: commentReducer,
+    comments: commentsReducer,
   },
 });
 

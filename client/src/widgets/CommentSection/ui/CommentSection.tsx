@@ -1,109 +1,133 @@
-import {
-  createCommentThunk,
-  deleteCommentThunk,
-  getOneRouteCommentsThunk,
-} from '@/entities/comment/api/CommentThunk';
+import styles from './CommentSection.module.css';
+import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import React, { useEffect, useState } from 'react';
-import { message as antMessage } from 'antd';
+import { createCommentThunk, deleteCommentThunk, getOneRouteCommentsThunk } from '@/entities/comment/api/CommentThunk';
 import { CommentType } from '@/entities/comment/model/CommentTypes';
+import { Textarea, Button, Card, Title, Divider, Modal, Text, Group } from '@mantine/core';
+import { message as antMessage } from 'antd';
 
 interface CommentSectionProps {
-  routeId: number; // Параметр, который будет передаваться в компонент
+  routeId: number;
 }
 
 export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Element {
   const dispatch = useAppDispatch();
-  const { comment, loading, error } = useAppSelector((state) => state.comment);
+  const { comments, loading, error } = useAppSelector((state) => state.comments);
+  const user = useAppSelector((state) => state.user.user);
   const [newComment, setNewComment] = useState<string>('');
-  const user = useAppSelector((state) => state.user);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
-
-  // Загружаем комментарии при изменении routeId
   useEffect(() => {
     dispatch(getOneRouteCommentsThunk(routeId));
   }, [dispatch, routeId]);
 
-  // Функция для добавления нового комментария
   const handleAddComment = () => {
     if (newComment.trim() === '') {
       antMessage.error('Комментарий не может быть пустым');
       return;
     }
     if (!user) {
-        antMessage.error('Пользователь не найден');
-        return;
-      }
-
+      antMessage.error('Пользователь не найден');
+      return;
+    }
     const commentData = {
       text: newComment,
       route_id: routeId,
-      user_id: user.id, // Используем user.id из состояния
+      user_id: user.id,
     };
 
-    // Отправляем запрос на создание комментария
     dispatch(createCommentThunk(commentData))
       .unwrap()
       .then(() => {
-        setNewComment(''); // очищаем поле ввода
-        dispatch(getOneRouteCommentsThunk(routeId)); // обновляем комментарии
+        setNewComment('');
+        dispatch(getOneRouteCommentsThunk(routeId));
       })
       .catch(() => {
         antMessage.error('Ошибка при добавлении комментария');
       });
   };
 
-  // Функция для удаления комментария
-  const handleDeleteComment = (comment_id: number) => {
-    dispatch(deleteCommentThunk(comment_id))
+  const confirmDelete = (comment_id: number) => {
+    setCommentToDelete(comment_id);
+    setModalOpen(true);
+  };
+
+  const handleDeleteComment = () => {
+    if (!commentToDelete) return;
+
+    dispatch(deleteCommentThunk(commentToDelete))
       .unwrap()
       .then(() => {
         antMessage.success('Комментарий удален');
-        dispatch(getOneRouteCommentsThunk(routeId)); // обновляем комментарии
+        dispatch(getOneRouteCommentsThunk(routeId));
       })
       .catch(() => {
         antMessage.error('Ошибка при удалении комментария');
+      })
+      .finally(() => {
+        setModalOpen(false);
+        setCommentToDelete(null);
       });
   };
 
   return (
-    <div>
-      <h2>Комментарии</h2>
-
-      {/* Форма добавления комментария */}
-      <div>
-        <textarea
+    <div className={styles.commentSection}>
+      <Title order={3}>Отзывы</Title>
+      <Divider my="sm" />
+      <div className={styles.commentForm}>
+        <Textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          rows={4}
-          cols={50}
-          placeholder="Добавьте ваш комментарий"
+          className={styles.commentInput}
+          minRows={3}
+          placeholder="Напишите ваш отзыв..."
         />
-        <button onClick={handleAddComment} disabled={loading}>
-          Добавить комментарий
-        </button>
+        <Group justify="flex-end">
+          <Button onClick={handleAddComment} disabled={loading} className={styles.commentButton}>
+            Добавить
+          </Button>
+        </Group>
       </div>
 
-      {/* Если есть ошибка */}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-
-      {/* Список комментариев */}
+      {error && <Text color="red">{error}</Text>}
       {loading ? (
-        <div>Загрузка...</div>
+        <Text>Загрузка...</Text>
       ) : (
-        <div>
-          {comment?.map((comment: CommentType) => (
-            <div key={comment.id} style={{ marginBottom: '10px' }}>
-              <p>{comment.text}</p>
-              <p>
-                <strong>{comment.username}</strong>
-              </p>
-              {/* Удалить комментарий */}
-              <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
-            </div>
+        <div className={styles.commentList}>
+          {comments?.map((comment: CommentType) => (
+            <Card key={comment.id} className={styles.commentItem}>
+              <div className={styles.commentHeader}>
+                <Text className={styles.commentUsername}>{user!.username}</Text>
+                <p className={styles.date}>{new Date(comment.createdAt).toLocaleDateString()}</p>
+                {user?.id === comment.user_id && (
+                  <Button
+                    onClick={() => confirmDelete(comment.id)}
+                    className={styles.commentDelete}
+                    size="xs"
+                    variant="subtle"
+                  >
+                    Удалить
+                  </Button>
+                )}
+              </div>
+              <Text>{comment.text}</Text>
+            </Card>
           ))}
         </div>
       )}
+
+      <Modal opened={modalOpen} onClose={() => setModalOpen(false)} title="Удаление комментария">
+        <Text>Вы уверены, что хотите удалить этот комментарий?</Text>
+        <Group justify="flex-end" className={styles.modalButtons}>
+          <Button onClick={handleDeleteComment} color="red">
+            Удалить
+          </Button>
+          <Button onClick={() => setModalOpen(false)} variant="outline">
+            Отмена
+          </Button>
+        </Group>
+      </Modal>
     </div>
   );
 }
