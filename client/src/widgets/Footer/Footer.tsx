@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Collapse, Flex, rgba, Text } from '@mantine/core';
+import { Box, Collapse, Flex, Group, rgba, Text } from '@mantine/core';
 import { AiFillGithub } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
-
+import { GiBullHorns } from 'react-icons/gi';
 import styles from './Footer.module.css';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -24,7 +24,7 @@ export function Footer(): React.JSX.Element {
       <Flex direction="column" align="center" px="md">
         {isPad && (
           <button
-            className={styles.footerButton}
+            className={styles.footerLink}
             onClick={() => setOpened((prev) => !prev)}
           >
             <Text>Наши разработчики</Text>
@@ -57,13 +57,16 @@ export function Footer(): React.JSX.Element {
                   className={styles.footerLink}
                 >
                   <AiFillGithub size={20} />
-                  <Text>{link.label}</Text>
+                  <Text pl={10}>{link.label}</Text>
                 </a>
               ))}
             </Flex>
           </Flex>
         </Collapse>
-        <Text mt="md">Buffaloes team &copy; {currentYear}</Text>
+        <Group>
+          <GiBullHorns />
+          <Text m={'20 0'}>Buffaloes team &copy; {currentYear}</Text>
+        </Group>
       </Flex>
     </Box>
   );

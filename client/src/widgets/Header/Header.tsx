@@ -24,8 +24,9 @@ import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 export function Header(): React.JSX.Element {
   const isMobile = useMediaQuery('(max-width: 48em)');
-  // const isTablet = useMediaQuery('(min-width: 48em) and (max-width: 64em)');
-
+  const isTablet = useMediaQuery('(min-width: 48em) and (max-width: 64em)');
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,19 +59,16 @@ export function Header(): React.JSX.Element {
   const handleSuccess = () => {
     setIsModalOpen(false);
     setTimeout(() => {
-      setAuthType('signin'); // Переключаем на вход
+      setAuthType('signin');
       setIsModalOpen(true);
-    }, 300); // Даем небольшую задержку, чтобы выглядело плавнее
+    }, 300);
   };
-
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
 
   // При наличии токена автоматически открываем модальное окно авторизации
   React.useEffect(() => {
     if (token) {
-      navigate(CLIENT_ROUTES.HOME); // Перенаправляем на главную страницу
-      openModal('signin'); // Открываем окно авторизации
+      navigate(CLIENT_ROUTES.HOME);
+      openModal('signin');
     }
   }, [token, navigate]);
 
@@ -78,9 +76,11 @@ export function Header(): React.JSX.Element {
     <Box bg={rgba('gray', 0.07)} pb={10} mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <Group onClick={redirectToHomPage}>
-            <Image src={logo} w={70} h="auto" />
-            <h1>Travel Routes</h1>
+          <Group onClick={redirectToHomPage} style={{ cursor: 'pointer' }}>
+            <Image src={logo} w={isMobile ? 40 : isTablet ? 50 : 70} />
+            <h1 style={{ fontSize: isMobile ? 16 : isTablet ? 18 : 24 }}>
+              Travel Routes
+            </h1>
           </Group>
 
           <Group visibleFrom="md">
