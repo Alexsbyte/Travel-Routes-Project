@@ -15,7 +15,7 @@ interface Props {
 export function MapHome({ filteredRoutes, onPointClick }: Props): React.JSX.Element {
   // Собираем все точки маршрутов в один массив
 
-  const points = filteredRoutes.flatMap((route) => route.points);
+  const points = filteredRoutes.flatMap((route) => route.points[0]);
   console.log(points);
 
   const [selectedPoint, setSelectedPoint] = useState<{

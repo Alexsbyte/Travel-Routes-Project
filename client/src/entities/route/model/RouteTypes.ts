@@ -7,7 +7,7 @@ export type RawRouteData = {
 type Photo = { url: string };
 
 type Point = {
-  id: Key | null | undefined;
+  id: number
   description: string;
   latitude: number;
   longitude: number;
