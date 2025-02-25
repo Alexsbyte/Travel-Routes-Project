@@ -16,20 +16,20 @@ import {
   Modal,
   Text,
   Group,
+  Avatar,
 } from '@mantine/core';
 import { message as antMessage } from 'antd';
+import { useParams } from 'react-router-dom';
 
-interface CommentSectionProps {
-  routeId: number;
-}
-
-export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Element {
+export function CommentSection(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { comments, loading, error } = useAppSelector((state) => state.comments);
   const user = useAppSelector((state) => state.user.user);
   const [newComment, setNewComment] = useState<string>('');
   const [modalOpen, setModalOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
+  const { id } = useParams<{ id: string }>(); // Получаем параметр id из URL
+  const routeId = Number(id); // Преобразуем id в число, если нужно
 
   useEffect(() => {
     dispatch(getOneRouteCommentsThunk(routeId));
@@ -72,7 +72,6 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
     dispatch(deleteCommentThunk(commentToDelete))
       .unwrap()
       .then(() => {
-        antMessage.success('Комментарий удален');
         dispatch(getOneRouteCommentsThunk(routeId));
       })
       .catch(() => {
@@ -106,7 +105,7 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
           </Button>
         </div>
       </div>
-
+      Aselya, [25.02.2025 19:53]
       {error && <Text>{error}</Text>}
       {loading ? (
         <Text>Загрузка...</Text>
@@ -116,9 +115,15 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
             <Card key={comment.id} className={styles.commentItem}>
               <div className={styles.commentHeader}>
                 {user?.avatar && (
-                  <img src={user.avatar} alt="User Avatar" className={styles.avatar} />
+                  <Avatar
+                    src={`${import.meta.env.VITE_API}images/avatars/${user.avatar}`}
+                    alt="User Avatar"
+                    className={styles.avatar}
+                  />
                 )}
-                <Text className={styles.commentUsername}>{user!.username}</Text>
+                <Text className={styles.commentUsername}>
+                  {comment.userComment?.username}
+                </Text>
                 <p className={styles.date}>
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </p>
@@ -138,7 +143,6 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
           ))}
         </div>
       )}
-
       <Modal
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
