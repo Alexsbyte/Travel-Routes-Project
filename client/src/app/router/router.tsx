@@ -7,9 +7,6 @@ import { WelcomePage, RouteFormPage, HomePage } from '@/pages';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { OneRoutePage } from '@/pages/OneRoutePage/ui/OneRoutePage';
 
-
-
-
 export const router = createBrowserRouter([
   {
     path: CLIENT_ROUTES.HOME,
@@ -17,7 +14,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: CLIENT_ROUTES.HOME,
-        element: <HomePage /> ,
+        element: <HomePage />,
       },
       {
         path: CLIENT_ROUTES.WELCOME,
@@ -35,9 +32,13 @@ export const router = createBrowserRouter([
           </AuthGuard>
         ),
       },
-        {      
-        path: `${ CLIENT_ROUTES.ROUTE_PAGE}/:id`,
-        element: <OneRoutePage />,
+      {
+        path: `${CLIENT_ROUTES.ROUTE_PAGE}/:id`,
+        element: (
+          <AuthGuard>
+            <OneRoutePage />
+          </AuthGuard>
+        ),
       },
     ],
   },
