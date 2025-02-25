@@ -18,18 +18,22 @@ import {
   Group,
 } from '@mantine/core';
 import { message as antMessage } from 'antd';
+import { useParams } from 'react-router-dom';
 
-interface CommentSectionProps {
-  routeId: number;
-}
+// interface CommentSectionProps {
+//   routeId: number;
+// }
 
-export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Element {
+export function CommentSection(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { comments, loading, error } = useAppSelector((state) => state.comments);
   const user = useAppSelector((state) => state.user.user);
   const [newComment, setNewComment] = useState<string>('');
   const [modalOpen, setModalOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
+
+  const { id } = useParams<{ id: string }>(); // Получаем параметр id из URL
+  const routeId = Number(id); // Преобразуем id в число, если нужно
 
   useEffect(() => {
     dispatch(getOneRouteCommentsThunk(routeId));

@@ -14,7 +14,7 @@ export function OneRoutePage(): React.JSX.Element {
   const routes = useAppSelector((store) => store.route.routes);
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
-  usePageTitle()
+  usePageTitle();
   useEffect(() => {
     dispatch(getAllRoutesThunk());
   }, [dispatch]);
@@ -68,7 +68,7 @@ export function OneRoutePage(): React.JSX.Element {
         <OneRouteItem route={route} />
       </div>
 
-      <CommentSection routeId={Number(id)} />
+      <CommentSection />
     </>
   );
 }
