@@ -11,17 +11,17 @@ class RouteService {
         {
           model: User,
           as: 'user',
-          attributes: ['username', 'email'],
+          attributes: ['id', 'username', 'email'],
         },
         {
           model: Photo,
           as: 'photos',
-          attributes: ['url'],
+          attributes: ['id', 'url'],
         },
         {
           model: Point,
           as: 'points',
-          attributes: ['description', 'latitude', 'longitude'],
+          attributes: ['id', 'description', 'latitude', 'longitude'],
         },
       ],
     });
@@ -33,17 +33,17 @@ class RouteService {
         {
           model: User,
           as: 'user',
-          attributes: ['username', 'email'],
+          attributes: ['id', 'username', 'email'],
         },
         {
           model: Photo,
           as: 'photos',
-          attributes: ['url'],
+          attributes: ['id', 'url'],
         },
         {
           model: Point,
           as: 'points',
-          attributes: ['description', 'latitude', 'longitude'],
+          attributes: ['id', 'description', 'latitude', 'longitude'],
         },
       ],
     });
