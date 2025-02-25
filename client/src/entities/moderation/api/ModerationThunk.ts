@@ -11,12 +11,14 @@ export const checkModerationThunk = createAsyncThunk<
 >('moderation/check', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<boolean>>(
-      '/api/moderations',
+      '/api/ai/moderations',
       payload,
     );
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
+    console.log(err);
+
     return rejectWithValue(err.response!.data);
   }
 });
@@ -28,7 +30,7 @@ export const generateBeautifullThunk = createAsyncThunk<
 >('moderation/check', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<string>>(
-      '/api/generations',
+      '/api/ai/generations',
       payload,
     );
     return data;

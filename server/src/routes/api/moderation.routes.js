@@ -43,7 +43,7 @@ async function checkProfanity(text) {
     // );
 
     const { data } = await axios.post(
-      'https://api.openai.com/v1/moderation',
+      'https://api.openai.com/v1/moderations',
       {
         model: 'omni-moderation-latest',
         input: text.toLowerCase().trim(),
@@ -58,18 +58,19 @@ async function checkProfanity(text) {
       },
     );
 
-    // console.log(res.data.results[0].flagged);
+    console.log(data.results[0].flagged);
+    console.log(data.results);
     // console.log(res.data.results[0].category_applied_input_types);
     // console.log(res);
 
-    return { success: data.results[0].flagged, error: null };
+    return { flagged: data.results[0].flagged, error: null };
   } catch (error) {
     console.error('Ошибка openAI:', error?.response?.data || error.message);
     return { success: false, error }; //
   }
 }
 
-router.post('/', verifyAccessToken, async (req, res) => {
+router.post('/moderations', verifyAccessToken, async (req, res) => {
   try {
     const { title, description } = req.body;
 
@@ -79,7 +80,7 @@ router.post('/', verifyAccessToken, async (req, res) => {
       return res.status(400).json(formatResponse(400, null, null, isProfane.error));
     }
 
-    if (!isProfane.success) {
+    if (isProfane.flagged) {
       return res
         .status(400)
         .json(
@@ -92,7 +93,40 @@ router.post('/', verifyAccessToken, async (req, res) => {
         );
     }
 
-    res.status(200).json(formatResponse(200, 'Текст прошел проверку', isProfane.success));
+    res.status(200).json(formatResponse(200, 'Текст прошел проверку', isProfane.flagged));
+  } catch (error) {
+    console.log(error);
+
+    res
+      .status(500)
+      .json(formatResponse(500, 'Ошибка обращения к внешнему API', null, error.message));
+  }
+});
+
+router.post('/generations', verifyAccessToken, async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    const isProfane = await checkProfanity(title + ' ' + description);
+
+    if (isProfane.error) {
+      return res.status(400).json(formatResponse(400, null, null, isProfane.error));
+    }
+
+    if (!isProfane.flagged) {
+      return res
+        .status(400)
+        .json(
+          formatResponse(
+            400,
+            'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
+            null,
+            'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
+          ),
+        );
+    }
+
+    res.status(200).json(formatResponse(200, 'Текст прошел проверку', isProfane.flagged));
   } catch (error) {
     console.log(error);
 

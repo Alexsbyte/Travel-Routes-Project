@@ -2,17 +2,20 @@ import {
   Box,
   Button,
   FileInput,
+  Flex,
   Group,
   Input,
   Modal,
   Select,
   Space,
+  Text,
   // Text,
   Textarea,
+  Title,
 } from '@mantine/core';
 
 import style from './RouteForm.module.css';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 // import { createRouteThunk } from '@/entities/route';
@@ -23,7 +26,7 @@ import {
   checkModerationThunk,
   generateBeautifullThunk,
 } from '@/entities/moderation/api/ModerationThunk';
-// import { setError } from '@/entities/moderation/slice/ModerationSlice';
+import { setError } from '@/entities/moderation/slice/ModerationSlice';
 // import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type InputsType = {
@@ -46,15 +49,15 @@ export function RouteForm(): React.JSX.Element {
   const [opened, setOpened] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  // const { success, error } = useAppSelector((state) => state.moderation);
+  const { flagged, error } = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
   // const { points } = useAppSelector((state) => state.points);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     setOpened(true);
-  //   }
-  // }, [error, dispatch]);
+  useEffect(() => {
+    if (error) {
+      setOpened(true);
+    }
+  }, [error, dispatch]);
 
   const form = useForm({
     initialValues: initialState,
@@ -126,14 +129,19 @@ export function RouteForm(): React.JSX.Element {
   ): Promise<void> => {
     e?.preventDefault();
     try {
-      // dispatch(setError.setError());
+      dispatch(setError.setError());
       dispatch(
         checkModerationThunk({ title: values.title, description: values.description }),
-      );
+      ).unwrap();
 
-      // if (!success) {
-      //   return;
-      // }
+      console.log(flagged);
+      console.log(error);
+
+      if (flagged) {
+        console.log(error);
+
+        return;
+      }
 
       // const formData = new FormData();
       // formData.append('title', values.title);
@@ -243,9 +251,17 @@ export function RouteForm(): React.JSX.Element {
             onClose={() => {
               setOpened(false);
             }}
-            title="Проверка введеного текста"
           >
-            {/* {error && <Text c="red">{error}</Text>} */}
+            <>
+              <Flex direction={'column'} gap={'sm'} align={'center'}>
+                <Title order={3}>Текст не прошел проверку</Title>
+                {error && (
+                  <Text fz={18} m={20} c="red">
+                    {error}
+                  </Text>
+                )}
+              </Flex>
+            </>
           </Modal>
         </Group>
       )}

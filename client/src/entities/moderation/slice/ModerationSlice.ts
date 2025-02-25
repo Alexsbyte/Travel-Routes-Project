@@ -4,13 +4,13 @@ import { checkModerationThunk } from '../api/ModerationThunk';
 interface ModerationState {
   isLoading: boolean;
   error: string | null;
-  success: boolean;
+  flagged: boolean;
 }
 
 const initialState: ModerationState = {
   isLoading: false,
   error: null,
-  success: false,
+  flagged: false,
 };
 
 const moderationSlice = createSlice({
@@ -29,13 +29,12 @@ const moderationSlice = createSlice({
       .addCase(checkModerationThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         console.log(action);
-        state.success = action.payload.data;
+        state.flagged = action.payload.data;
       })
       .addCase(checkModerationThunk.rejected, (state, action) => {
         state.isLoading = false;
-
         state.error = action.payload!.error;
-        state.success = false;
+        state.flagged = true;
       });
   },
 });
