@@ -35,7 +35,7 @@ export function RoutesPage(): React.JSX.Element {
       
       <div style={{ display: 'flex' }}>
         <div style={{ width: '70%' }}>
-            <p style={{ width: '100%' , height: '700px' , padding: '40px'}} ><YandexMap/></p>
+            <p style={{ width: '100%' , height: '700px' , padding: '40px'}} ><YandexMap isEditable={false}/></p>
         </div>
         <div style={{ width: '30%' }}>
         <Filter onFilterChange={handleFilterChange} />

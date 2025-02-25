@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllRoutesThunk } from '@/entities/route';
 import { OneRouteItem } from '@/widgets/OneRouteItem';
 import { usePageTitle } from '@/shared/hooks/pageTitle';
+import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
@@ -35,7 +36,7 @@ export function OneRoutePage(): React.JSX.Element {
       {/* Карта и галерея */}
       <div className={styles.mapGalleryContainer}>
         <div className={styles.map}>
-          <h3>Здесь будет карта</h3>
+          <YandexMap isEditable={false}/>
         </div>
 
         <button

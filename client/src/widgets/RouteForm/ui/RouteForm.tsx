@@ -162,7 +162,7 @@ export function RouteForm(): React.JSX.Element {
           <h1>Создай свой маршрут</h1>
 
           <Box my="xl" w={900} h={500}>
-            <YandexMap />
+            <YandexMap  isEditable={true}/>
           </Box>
 
           <div className={style.formContainer}>
