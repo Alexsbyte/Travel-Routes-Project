@@ -83,7 +83,7 @@ export function RegistrationForm({
           className={styles.input}
           placeholder="Повторите пароль"
         />
-           <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
         </span>
       </div>

@@ -65,12 +65,9 @@ export function OneRoutePage(): React.JSX.Element {
         </div>
 
         <OneRouteItem route={route} />
+      </div>
 
-        {/* Блок с комментариями */}
-      </div>
-      <div>
-        <CommentSection routeId={Number(id)} />
-      </div>
+      <CommentSection routeId={Number(id)} />
     </>
   );
 }

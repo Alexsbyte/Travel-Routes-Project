@@ -1,9 +1,22 @@
 import styles from './CommentSection.module.css';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import { createCommentThunk, deleteCommentThunk, getOneRouteCommentsThunk } from '@/entities/comment/api/CommentThunk';
+import {
+  createCommentThunk,
+  deleteCommentThunk,
+  getOneRouteCommentsThunk,
+} from '@/entities/comment/api/CommentThunk';
 import { CommentType } from '@/entities/comment/model/CommentTypes';
-import { Textarea, Button, Card, Title, Divider, Modal, Text, Group } from '@mantine/core';
+import {
+  Textarea,
+  Button,
+  Card,
+  Title,
+  Divider,
+  Modal,
+  Text,
+  Group,
+} from '@mantine/core';
 import { message as antMessage } from 'antd';
 
 interface CommentSectionProps {
@@ -83,14 +96,18 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
           minRows={3}
           placeholder="Напишите ваш отзыв..."
         />
-        <Group justify="flex-end">
-          <Button onClick={handleAddComment} disabled={loading} className={styles.commentButton}>
+        <div className={styles.commentButtonWrapper}>
+          <Button
+            onClick={handleAddComment}
+            disabled={loading}
+            className={styles.commentButton}
+          >
             Добавить
           </Button>
-        </Group>
+        </div>
       </div>
 
-      {error && <Text color="red">{error}</Text>}
+      {error && <Text>{error}</Text>}
       {loading ? (
         <Text>Загрузка...</Text>
       ) : (
@@ -98,8 +115,13 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
           {comments?.map((comment: CommentType) => (
             <Card key={comment.id} className={styles.commentItem}>
               <div className={styles.commentHeader}>
+                {user?.avatar && (
+                  <img src={user.avatar} alt="User Avatar" className={styles.avatar} />
+                )}
                 <Text className={styles.commentUsername}>{user!.username}</Text>
-                <p className={styles.date}>{new Date(comment.createdAt).toLocaleDateString()}</p>
+                <p className={styles.date}>
+                  {new Date(comment.createdAt).toLocaleDateString()}
+                </p>
                 {user?.id === comment.user_id && (
                   <Button
                     onClick={() => confirmDelete(comment.id)}
@@ -117,12 +139,14 @@ export function CommentSection({ routeId }: CommentSectionProps): React.JSX.Elem
         </div>
       )}
 
-      <Modal opened={modalOpen} onClose={() => setModalOpen(false)} title="Удаление комментария">
+      <Modal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Удаление комментария"
+      >
         <Text>Вы уверены, что хотите удалить этот комментарий?</Text>
         <Group justify="flex-end" className={styles.modalButtons}>
-          <Button onClick={handleDeleteComment} color="red">
-            Удалить
-          </Button>
+          <Button onClick={handleDeleteComment}>Удалить</Button>
           <Button onClick={() => setModalOpen(false)} variant="outline">
             Отмена
           </Button>
