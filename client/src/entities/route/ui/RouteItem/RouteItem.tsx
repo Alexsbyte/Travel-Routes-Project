@@ -2,9 +2,9 @@ import React from 'react';
 import { Carousel } from 'antd';
 import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
-import { Route } from '../../model';
 import { Link } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { Route } from '../../model/RouteTypes';
 
 type Props = {
   route: Route;
@@ -12,9 +12,9 @@ type Props = {
 
 export function RouteItem({ route }: Props): React.JSX.Element {
 
-  {* const slides = images.map((url) => (
-    <div key={url}>
-      <Image preview={false} src={url} alt={`Route image ${url}`} /> *}
+  //  const slides = images.map((url) => (
+  //   <div key={url}>
+  //     <Image preview={false} src={url} alt={`Route image ${url}`} /> 
 
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
