@@ -9,7 +9,7 @@ import {
   Text,
   Textarea,
 } from '@mantine/core';
-
+import { message as antMessage } from 'antd';
 import style from './RouteForm.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
@@ -21,6 +21,7 @@ import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
 import { setError } from '@/entities/moderation/slice/ModerationSlice';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { useMediaQuery } from '@mantine/hooks';
 
 type InputsType = {
   title: string;
@@ -143,7 +144,7 @@ export function RouteForm(): React.JSX.Element {
       dispatch(createRouteThunk(formData));
       dispatch(clearPoints());
       form.reset();
-
+      antMessage.success('Успешно создано!');
       navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       if (error instanceof Error) {
@@ -166,10 +167,13 @@ export function RouteForm(): React.JSX.Element {
             </Box>
 
             <div className={style.formContainer}>
+              <p>Добавь свой любимый маршрут</p>
               <Space h="md" />
               <Input.Wrapper
                 label="Название маршрута"
-                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
               >
                 <Input
                   {...form.getInputProps('title')}
@@ -184,7 +188,9 @@ export function RouteForm(): React.JSX.Element {
               <Space h="md" />
               <Input.Wrapper
                 label="Описание маршрута"
-                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
               >
                 <Textarea
                   {...form.getInputProps('description')}
@@ -194,7 +200,9 @@ export function RouteForm(): React.JSX.Element {
               <Space h="md" />
               <Input.Wrapper
                 label="Тип маршрута"
-                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
               >
                 <Select
                   {...form.getInputProps('category')}
@@ -205,29 +213,32 @@ export function RouteForm(): React.JSX.Element {
               <Space h="md" />
               <div className={style.buttonsToAdd}>
                 <Input.Wrapper
-                  label="Выберите файлы(до 6 файлов)"
-                  labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+                  label="Добавьте до 6 файлов"
+                  labelProps={{
+                    style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                  }}
                 >
                   <FileInput
                     {...form.getInputProps('files')}
-                    w={170}
+                    w={160}
                     h={50}
-                    m={10}
                     styles={{
                       input: {
-                        paddingTop: '10px',
-                        paddingBottom: '10px',
+                        paddingTop: '12px',
+                        paddingBottom: '12px',
                       },
                     }}
                     multiple
                     accept="image/*"
-                    placeholder="Выберите файлы"
+                    placeholder="Добавьте файлы"
                   />
                 </Input.Wrapper>
+                <Space h="md" />
+
                 <Button
-                  w={170}
+                  w={160}
                   h={50}
-                  m={10}
+                  mt={25}
                   onClick={(event) => {
                     event.preventDefault();
                     form.onSubmit(createRoute)();
@@ -235,10 +246,12 @@ export function RouteForm(): React.JSX.Element {
                 >
                   Создать
                 </Button>
+                <Space h="md" />
+
                 <Button
-                  w={170}
+                  w={160}
                   h={50}
-                  m={10}
+                  mt={25}
                   onClick={(event) => {
                     event.preventDefault();
                     navigate('/');

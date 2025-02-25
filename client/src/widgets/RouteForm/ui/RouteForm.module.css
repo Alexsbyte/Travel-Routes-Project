@@ -37,9 +37,14 @@
   box-shadow: 0 4px 15px rgba(139, 85, 14, 0.308);
 }
 
+.formContainer p {
+  margin-top: 70px;
+}
+
 .buttonsToAdd {
   display: flex;
-  flex-flow: column;
+  flex-flow: row nowrap;
+  justify-content: space-around;
 }
 
 .routeForm button {
@@ -70,6 +75,12 @@
   border-radius: 8px;
 }
 
+@media (max-width: 1400px) {
+  .buttonsToAdd {
+    flex-flow: column;
+  }
+}
+
 @media (max-width: 1024px) {
   .routeForm h1 {
     font-family: 'Eagle Lake', serif;
@@ -92,5 +103,10 @@
   .formContainer {
     width: 100%;
     max-width: none;
+  }
+
+  .buttonsToAdd {
+    flex-flow: row nowrap;
+    justify-content: space-around;
   }
 }
