@@ -55,10 +55,6 @@ export function Header(): React.JSX.Element {
     navigate('/');
   };
 
-  const createRouteHandler = (): void => {
-    navigate('/createRoute');
-  };
-
   const handleSuccess = () => {
     setIsModalOpen(false);
     setTimeout(() => {
@@ -90,14 +86,15 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button h={55} onClick={createRouteHandler}>
-                  Создать маршрут
-                </Button>
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>
                   Главная
                 </Button>
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
                   Маршруты
+                </Button>
+
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}>
+                  Создать маршрут
                 </Button>
                 <Menu withArrow width={180}>
                   <Menu.Target>
@@ -128,7 +125,13 @@ export function Header(): React.JSX.Element {
               </Group>
             )}
           </Group>
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
+          <Burger
+            // bg={rgba('gray', 0.07)}
+            pl={5}
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="md"
+          />
         </Group>
       </header>
 
@@ -138,14 +141,16 @@ export function Header(): React.JSX.Element {
         onClose={closeDrawer}
         size="100%"
         title="Навигация"
+        padding="sm"
+        hiddenFrom="md"
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px)" mx="sm">
           <Flex
             direction={isMobile ? 'column' : 'row'}
-            gap="md"
+            gap="sm"
             justify={isMobile ? 'center' : 'space-around'}
-            align="center"
+            // align="center"
           >
             <Button
               className={classes.buttons}
@@ -155,9 +160,6 @@ export function Header(): React.JSX.Element {
               }}
             >
               Главная
-            </Button>
-            <Button className={classes.buttons} onClick={createRouteHandler}>
-              Создать маршрут
             </Button>
             <Button
               className={classes.buttons}
@@ -179,6 +181,16 @@ export function Header(): React.JSX.Element {
                 >
                   Профиль
                 </Button> */}
+
+                <Button
+                  className={classes.buttons}
+                  onClick={() => {
+                    navigate(CLIENT_ROUTES.ROUTE_FORM);
+                    closeDrawer();
+                  }}
+                >
+                  Создать маршрут
+                </Button>
                 <Button
                   className={classes.buttons}
                   onClick={() => {
@@ -190,8 +202,9 @@ export function Header(): React.JSX.Element {
                 </Button>
               </>
             ) : (
-              <Group>
+              <>
                 <Button
+                  className={classes.buttons}
                   onClick={() => {
                     openModal('signin');
                     closeDrawer();
@@ -200,6 +213,7 @@ export function Header(): React.JSX.Element {
                   Войти
                 </Button>
                 <Button
+                  className={classes.buttons}
                   onClick={() => {
                     closeDrawer();
                     openModal('signup');
@@ -207,7 +221,7 @@ export function Header(): React.JSX.Element {
                 >
                   Регистрация
                 </Button>
-              </Group>
+              </>
             )}
           </Flex>
         </ScrollArea>
