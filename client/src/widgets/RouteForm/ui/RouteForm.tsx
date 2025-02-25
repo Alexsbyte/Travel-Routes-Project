@@ -167,7 +167,10 @@ export function RouteForm(): React.JSX.Element {
 
             <div className={style.formContainer}>
               <Space h="md" />
-              <Input.Wrapper label="Название маршрута">
+              <Input.Wrapper
+                label="Название маршрута"
+                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+              >
                 <Input
                   {...form.getInputProps('title')}
                   placeholder="Название маршрута (не более 30 смволов)"
@@ -179,14 +182,20 @@ export function RouteForm(): React.JSX.Element {
                 )}
               </Input.Wrapper>
               <Space h="md" />
-              <Input.Wrapper label="Описание маршрута">
+              <Input.Wrapper
+                label="Описание маршрута"
+                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+              >
                 <Textarea
                   {...form.getInputProps('description')}
                   placeholder="Описание маршрута (не более 500символов)"
                 />
               </Input.Wrapper>
               <Space h="md" />
-              <Input.Wrapper label="Тип маршрута">
+              <Input.Wrapper
+                label="Тип маршрута"
+                labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+              >
                 <Select
                   {...form.getInputProps('category')}
                   placeholder="Тип маршрута"
@@ -195,17 +204,28 @@ export function RouteForm(): React.JSX.Element {
               </Input.Wrapper>
               <Space h="md" />
               <div className={style.buttonsToAdd}>
-                <Input.Wrapper label="Выберите файлы(до 6 файлов)">
+                <Input.Wrapper
+                  label="Выберите файлы(до 6 файлов)"
+                  labelProps={{ style: { textAlign: 'left', width: '100%' } }}
+                >
                   <FileInput
                     {...form.getInputProps('files')}
-                    w={200}
+                    w={170}
+                    h={50}
+                    m={10}
+                    styles={{
+                      input: {
+                        paddingTop: '10px',
+                        paddingBottom: '10px',
+                      },
+                    }}
                     multiple
                     accept="image/*"
-                    placeholder="Выберите файл(до 6)"
+                    placeholder="Выберите файлы"
                   />
                 </Input.Wrapper>
                 <Button
-                  w={160}
+                  w={170}
                   h={50}
                   m={10}
                   onClick={(event) => {
@@ -216,7 +236,7 @@ export function RouteForm(): React.JSX.Element {
                   Создать
                 </Button>
                 <Button
-                  w={160}
+                  w={170}
                   h={50}
                   m={10}
                   onClick={(event) => {
