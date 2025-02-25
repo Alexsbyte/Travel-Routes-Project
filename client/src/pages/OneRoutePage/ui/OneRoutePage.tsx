@@ -10,6 +10,7 @@ import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 import { getOneRouteThunk } from '@/entities/route/api/RouteThunk';
 import { setPoints } from '@/entities/point';
 import { Loader } from '@/shared/ui/Loader';
+import { CommentSection } from '@/widgets/CommentSection/ui/CommentSection';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
@@ -17,8 +18,8 @@ export function OneRoutePage(): React.JSX.Element {
 
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
-  usePageTitle()
 
+  usePageTitle()
 
   useEffect(() => {
     if (id) {
@@ -75,14 +76,28 @@ export function OneRoutePage(): React.JSX.Element {
           {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
         </button>
       </div>
+          {/* Галерея накладывается на карту */}
+          <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
+            <Carousel
+              draggable={true}
+              autoplay={false}
+              dots={true}
+              arrows={false}
+              className={styles.carousel}
+            >
+              {images.map((url, index) => (
+                <div key={index}>
+                  <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
+                </div>
+              ))}
+            </Carousel>
+          </div>
+        </div>
 
-      <OneRouteItem route={route} />
-
-      {/* Блок с комментариями */}
-      <div className={styles.commentsSection}>
-        <h3>Комментарии</h3>
-        {/* Здесь будут комментарии */}
+        <OneRouteItem route={route} />
       </div>
-    </div>
+
+      <CommentSection />
+    </>
   );
 }

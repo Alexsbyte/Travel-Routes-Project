@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FileInput,
-  Group,
   Input,
   Modal,
   Select,
@@ -10,7 +9,7 @@ import {
   Text,
   Textarea,
 } from '@mantine/core';
-
+import { message as antMessage } from 'antd';
 import style from './RouteForm.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
@@ -144,7 +143,7 @@ export function RouteForm(): React.JSX.Element {
       dispatch(createRouteThunk(formData));
       dispatch(clearPoints());
       form.reset();
-
+      antMessage.success('Успешно создано!');
       navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       if (error instanceof Error) {
@@ -158,66 +157,109 @@ export function RouteForm(): React.JSX.Element {
   return (
     <>
       {user && (
-        <Group justify="center" mt="xl" className={style.routeForm}>
+        <div className={style.routeForm}>
           <h1>Создай свой маршрут</h1>
 
-          <Box my="xl" w={900} h={500}>
-            <YandexMap  isEditable={true}/>
-          </Box>
+          <div className={style.container}>
+            <Box className={style.mapContainer}>
+              <YandexMap />
+            </Box>
 
-          <div className={style.formContainer}>
-            <Space h="md" />
-            <Input
-              {...form.getInputProps('title')}
-              w={800}
-              placeholder="Название маршрута (не более 30 смволов)"
-            />
-            {form.errors.title && (
-              <div style={{ color: 'red', fontSize: '12px' }}>{form.errors.title}</div>
-            )}
-            <Space h="md" />
-            <Textarea
-              {...form.getInputProps('description')}
-              placeholder="Описание маршрута (не более 500символов)"
-            />
-            <Space h="md" />
-            <Select
-              {...form.getInputProps('category')}
-              placeholder="Тип маршрута"
-              data={['', 'автомобильный', 'пеший', 'велосипедный']}
-            />
-            <Space h="md" />
-            <FileInput
-              {...form.getInputProps('files')}
-              w={200}
-              multiple
-              accept="image/*"
-              placeholder="Выберите файл(до 6)"
-            />
-            <Space h="md" />
-            <Button
-              w={160}
-              h={50}
-              m={10}
-              onClick={(event) => {
-                event.preventDefault();
-                form.onSubmit(createRoute)();
-              }}
-            >
-              Создать
-            </Button>
-            <Button
-              className="cancel"
-              w={160}
-              h={50}
-              m={10}
-              onClick={(event) => {
-                event.preventDefault();
-                navigate('/');
-              }}
-            >
-              Отмена
-            </Button>
+            <div className={style.formContainer}>
+              <p>Добавь свой любимый маршрут</p>
+              <Space h="md" />
+              <Input.Wrapper
+                label="Название маршрута"
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
+              >
+                <Input
+                  {...form.getInputProps('title')}
+                  placeholder="Название маршрута (не более 30 смволов)"
+                />
+                {form.errors.title && (
+                  <div style={{ color: 'red', fontSize: '12px' }}>
+                    {form.errors.title}
+                  </div>
+                )}
+              </Input.Wrapper>
+              <Space h="md" />
+              <Input.Wrapper
+                label="Описание маршрута"
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
+              >
+                <Textarea
+                  {...form.getInputProps('description')}
+                  placeholder="Описание маршрута (не более 500символов)"
+                />
+              </Input.Wrapper>
+              <Space h="md" />
+              <Input.Wrapper
+                label="Тип маршрута"
+                labelProps={{
+                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                }}
+              >
+                <Select
+                  {...form.getInputProps('category')}
+                  placeholder="Тип маршрута"
+                  data={['', 'автомобильный', 'пеший', 'велосипедный']}
+                />
+              </Input.Wrapper>
+              <Space h="md" />
+              <div className={style.buttonsToAdd}>
+                <Input.Wrapper
+                  label="Добавьте до 6 файлов"
+                  labelProps={{
+                    style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                  }}
+                >
+                  <FileInput
+                    {...form.getInputProps('files')}
+                    w={160}
+                    h={50}
+                    styles={{
+                      input: {
+                        paddingTop: '12px',
+                        paddingBottom: '12px',
+                      },
+                    }}
+                    multiple
+                    accept="image/*"
+                    placeholder="Добавьте файлы"
+                  />
+                </Input.Wrapper>
+                <Space h="md" />
+
+                <Button
+                  w={160}
+                  h={50}
+                  mt={25}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    form.onSubmit(createRoute)();
+                  }}
+                >
+                  Создать
+                </Button>
+                <Space h="md" />
+
+                <Button
+                  w={160}
+                  h={50}
+                  mt={25}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigate('/');
+                  }}
+                >
+                  Отмена
+                </Button>
+              </div>
+            </div>
           </div>
           <Modal
             opened={opened}
@@ -228,7 +270,7 @@ export function RouteForm(): React.JSX.Element {
           >
             {error && <Text c="red">{error}</Text>}
           </Modal>
-        </Group>
+        </div>
       )}
     </>
   );

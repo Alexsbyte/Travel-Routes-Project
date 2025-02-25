@@ -7,13 +7,10 @@ import { useAppDispatch } from "@/shared/hooks/reduxHooks";
 import { clearPoints } from '@/entities/point';
 
 export default function Layout(): JSX.Element {
-
   const location = useLocation();
-
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(refreshTokensThunk());
-    
   }, [dispatch]);
 
   

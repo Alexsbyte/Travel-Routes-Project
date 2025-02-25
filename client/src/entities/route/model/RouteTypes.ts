@@ -8,11 +8,7 @@ export type RawRouteData = {
 
 type Photo = { url: string };
 
-// type Point = {
-//   description: string;
-//   latitude: number;
-//   longitude: number;
-// };
+
 
 export type Route = {
   id: number;
