@@ -6,6 +6,7 @@ const upload = require('../../config/multerConfig');
 router
 
   .get('/', RouteController.getAll)
+  .get('/:id', RouteController.getById)
   .post('/', verifyAccessToken, upload.array('files', 6), RouteController.create)
   .put('/:id', verifyAccessToken, RouteController.update)
   .delete('/:id', verifyAccessToken, RouteController.delete);

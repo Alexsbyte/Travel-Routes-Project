@@ -7,6 +7,8 @@ export enum AUTH_API_ROUTES {
 
 export enum ROUTE_API_ROUTES {
   GET_ALL = 'api/routes',
+  GET_ONE_ROUTE = 'api/routes/',
+
 }
 
 export enum MODERATIONS_API_ROUTES {
