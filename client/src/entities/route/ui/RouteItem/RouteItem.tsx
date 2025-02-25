@@ -12,10 +12,6 @@ type Props = {
 
 export function RouteItem({ route }: Props): React.JSX.Element {
 
-  //  const slides = images.map((url) => (
-  //   <div key={url}>
-  //     <Image preview={false} src={url} alt={`Route image ${url}`} /> 
-
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -36,6 +32,7 @@ export function RouteItem({ route }: Props): React.JSX.Element {
   ));
 
   return (
+    <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}>
     <div className={styles.container}>
       {/* Поделился */}
       <div className={styles.sharedBy}>
@@ -69,12 +66,11 @@ export function RouteItem({ route }: Props): React.JSX.Element {
       {/* Описание */}
       <div className={styles.separator}></div>
       <div className={styles.description}>
-        <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}>
           <h3 className={styles.title}>{route.title}</h3>
-        </Link>
         <div className={styles.separator}></div>
         <p className={styles.text}>{route.description}</p>
       </div>
     </div>
+        </Link>
   );
 }

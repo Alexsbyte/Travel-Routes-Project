@@ -37,7 +37,7 @@ export const routeSlice = createSlice({
         state.routes = action.payload.data;
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(getAllRoutesThunk.rejected, (state, action) => {
         state.loading = false;
