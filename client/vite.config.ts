@@ -17,4 +17,19 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['@pbe/react-yandex-maps'],
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'react';
+            if (id.includes('mantine')) return 'mantine';
+            if (id.includes('ant')) return 'ant';
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
 });

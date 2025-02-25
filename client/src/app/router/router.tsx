@@ -2,10 +2,14 @@ import { createBrowserRouter } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { VerifyEmail } from '@/features/auth/VerifyEmail';
-import { WelcomePage, RouteFormPage, HomePage } from '@/pages';
-
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
-import { OneRoutePage } from '@/pages/OneRoutePage/ui/OneRoutePage';
+import { Suspense, lazy } from 'react';
+
+// Ленивый импорт страниц
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
+const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
+const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +18,19 @@ export const router = createBrowserRouter([
     children: [
       {
         path: CLIENT_ROUTES.HOME,
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<div>Загрузка...</div>}>
+            <HomePage />
+          </Suspense>
+        ),
       },
       {
         path: CLIENT_ROUTES.WELCOME,
-        element: <WelcomePage />,
+        element: (
+          <Suspense fallback={<div>Загрузка...</div>}>
+            <WelcomePage />
+          </Suspense>
+        ),
       },
       {
         path: CLIENT_ROUTES.VERIFY_EMAIL,
@@ -28,13 +40,19 @@ export const router = createBrowserRouter([
         path: CLIENT_ROUTES.ROUTE_FORM,
         element: (
           <AuthGuard>
-            <RouteFormPage />
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <RouteFormPage />
+            </Suspense>
           </AuthGuard>
         ),
       },
       {
         path: `${CLIENT_ROUTES.ROUTE_PAGE}/:id`,
-        element: <OneRoutePage />,
+        element: (
+          <Suspense fallback={<div>Загрузка...</div>}>
+            <OneRoutePage />
+          </Suspense>
+        ),
       },
     ],
   },
