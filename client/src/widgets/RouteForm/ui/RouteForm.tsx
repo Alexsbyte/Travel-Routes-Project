@@ -7,28 +7,28 @@ import {
   Modal,
   Select,
   Space,
-  Text,
+  // Text,
   Textarea,
 } from '@mantine/core';
 
 import style from './RouteForm.module.css';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import { createRouteThunk } from '@/entities/route';
+// import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
-import { clearPoints, Point } from '@/entities/point';
+// import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
-import { setError } from '@/entities/moderation/slice/ModerationSlice';
-import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+// import { setError } from '@/entities/moderation/slice/ModerationSlice';
+// import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type InputsType = {
   title: string;
   description: string;
   category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
   files: File[];
-  points: Point[];
+  // points: Point[];
 };
 
 const initialState: InputsType = {
@@ -36,22 +36,22 @@ const initialState: InputsType = {
   description: '',
   category: '',
   files: [],
-  points: [],
+  // points: [],
 };
 
 export function RouteForm(): React.JSX.Element {
   const [opened, setOpened] = useState(false);
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const { success, error } = useAppSelector((state) => state.moderation);
+  // const { success, error } = useAppSelector((state) => state.moderation);
   const navigate = useNavigate();
-  const { points } = useAppSelector((state) => state.points);
+  // const { points } = useAppSelector((state) => state.points);
 
-  useEffect(() => {
-    if (error) {
-      setOpened(true);
-    }
-  }, [error, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     setOpened(true);
+  //   }
+  // }, [error, dispatch]);
 
   const form = useForm({
     initialValues: initialState,
@@ -123,29 +123,29 @@ export function RouteForm(): React.JSX.Element {
   ): Promise<void> => {
     e?.preventDefault();
     try {
-      dispatch(setError.setError());
+      // dispatch(setError.setError());
       dispatch(
         checkModerationThunk({ title: values.title, description: values.description }),
       );
 
-      if (!success) {
-        return;
-      }
+      // if (!success) {
+      //   return;
+      // }
 
-      const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('description', values.description);
-      formData.append('category', values.category);
-      formData.append('points', JSON.stringify(points));
-      values.files.forEach((file) => {
-        formData.append('files', file);
-      });
+      // const formData = new FormData();
+      // formData.append('title', values.title);
+      // formData.append('description', values.description);
+      // formData.append('category', values.category);
+      // formData.append('points', JSON.stringify(points));
+      // values.files.forEach((file) => {
+      //   formData.append('files', file);
+      // });
 
-      dispatch(createRouteThunk(formData));
-      dispatch(clearPoints());
-      form.reset();
+      // dispatch(createRouteThunk(formData));
+      // dispatch(clearPoints());
+      // form.reset();
 
-      navigate(CLIENT_ROUTES.HOME);
+      // navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -226,7 +226,7 @@ export function RouteForm(): React.JSX.Element {
             }}
             title="Проверка введеного текста"
           >
-            {error && <Text c="red">{error}</Text>}
+            {/* {error && <Text c="red">{error}</Text>} */}
           </Modal>
         </Group>
       )}

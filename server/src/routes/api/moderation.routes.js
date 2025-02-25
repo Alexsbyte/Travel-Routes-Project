@@ -3,36 +3,53 @@ const axios = require('axios');
 require('dotenv').config();
 const verifyAccessToken = require('../../middleware/verifyAccessToken');
 const formatResponse = require('../../utils/formatResponse');
+const { HttpsProxyAgent } = require('https-proxy-agent');
 
-const HF_API_KEY = process.env.HUGGINGFACE_API_KEY;
+const proxy = process.env.PROXY_URL;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 async function checkProfanity(text) {
   try {
+    const agent = new HttpsProxyAgent(proxy);
+
     const response = await axios.post(
-      'https://api-inference.huggingface.co/models/joeddav/xlm-roberta-large-xnli',
+      // 'https://api.openai.com/v1/moderations',
+      'https://api.openai.com/v1/completions',
+      // {
+      //   input: text,
+      // },
       {
-        inputs: text,
-        parameters: {
-          candidate_labels: ['profanity', 'not profanity'],
-        },
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'user',
+            content: 'красивый текст о путешествии',
+          },
+        ],
+        max_tokens: 20,
+        temperature: 0.7,
       },
       {
         headers: {
-          Authorization: `Bearer ${HF_API_KEY}`,
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
+        httpAgent: agent,
+        httpsAgent: agent,
       },
     );
 
-    const result = response.data;
+    console.log(response);
 
-    if (result.labels[0] === 'not profanity') {
-      return false;
-    }
-    const profanityScore = result.scores[0];
-    return profanityScore > 0.66;
+    // const result = response.data;
+
+    // if (result.labels[0] === 'not profanity') {
+    //   return false;
+    // }
+    // const profanityScore = result.scores[0];
+    // return profanityScore > 0.66;
   } catch (error) {
-    console.error('Ошибка Hugging Face:', error?.response?.data || error.message);
+    console.error('Ошибка openAI:', error?.response?.data || error.message);
     return false; // В случае ошибки пропускаем
   }
 }
