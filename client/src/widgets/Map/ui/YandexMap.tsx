@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { YMaps, Map, Placemark, Polyline, SearchControl, GeolocationControl } from "@pbe/react-yandex-maps";
 import { RootState } from "../../../app/store/store";
-import { addPoint, updatePoint, deletePoint } from "../../../entities/point/";
+import { addPoint,  } from "../../../entities/point/"; //deletePoint ,updatePoint
 import { Button, TextInput, Textarea, Modal } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import { IPoint } from "@/entities/point/model";
@@ -23,7 +23,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
   const [editComment, setEditComment] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
-  
+  const mapRef = useRef<any>(null)
   // const {id}= useParams()
   // const location = useLocation()
 
@@ -34,6 +34,19 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
       }, 50);
     }
   }, [isAddModalOpen]);
+
+  useEffect(() => {
+    if (mapRef.current && points.length > 0) {
+      const map = mapRef.current;
+  
+      if (points.length === 1) {
+        map.setCenter([points[0].latitude, points[0].longitude], 12);
+      } else {
+        const bounds = points.map((point) => [point.latitude, point.longitude]);
+        map.setBounds(bounds, { checkZoomRange: true, zoomMargin: 50 });
+      }
+    }
+  }, [points]);
 
   const handleMapClick = (e: any) => {
     if(!isEditable) return
@@ -65,14 +78,14 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
 
   const handleSaveEdit = () => {
     if (editPoint) {
-      dispatch(updatePoint({ id: editPoint.id, description: editComment }));
+      // dispatch(updatePoint({ id: editPoint.id, description: editComment }));
       setIsEditModalOpen(false);
     }
   };
 
   const handleDeletePoint = () => {
     if (editPoint) {
-      dispatch(deletePoint(editPoint.id));
+      // dispatch(deletePoint(editPoint.id));
       setIsEditModalOpen(false);
     }
   };
@@ -89,6 +102,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
         width="100%"
         height="100%"
         onClick={handleMapClick}
+        instanceRef={mapRef}
       >
         {points.map((point) => (
           <Placemark
@@ -105,6 +119,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
         )}
         <SearchControl options={{ float: "right" }} />
         <GeolocationControl options={{ float: "left" }} />
+        {/* <ZoomControl options={{ float: "right" }} /> */}
       </Map>
 
       {/* Модальное окно для добавления точки */}

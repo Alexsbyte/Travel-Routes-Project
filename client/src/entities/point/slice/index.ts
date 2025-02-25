@@ -29,9 +29,12 @@ export const pointsSlice = createSlice({
     clearPoints: (state) => {
       state.points = [];
     },
+    setPoints: (state, action: PayloadAction<IPoint[]>)=>{
+      state.points = action.payload
+       }
   },
 });
 
-export const { addPoint, updatePoint, deletePoint, clearPoints } = pointsSlice.actions;
+export const { addPoint, updatePoint, deletePoint, clearPoints, setPoints } = pointsSlice.actions;
 
 export const pointsReducer = pointsSlice.reducer;

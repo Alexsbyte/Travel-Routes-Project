@@ -4,26 +4,39 @@ import { Carousel } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import React, { useEffect, useState } from 'react';
-import { getAllRoutesThunk } from '@/entities/route';
 import { OneRouteItem } from '@/widgets/OneRouteItem';
 import { usePageTitle } from '@/shared/hooks/pageTitle';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
+import { getOneRouteThunk } from '@/entities/route/api/RouteThunk';
+import { setPoints } from '@/entities/point';
+import { Loader } from '@/shared/ui/Loader';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
-  const routes = useAppSelector((store) => store.route.routes);
+  const route = useAppSelector((store) => store.route.route);
+  // const loading = useAppSelector((store) => store.route.loading);
+
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
   usePageTitle()
+
+
   useEffect(() => {
-    dispatch(getAllRoutesThunk());
-  }, [dispatch]);
+    if (id) {
+      dispatch(getOneRouteThunk(+id));
+    }
+  }, [dispatch, id]);
 
-  const route = routes.find((route) => route.id.toString() === `${id}`);
+  useEffect(() => {
+    if (route?.points) {
+      dispatch(setPoints(route.points));
+    }
+  }, [dispatch, route?.points]);
 
+  
   if (!route) {
-    return <div>Маршрут не найден</div>;
-  }
+      return <Loader loading={true} />;
+    }
 
   const images = [
     'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png',
