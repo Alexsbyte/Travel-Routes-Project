@@ -162,7 +162,7 @@ export function RouteForm(): React.JSX.Element {
 
           <div className={style.container}>
             <Box className={style.mapContainer}>
-              <YandexMap />
+              <YandexMap isEditable={true}/>
             </Box>
 
             <div className={style.formContainer}>
