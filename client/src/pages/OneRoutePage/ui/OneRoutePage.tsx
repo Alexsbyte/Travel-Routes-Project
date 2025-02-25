@@ -14,7 +14,6 @@ import { Loader } from '@/shared/ui/Loader';
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
   const route = useAppSelector((store) => store.route.route);
-  // const loading = useAppSelector((store) => store.route.loading);
 
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
@@ -48,19 +47,8 @@ export function OneRoutePage(): React.JSX.Element {
     <div className={styles.routePage}>
       {/* Карта и галерея */}
       <div className={styles.mapGalleryContainer}>
-        <div className={styles.map}>
-          <YandexMap isEditable={false}/>
-        </div>
-
-        <button
-          className={styles.toggleGallery}
-          onClick={() => setShowGallery(!showGallery)}
-        >
-          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
-        </button>
-
-        {/* Галерея накладывается на карту */}
-        <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
+        {showGallery ? 
+        (<div className={`${styles.carouselWrapper}`}>
           <Carousel
             draggable={true}
             autoplay={false}
@@ -70,11 +58,22 @@ export function OneRoutePage(): React.JSX.Element {
           >
             {images.map((url, index) => (
               <div key={index}>
-                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
+                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} 
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}/>
               </div>
             ))}
           </Carousel>
-        </div>
+        </div>)
+        :
+        <div className={styles.map}>
+        <YandexMap isEditable={false}/>
+      </div>}
+        <button
+          className={styles.toggleGallery}
+          onClick={() => setShowGallery(!showGallery)}
+        >
+          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
+        </button>
       </div>
 
       <OneRouteItem route={route} />

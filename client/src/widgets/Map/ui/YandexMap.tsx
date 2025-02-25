@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import { YMaps, Map, Placemark, Polyline, SearchControl, GeolocationControl } from "@pbe/react-yandex-maps";
+import { YMaps, Map, Placemark, Polyline, SearchControl, GeolocationControl, ZoomControl } from "@pbe/react-yandex-maps";
 import { RootState } from "../../../app/store/store";
-import { addPoint,  } from "../../../entities/point/"; //deletePoint ,updatePoint
+import { addPoint,  deletePoint ,updatePoint} from "../../../entities/point/"; 
 import { Button, TextInput, Textarea, Modal } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import { IPoint } from "@/entities/point/model";
-// import { notifications } from "@mantine/notifications";
+import { message } from 'antd';
 import style from './YandexMap.module.css'
 // import { useLocation, useParams } from "react-router-dom";
 export function YandexMap({isEditable}:{isEditable:boolean}) {
   const dispatch = useDispatch();
   const points = useSelector((state: RootState) => state.points.points);
+  
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -35,18 +36,6 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
     }
   }, [isAddModalOpen]);
 
-  useEffect(() => {
-    if (mapRef.current && points.length > 0) {
-      const map = mapRef.current;
-  
-      if (points.length === 1) {
-        map.setCenter([points[0].latitude, points[0].longitude], 12);
-      } else {
-        const bounds = points.map((point) => [point.latitude, point.longitude]);
-        map.setBounds(bounds, { checkZoomRange: true, zoomMargin: 50 });
-      }
-    }
-  }, [points]);
 
   const handleMapClick = (e: any) => {
     if(!isEditable) return
@@ -78,23 +67,26 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
 
   const handleSaveEdit = () => {
     if (editPoint) {
-      // dispatch(updatePoint({ id: editPoint.id, description: editComment }));
+      dispatch(updatePoint({ id: editPoint.id, description: editComment }));
       setIsEditModalOpen(false);
     }
   };
 
   const handleDeletePoint = () => {
     if (editPoint) {
-      // dispatch(deletePoint(editPoint.id));
+      dispatch(deletePoint(editPoint.id));
       setIsEditModalOpen(false);
     }
   };
 
   const handleCopyCoordinates = (latitude: number, longitude: number) => {
     navigator.clipboard.writeText(`${latitude}, ${longitude}`);
-    // notifications.show({ title: "Скопировано", message: "Координаты скопированы!" });
+    copyNotification();
   };
 
+  const copyNotification = () => {
+    message.success('Координаты скопированы!', 2); // 2 секунды показа
+  };
   return (
     <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_API }}>
       <Map
@@ -119,7 +111,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
         )}
         <SearchControl options={{ float: "right" }} />
         <GeolocationControl options={{ float: "left" }} />
-        {/* <ZoomControl options={{ float: "right" }} /> */}
+        <ZoomControl options={{ position: { right: 10, top: 50 } }} />
       </Map>
 
       {/* Модальное окно для добавления точки */}

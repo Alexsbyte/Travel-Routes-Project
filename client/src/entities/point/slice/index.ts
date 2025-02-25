@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
 import { IPoint } from '../model';
 
 interface PointsState {
@@ -15,15 +14,15 @@ export const pointsSlice = createSlice({
   initialState,
   reducers: {
     addPoint: (state, action: PayloadAction<Omit<IPoint, 'id'>>) => {
-      state.points.push({ id: nanoid(), ...action.payload });
+      state.points.push({...action.payload, id: state.points.length > 0 ? state.points[state.points.length - 1].id + 1 : 1});
     },
-    updatePoint: (state, action: PayloadAction<{ id: string; description: string }>) => {
+    updatePoint: (state, action: PayloadAction<{ id: number; description: string }>) => {
       const point = state.points.find((p) => p.id === action.payload.id);
       if (point) {
         point.description = action.payload.description;
       }
     },
-    deletePoint: (state, action: PayloadAction<string>) => {
+    deletePoint: (state, action: PayloadAction<number>) => {
       state.points = state.points.filter((p) => p.id !== action.payload);
     },
     clearPoints: (state) => {

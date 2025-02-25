@@ -8,7 +8,7 @@ export type Point = {
   
 // Определяем типы данных
 export interface IPoint {
-  id: string | number;
+  id: number;
   latitude: number;
   longitude: number;
   description: string | null;
