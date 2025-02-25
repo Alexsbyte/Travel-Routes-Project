@@ -1,7 +1,5 @@
 export interface RawCommentData {
   text: string;
-  route_id: number;
-  user_id: number;
 }
 
 

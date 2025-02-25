@@ -14,8 +14,8 @@ export enum MODERATIONS_API_ROUTES {
 }
 
 export enum COMMENT_API_ROUTES {
-  GET_ALL_USER_COMMENTS = 'api/user/comments',
+  GET_ALL_USER_COMMENTS = 'api/comments/user', //все комменты юзера
   ADD_COMMENT = 'api/comments',
   DELETE_COMMENT = 'api/comments/:comment_id',
-  GET_ONE_COMMENT = 'api/routes/:route_id',
+  GET_ONE_ROUTE_COMMENTS = 'api/comments/routes', // все комменты маршрута
 }

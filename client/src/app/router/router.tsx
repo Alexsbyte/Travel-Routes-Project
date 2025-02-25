@@ -2,10 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { VerifyEmail } from '@/features/auth/VerifyEmail';
-import { WelcomePage, RouteFormPage, HomePage, RoutesPage } from '@/pages';
+import { WelcomePage, RouteFormPage, HomePage } from '@/pages';
 
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { OneRoutePage } from '@/pages/OneRoutePage/ui/OneRoutePage';
+import { CommentSection } from '@/widgets/CommentSection';
+
 
 
 
@@ -26,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: CLIENT_ROUTES.VERIFY_EMAIL,
         element: <VerifyEmail />,
+      },
+      {
+        path: CLIENT_ROUTES.COMMENT_FORM,
+        element: <CommentSection  />,
       },
       {
         path: CLIENT_ROUTES.ROUTE_FORM,

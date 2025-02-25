@@ -1,43 +1,97 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CommentType } from '../model/CommentTypes';
+import { message } from 'antd';
+import {
+  createCommentThunk,
+  deleteCommentThunk,
+  getOneRouteCommentsThunk,
+} from '../api/CommentThunk';
 
 interface CommentsState {
-  comments: CommentType[];
+  comment: CommentType[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CommentsState = {
-  comments: [],
+  comment: [],
   loading: false,
   error: null,
 };
 
-
 export const commentSlice = createSlice({
-    name: 'route',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-      builder
-      // GET COMMENTS
-      .addCase(getAllRoutesThunk.pending, (state) => {
+  name: 'comment',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // GET ALL USER COMMENTS
+      // .addCase(getAllCommentsThunk.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(getAllCommentsThunk.fulfilled, (state, action) => {
+      //   state.comments = action.payload.data;
+      //   state.loading = false;
+      //   state.error = null;
+      //   message.success(action.payload.message);
+      // })
+      // .addCase(getAllCommentsThunk.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.comments = [];
+      //   state.error = action.payload!.error;
+      //   message.error(action.payload!.error);
+      // })
+
+      // CREATE COMMENT
+      .addCase(createCommentThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getAllRoutesThunk.fulfilled, (state, action) => {
-        state.routes = action.payload.data;
+      .addCase(createCommentThunk.fulfilled, (state, action) => {
+        state.comments = [...state.comments, action.payload.data];
         state.loading = false;
         state.error = null;
         message.success(action.payload.message);
       })
-      .addCase(getAllRoutesThunk.rejected, (state, action) => {
+      .addCase(createCommentThunk.rejected, (state, action) => {
         state.loading = false;
-        state.routes = [];
         state.error = action.payload!.error;
-        message.error(action.payload!.error);
       })
 
+      // DELETE COMMENT
+      .addCase(deleteCommentThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteCommentThunk.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(
+          (route) => route.id !== action.payload.data.id,
+        );
+        state.loading = false;
+        state.error = null;
+        message.success(action.payload.message);
+      })
+      .addCase(deleteCommentThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload!.error;
+      })
 
-    },
+      // GET COMMENTS FOR SPECIFIC ROUTE
+      .addCase(getOneRouteCommentsThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOneRouteCommentsThunk.fulfilled, (state, action) => {
+        state.comments = action.payload.data;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(getOneRouteCommentsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.error || 'Unknown error';
+      });
+  },
 });
+
+export const commentReducer = commentSlice.reducer;
