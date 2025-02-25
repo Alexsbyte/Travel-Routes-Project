@@ -19,7 +19,10 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { useNavigate } from 'react-router-dom';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 // import { clearPoints, Point } from '@/entities/point';
-import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
+import {
+  checkModerationThunk,
+  generateBeautifullThunk,
+} from '@/entities/moderation/api/ModerationThunk';
 // import { setError } from '@/entities/moderation/slice/ModerationSlice';
 // import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
@@ -155,6 +158,12 @@ export function RouteForm(): React.JSX.Element {
     }
   };
 
+  const makeBeautiful = async () => {
+    dispatch(
+      generateBeautifullThunk({ text: 'Сгенерируй красивый текст про поход в горах' }),
+    );
+  };
+
   return (
     <>
       {user && (
@@ -205,6 +214,16 @@ export function RouteForm(): React.JSX.Element {
               }}
             >
               Создать
+            </Button>
+            <Button
+              h={50}
+              m={10}
+              onClick={(event) => {
+                event.preventDefault();
+                form.onSubmit(makeBeautiful)();
+              }}
+            >
+              Сделать красиво!
             </Button>
             <Button
               className="cancel"

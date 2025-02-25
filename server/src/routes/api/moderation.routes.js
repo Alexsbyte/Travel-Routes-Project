@@ -12,22 +12,41 @@ async function checkProfanity(text) {
   try {
     const agent = new HttpsProxyAgent(proxy);
 
-    const response = await axios.post(
-      // 'https://api.openai.com/v1/moderations',
-      'https://api.openai.com/v1/completions',
-      // {
-      //   input: text,
-      // },
+    console.log(text);
+
+    // const res = await axios.post(
+    //   'https://api.openai.com/v1/moderations',
+    //   // 'https://api.openai.com/v1/completions',
+    //   {
+    //     input: text.toLowerCase().trim(),
+    //   },
+    //   // { model: 'omni-moderation-latest' },
+    //   // {
+    //   //   model: 'gpt-3.5-turbo',
+    //   //   messages: [
+    //   //     {
+    //   //       role: 'user',
+    //   //       content: 'красивый текст о путешествии',
+    //   //     },
+    //   //   ],
+    //   //   max_tokens: 20,
+    //   //   temperature: 0.7,
+    //   // },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${OPENAI_API_KEY}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //     httpAgent: agent,
+    //     httpsAgent: agent,
+    //   },
+    // );
+
+    const { data } = await axios.post(
+      'https://api.openai.com/v1/moderation',
       {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'user',
-            content: 'красивый текст о путешествии',
-          },
-        ],
-        max_tokens: 20,
-        temperature: 0.7,
+        model: 'omni-moderation-latest',
+        input: text.toLowerCase().trim(),
       },
       {
         headers: {
@@ -39,18 +58,14 @@ async function checkProfanity(text) {
       },
     );
 
-    console.log(response);
+    // console.log(res.data.results[0].flagged);
+    // console.log(res.data.results[0].category_applied_input_types);
+    // console.log(res);
 
-    // const result = response.data;
-
-    // if (result.labels[0] === 'not profanity') {
-    //   return false;
-    // }
-    // const profanityScore = result.scores[0];
-    // return profanityScore > 0.66;
+    return { success: data.results[0].flagged, error: null };
   } catch (error) {
     console.error('Ошибка openAI:', error?.response?.data || error.message);
-    return false; // В случае ошибки пропускаем
+    return { success: false, error }; //
   }
 }
 
@@ -60,13 +75,24 @@ router.post('/', verifyAccessToken, async (req, res) => {
 
     const isProfane = await checkProfanity(title + ' ' + description);
 
-    if (isProfane) {
-      return res
-        .status(400)
-        .json(formatResponse(400, null, null, 'Текст содержит нецензурные выражения'));
+    if (isProfane.error) {
+      return res.status(400).json(formatResponse(400, null, null, isProfane.error));
     }
 
-    res.status(200).json(formatResponse(200, 'Текст прошел проверку', !isProfane));
+    if (!isProfane.success) {
+      return res
+        .status(400)
+        .json(
+          formatResponse(
+            400,
+            'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
+            null,
+            'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
+          ),
+        );
+    }
+
+    res.status(200).json(formatResponse(200, 'Текст прошел проверку', isProfane.success));
   } catch (error) {
     console.log(error);
 
