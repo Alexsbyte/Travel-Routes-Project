@@ -10,6 +10,7 @@ import {
   Divider,
   ScrollArea,
   Flex,
+  rgba,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './header.module.css';
@@ -63,7 +64,7 @@ export function Header(): React.JSX.Element {
     setIsModalOpen(false);
   };
   return (
-    <Box pb={30}>
+    <Box bg={rgba('gray', 0.07)} pb={10} mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group onClick={redirectToHomPage}>
@@ -139,6 +140,9 @@ export function Header(): React.JSX.Element {
               }}
             >
               Главная
+            </Button>
+            <Button className={classes.buttons} onClick={createRouteHandler}>
+              Создать маршрут
             </Button>
             <Button
               className={classes.buttons}
