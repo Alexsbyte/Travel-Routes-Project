@@ -7,6 +7,7 @@ export type RawRouteData = {
 type Photo = { url: string };
 
 type Point = {
+  id: Key | null | undefined;
   description: string;
   latitude: number;
   longitude: number;
@@ -17,7 +18,7 @@ export type Route = {
   user_id: number;
   user: { username: string; email: string };
   photos: Photo[];
-  points: Point;
+  points: Point[];
   createdAt: string;
   updatedAt: string;
 } & RawRouteData;
