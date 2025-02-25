@@ -10,6 +10,7 @@ import {
   Divider,
   ScrollArea,
   Flex,
+  rgba,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './header.module.css';
@@ -23,8 +24,9 @@ import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 export function Header(): React.JSX.Element {
   const isMobile = useMediaQuery('(max-width: 48em)');
-  // const isTablet = useMediaQuery('(min-width: 48em) and (max-width: 64em)');
-
+  const isTablet = useMediaQuery('(min-width: 48em) and (max-width: 64em)');
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,44 +56,46 @@ export function Header(): React.JSX.Element {
     navigate('/');
   };
 
-  const createRouteHandler = (): void => {
-    navigate('/createRoute');
-  };
-
   const handleSuccess = () => {
     setIsModalOpen(false);
     setTimeout(() => {
-      setAuthType('signin'); // Переключаем на вход
+      setAuthType('signin');
       setIsModalOpen(true);
-    }, 300); // Даем небольшую задержку, чтобы выглядело плавнее
+    }, 300);
   };
-
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
 
   // При наличии токена автоматически открываем модальное окно авторизации
   React.useEffect(() => {
     if (token) {
-      navigate(CLIENT_ROUTES.HOME); // Перенаправляем на главную страницу
-      openModal('signin'); // Открываем окно авторизации
+      navigate(CLIENT_ROUTES.HOME);
+      openModal('signin');
     }
   }, [token, navigate]);
 
   return (
-    <Box pb={30}>
+    <Box bg={rgba('gray', 0.07)} pb={10} mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <Group onClick={redirectToHomPage}>
-            <Image src={logo} w={70} h="auto" />
-            <h1>Travel Routes</h1>
+          <Group onClick={redirectToHomPage} style={{ cursor: 'pointer' }}>
+            <Image src={logo} w={isMobile ? 40 : isTablet ? 50 : 70} />
+            <h1 style={{ fontSize: isMobile ? 16 : isTablet ? 18 : 24 }}>
+              Travel Routes
+            </h1>
           </Group>
 
           <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button onClick={createRouteHandler}>Создать маршрут</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>Главная</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.HOME)}>Маршруты</Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>
+                  Главная
+                </Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
+                  Маршруты
+                </Button>
+
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}>
+                  Создать маршрут
+                </Button>
                 <Menu withArrow width={180}>
                   <Menu.Target>
                     <Avatar
@@ -112,12 +116,22 @@ export function Header(): React.JSX.Element {
               </Group>
             ) : (
               <Group>
-                <Button onClick={() => openModal('signin')}>Войти</Button>
-                <Button onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button h={55} onClick={() => openModal('signin')}>
+                  Войти
+                </Button>
+                <Button h={55} onClick={() => openModal('signup')}>
+                  Регистрация
+                </Button>
               </Group>
             )}
           </Group>
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="md" />
+          <Burger
+            // bg={rgba('gray', 0.07)}
+            pl={5}
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="md"
+          />
         </Group>
       </header>
 
@@ -127,14 +141,16 @@ export function Header(): React.JSX.Element {
         onClose={closeDrawer}
         size="100%"
         title="Навигация"
+        padding="sm"
+        hiddenFrom="md"
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px)" mx="sm">
           <Flex
             direction={isMobile ? 'column' : 'row'}
-            gap="md"
+            gap="sm"
             justify={isMobile ? 'center' : 'space-around'}
-            align="center"
+            // align="center"
           >
             <Button
               className={classes.buttons}
@@ -165,6 +181,16 @@ export function Header(): React.JSX.Element {
                 >
                   Профиль
                 </Button> */}
+
+                <Button
+                  className={classes.buttons}
+                  onClick={() => {
+                    navigate(CLIENT_ROUTES.ROUTE_FORM);
+                    closeDrawer();
+                  }}
+                >
+                  Создать маршрут
+                </Button>
                 <Button
                   className={classes.buttons}
                   onClick={() => {
@@ -176,8 +202,9 @@ export function Header(): React.JSX.Element {
                 </Button>
               </>
             ) : (
-              <Group>
+              <>
                 <Button
+                  className={classes.buttons}
                   onClick={() => {
                     openModal('signin');
                     closeDrawer();
@@ -186,6 +213,7 @@ export function Header(): React.JSX.Element {
                   Войти
                 </Button>
                 <Button
+                  className={classes.buttons}
                   onClick={() => {
                     closeDrawer();
                     openModal('signup');
@@ -193,7 +221,7 @@ export function Header(): React.JSX.Element {
                 >
                   Регистрация
                 </Button>
-              </Group>
+              </>
             )}
           </Flex>
         </ScrollArea>

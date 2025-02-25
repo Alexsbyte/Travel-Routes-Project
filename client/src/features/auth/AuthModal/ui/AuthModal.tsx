@@ -9,19 +9,23 @@ import { AuthorizationForm } from '../../auth/ui/AuthorizationForm';
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void
-  authType: 'signin' | 'signup'; 
+  onClose: () => void;
+  authType: 'signin' | 'signup';
   onSuccess?: () => void;
 }
 
-export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onSuccess}) => {
+export const AuthModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  authType,
+  onSuccess,
+}) => {
   const dispatch = useAppDispatch();
   const [isSignUp, setIsSignUp] = useState(authType === 'signup'); // Инициализируем на основе authType
 
-   useEffect(() => {
+  useEffect(() => {
     setIsSignUp(authType === 'signup');
   }, [authType]);
-
 
   const handleSignUp = async (data: ISignUpData) => {
     try {
@@ -42,35 +46,46 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onS
     }
   };
 
-
   const handleSignIn = async (data: ISignInData) => {
     try {
       await dispatch(signInThunk(data)).unwrap();
       antMessage.success('Авторизация успешна!');
-      onClose(); 
+      onClose();
     } catch (error) {
       antMessage.error(error instanceof Error ? error.message : 'Ошибка авторизации');
-      onClose(); 
+      onClose();
     }
   };
 
-
   return (
     <Modal
+      display={!isOpen ? 'none' : 'block'}
       opened={isOpen}
       onClose={onClose}
-      title={<div className={styles.modalTitle}>{isSignUp ? 'Регистрация' : 'Вход в систему'}</div>}
       centered
       overlayProps={{ backgroundOpacity: 0.6, blur: 3 }}
       transitionProps={{ transition: 'fade', duration: 200 }}
-       size="lg"
+      size="lg"
       className={styles.modalContainer}
     >
-      {isSignUp ? (
-        <RegistrationForm handleSignUp={handleSignUp} onSwitch={() => setIsSignUp(false)} />
-      ) : (
-        <AuthorizationForm handleSignIn={handleSignIn} onSwitch={() => setIsSignUp(true)} />
-      )}
+      <>
+        <div>
+          <h2 className={styles.modalTitle}>
+            {isSignUp ? 'Регистрация' : 'Вход в систему'}
+          </h2>
+        </div>
+        {isSignUp ? (
+          <RegistrationForm
+            handleSignUp={handleSignUp}
+            onSwitch={() => setIsSignUp(false)}
+          />
+        ) : (
+          <AuthorizationForm
+            handleSignIn={handleSignIn}
+            onSwitch={() => setIsSignUp(true)}
+          />
+        )}
+      </>
     </Modal>
   );
 };

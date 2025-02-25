@@ -14,14 +14,13 @@ interface AuthFormProps {
 }
 export function AuthorizationForm({
   handleSignIn,
-  onSwitch,
-}: AuthFormProps): React.JSX.Element {
+}: // onSwitch,
+AuthFormProps): React.JSX.Element {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const loading = useAppSelector((state) => state.user.loading);
 
   const { register, handleSubmit } = useForm<ISignInData>();
-  
 
   const submitHandlerAuth: SubmitHandler<ISignInData> = async (data) => {
     try {
@@ -47,9 +46,7 @@ export function AuthorizationForm({
           className={styles.input}
           placeholder="Введите почту"
           required
-          
         />
-    
       </div>
       <div className={styles.passwordContainer}>
         <input
@@ -59,16 +56,16 @@ export function AuthorizationForm({
           placeholder="Введите пароль"
           required
         />
-            <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
         </span>
       </div>
       <button className={styles.button} type="submit" disabled={loading}>
         {loading ? 'Вход...' : 'Авторизоваться'}
       </button>
-      <p className={styles.switchText}>
+      {/* <p className={styles.switchText}>
         Нет аккаунта? <span onClick={onSwitch}>Зарегистрироваться </span>
-      </p>
+      </p> */}
     </form>
   );
 }

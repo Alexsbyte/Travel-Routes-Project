@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './RegistrationForm.module.css';
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
@@ -15,8 +15,8 @@ interface RegFormProps {
 
 export function RegistrationForm({
   handleSignUp,
-  onSwitch,
-}: RegFormProps): React.JSX.Element {
+}: // onSwitch,
+RegFormProps): React.JSX.Element {
   const { register, handleSubmit } = useForm<ISignUpData>();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -73,7 +73,7 @@ export function RegistrationForm({
           placeholder="Введите пароль"
         />
         <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
-          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
         </span>
       </div>
       <div className={styles.passwordContainer}>
@@ -84,15 +84,15 @@ export function RegistrationForm({
           placeholder="Повторите пароль"
         />
         <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
-          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
         </span>
       </div>
       <button className={styles.button} type="submit" disabled={loading}>
         {loading ? 'Загрузка...' : 'Зарегистрироваться'}
       </button>
-      <p className={styles.switchText}>
+      {/* <p className={styles.switchText}>
         Уже зарегистрированы? <span onClick={onSwitch}>Войдите </span>
-      </p>
+      </p> */}
     </form>
   );
 }
