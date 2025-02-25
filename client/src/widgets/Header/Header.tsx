@@ -10,6 +10,7 @@ import {
   Divider,
   ScrollArea,
   Flex,
+  rgba,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import classes from './header.module.css';
@@ -78,7 +79,7 @@ export function Header(): React.JSX.Element {
   }, [token, navigate]);
 
   return (
-    <Box pb={30}>
+    <Box bg={rgba('gray', 0.07)} pb={10} mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group onClick={redirectToHomPage}>
@@ -89,9 +90,15 @@ export function Header(): React.JSX.Element {
           <Group visibleFrom="md">
             {user ? (
               <Group>
-                <Button onClick={createRouteHandler}>Создать маршрут</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>Главная</Button>
-                <Button onClick={() => navigate(CLIENT_ROUTES.HOME)}>Маршруты</Button>
+                <Button h={55} onClick={createRouteHandler}>
+                  Создать маршрут
+                </Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.WELCOME)}>
+                  Главная
+                </Button>
+                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
+                  Маршруты
+                </Button>
                 <Menu withArrow width={180}>
                   <Menu.Target>
                     <Avatar
@@ -112,8 +119,12 @@ export function Header(): React.JSX.Element {
               </Group>
             ) : (
               <Group>
-                <Button onClick={() => openModal('signin')}>Войти</Button>
-                <Button onClick={() => openModal('signup')}>Регистрация</Button>
+                <Button h={55} onClick={() => openModal('signin')}>
+                  Войти
+                </Button>
+                <Button h={55} onClick={() => openModal('signup')}>
+                  Регистрация
+                </Button>
               </Group>
             )}
           </Group>
@@ -144,6 +155,9 @@ export function Header(): React.JSX.Element {
               }}
             >
               Главная
+            </Button>
+            <Button className={classes.buttons} onClick={createRouteHandler}>
+              Создать маршрут
             </Button>
             <Button
               className={classes.buttons}

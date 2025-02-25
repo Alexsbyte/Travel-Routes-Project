@@ -57,6 +57,7 @@ export const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose, authType, onS
 
   return (
     <Modal
+      display={!isOpen ? 'none' : 'block'}
       opened={isOpen}
       onClose={onClose}
       title={<div className={styles.modalTitle}>{isSignUp ? 'Регистрация' : 'Вход в систему'}</div>}
