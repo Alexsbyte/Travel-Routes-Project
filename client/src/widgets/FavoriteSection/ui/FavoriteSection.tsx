@@ -35,9 +35,8 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
   };
 
   useEffect(() => {
-    console.log(route_id, currentFavorite)
-    if (route_id && !currentFavorite ) {
-        console.log(route_id, 'renderrenderrendrreerreererererwfafdsvavwrbgwrgj')
+    console.log(route_id, currentFavorite);
+    if (route_id && !currentFavorite) {
       dispatch(getOneRouteFavoriteThunk(route_id));
     }
   }, [dispatch, route_id]);
@@ -63,8 +62,7 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
         }
         onClick={handleAddFavorite}
         className={styles.favoriteButton}
-      >
-      </Button>
+      ></Button>
     </div>
   );
 }

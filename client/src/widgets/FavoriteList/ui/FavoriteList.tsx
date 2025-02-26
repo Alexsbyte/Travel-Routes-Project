@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Spin } from 'antd';
 import React, { useEffect } from 'react';
 
-export function UserProfile(): React.JSX.Element {
+export function FavoriteList(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const { favorites, loading, error } = useAppSelector((state) => state.favorites);
@@ -27,10 +27,12 @@ export function UserProfile(): React.JSX.Element {
 
   return (
     <div>
-      {favorites.length === 0 ? (
+      {!favorites || favorites.length === 0 ? (
         <p>Вы ещё не добавили маршруты в избранное.</p>
       ) : (
-        favorites.map((favorite) => (
+        favorites
+        .filter((favorite) => favorite.route)
+        .map((favorite) => (
           <RouteItem
              key={favorite.route.id}
             route={favorite.route} // Передаём `Route` без изменений

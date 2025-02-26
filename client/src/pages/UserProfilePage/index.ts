@@ -1,2 +1,2 @@
-export { UserProfilePage } from "./ui/UserProfilePage";
+export { FavoritePage } from "./ui/FavoritePage";
 

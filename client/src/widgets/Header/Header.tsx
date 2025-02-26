@@ -99,14 +99,6 @@ export function Header(): React.JSX.Element {
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
                   Маршруты
                 </Button>
-                <Button
-                  h={55}
-                  onClick={() => {
-                    navigate(CLIENT_ROUTES.FAVORITE_FORM);
-                  }}
-                >
-                  Профиль
-                </Button>
 
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}>
                   Создать маршрут
@@ -126,6 +118,7 @@ export function Header(): React.JSX.Element {
                     {/* <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item> */}
                     <Divider />
                     <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
+                    <Menu.Item onClick={() => navigate("/favorites")}>Избранное</Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
               </Group>

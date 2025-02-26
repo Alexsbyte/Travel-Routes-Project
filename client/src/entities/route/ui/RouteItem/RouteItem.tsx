@@ -6,12 +6,14 @@ import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import { Link } from 'react-router-dom';
 import { FavoriteSection } from '@/widgets/FavoriteSection';
+import { useAppSelector } from '@/shared/hooks/reduxHooks';
 
 type Props = {
   route: Route;
 };
 
 export function RouteItem({ route }: Props): React.JSX.Element {
+  const user = useAppSelector((state) => state.user.user);
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -20,16 +22,16 @@ export function RouteItem({ route }: Props): React.JSX.Element {
     }
   };
 
-  const slides = route.photos.map((photo) => (
-    <div key={photo.url} className={styles.slideContainer}>
-      <Image
-        className={styles.fullSizeImage}
-        preview={false}
-        src={getImageUrl(photo.url)}
-        alt={`Route image ${photo.url}`}
-      />
-    </div>
-  ));
+  // const slides = route.photos.map((photo) => (
+  //   <div key={photo.url} className={styles.slideContainer}>
+  //     <Image
+  //       className={styles.fullSizeImage}
+  //       preview={false}
+  //       src={getImageUrl(photo.url)}
+  //       alt={`Route image ${photo.url}`}
+  //     />
+  //   </div>
+  // ));
 
   return (
     <>
@@ -37,7 +39,7 @@ export function RouteItem({ route }: Props): React.JSX.Element {
         <div className={styles.container}>
           {/* Поделился */}
           <div className={styles.sharedBy}>
-            Поделился: <strong>{route.user.username}</strong>
+            {/* Поделился: <strong>{route.user.username}</strong> */}
           </div>
           {/* Теги */}
           <div className={styles.tags}>
@@ -61,7 +63,7 @@ export function RouteItem({ route }: Props): React.JSX.Element {
               easing="ease-in-out"
               className={styles.carousel}
             >
-              {slides}
+              {/* {slides} */}
             </Carousel>
           </div>
           {/* Описание */}
