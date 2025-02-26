@@ -224,14 +224,14 @@ export function RouteForm(): React.JSX.Element {
     <>
       {user && (
         <div className={style.routeForm}>
-          <h1>Создай свой маршрут</h1>
+          <h1>Ваш идеальный маршрут начинается здесь</h1>
           <div className={style.container}>
             <Box className={style.mapContainer}>
               <YandexMap isEditable={true} />
             </Box>
 
             <div className={style.formContainer}>
-              <p>Добавь свой любимый маршрут</p>
+              <p>Конструктор маршрутов</p>
               <Space h="md" />
               <Input.Wrapper
                 label="Название маршрута"
