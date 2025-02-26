@@ -125,3 +125,10 @@
     justify-content: space-around;
   }
 }
+
+@media (max-width: 425px) {
+  .buttonsToAdd {
+    flex-flow: column;
+    align-items: center;
+  }
+}
