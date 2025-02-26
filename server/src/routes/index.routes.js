@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const authRoutes = require('./user.routes');
 const routerRoutes = require('./api/router.routes');
-const moderationRouter = require('./api/moderation.routes');
+const aiRouter = require('./api/ai.routes');
 const commentRoutes = require('./comment.routes');
 const formatResponse = require('../utils/formatResponse');
 
 router.use('/auth', authRoutes);
 router.use('/routes', routerRoutes);
-router.use('/moderations', moderationRouter);
+router.use('/ai', aiRouter);
 router.use('/comments', commentRoutes);
 
 router.use('*', (req, res) => {
