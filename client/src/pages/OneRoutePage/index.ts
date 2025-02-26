@@ -1,1 +1,1 @@
-export { OneRoutePage } from "./ui/OneRoutePage";
+export { OneRoutePage as default } from './ui/OneRoutePage';

@@ -3,4 +3,5 @@ export enum ROUTE_THUNKS_TYPES {
   CREATE = 'route/create',
   DELETE = 'route/delete',
   UPDATE = 'route/update',
+  GET_ONE_ROUTE = 'route/getOneById',
 }

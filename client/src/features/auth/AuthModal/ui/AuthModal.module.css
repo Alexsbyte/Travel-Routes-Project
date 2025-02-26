@@ -4,22 +4,22 @@
   background: #fff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   font-family: 'Poppins', sans-serif;
-  max-width: 800px;  /* Можно настроить ширину модального окна */
-  width: 90%;        /* Ширина на 90% от доступного пространства */
-  height: auto;      /* Автоматическая высота */
+  max-width: 800px; /* Можно настроить ширину модального окна */
+  width: 90%; /* Ширина на 90% от доступного пространства */
+  height: auto; /* Автоматическая высота */
   max-height: 700px; /* Максимальная высота */
-  overflow-y: auto;  /* Если содержимое превышает высоту, добавится прокрутка */
+  overflow-y: auto; /* Если содержимое превышает высоту, добавится прокрутка */
   display: flex;
 }
 
 .modalTitle {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 15px;
   color: #333;
-  width: 100%;         /* Убедимся, что блок использует всю ширину */
-  display: block;      /* Чтобы заголовок занимал полный блок */
+  width: 100%; /* Убедимся, что блок использует всю ширину */
+  display: block; /* Чтобы заголовок занимал полный блок */
 }
 
 .inputField {
@@ -70,4 +70,3 @@
 .closeButton:hover {
   background: #cc0000;
 }
-

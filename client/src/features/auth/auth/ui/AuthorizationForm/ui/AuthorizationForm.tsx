@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import styles from '../AuthorizationForm/AuthorizationForm.module.css';
+import styles from '../../AuthorizationForm/ui/AuthorizationForm.module.css';
 import { useNavigate } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
 import { UserValidator, ISignInData } from '@/entities/user';
 import { message as antMessage } from 'antd';
-import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 interface AuthFormProps {
   handleSignIn: (data: ISignInData) => Promise<void>;
@@ -14,14 +15,13 @@ interface AuthFormProps {
 }
 export function AuthorizationForm({
   handleSignIn,
-  onSwitch,
-}: AuthFormProps): React.JSX.Element {
+}: // onSwitch,
+AuthFormProps): React.JSX.Element {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const loading = useAppSelector((state) => state.user.loading);
 
   const { register, handleSubmit } = useForm<ISignInData>();
-  
 
   const submitHandlerAuth: SubmitHandler<ISignInData> = async (data) => {
     try {
@@ -47,9 +47,7 @@ export function AuthorizationForm({
           className={styles.input}
           placeholder="Введите почту"
           required
-          
         />
-    
       </div>
       <div className={styles.passwordContainer}>
         <input
@@ -59,16 +57,16 @@ export function AuthorizationForm({
           placeholder="Введите пароль"
           required
         />
-            <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
+        <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
           {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
         </span>
       </div>
       <button className={styles.button} type="submit" disabled={loading}>
         {loading ? 'Вход...' : 'Авторизоваться'}
       </button>
-      <p className={styles.switchText}>
+      {/* <p className={styles.switchText}>
         Нет аккаунта? <span onClick={onSwitch}>Зарегистрироваться </span>
-      </p>
+      </p> */}
     </form>
   );
 }

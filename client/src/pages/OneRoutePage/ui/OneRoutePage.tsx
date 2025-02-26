@@ -4,24 +4,36 @@ import { Carousel } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import React, { useEffect, useState } from 'react';
-import { getAllRoutesThunk } from '@/entities/route';
 import { OneRouteItem } from '@/widgets/OneRouteItem';
 import { usePageTitle } from '@/shared/hooks/pageTitle';
+import { CommentSection } from '@/widgets/CommentSection/ui/CommentSection';
+import { YandexMap } from '@/widgets/Map/ui/YandexMap';
+import { getOneRouteThunk } from '@/entities/route/api/RouteThunk';
+import { setPoints } from '@/entities/point';
+import { Loader } from '@/shared/ui/Loader';
 
 export function OneRoutePage(): React.JSX.Element {
   const { id } = useParams();
-  const routes = useAppSelector((store) => store.route.routes);
+  const route = useAppSelector((store) => store.route.route);
   const dispatch = useAppDispatch();
   const [showGallery, setShowGallery] = useState(false);
-  usePageTitle()
-  useEffect(() => {
-    dispatch(getAllRoutesThunk());
-  }, [dispatch]);
+  usePageTitle();
 
-  const route = routes.find((route) => route.id.toString() === `${id}`);
+  useEffect(() => {
+    if (id) {
+      dispatch(getOneRouteThunk(+id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (route?.points) {
+      dispatch(setPoints(route.points));
+    }
+  }, [dispatch, route?.points]);
+
 
   if (!route) {
-    return <div>Маршрут не найден</div>;
+    return <Loader loading={true} />;
   }
 
   const images = [
@@ -31,22 +43,12 @@ export function OneRoutePage(): React.JSX.Element {
   ];
 
   return (
-    <div className={styles.routePage}>
+    <>
+      <div className={styles.routePage}>
       {/* Карта и галерея */}
       <div className={styles.mapGalleryContainer}>
-        <div className={styles.map}>
-          <h3>Здесь будет карта</h3>
-        </div>
-
-        <button
-          className={styles.toggleGallery}
-          onClick={() => setShowGallery(!showGallery)}
-        >
-          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
-        </button>
-
-        {/* Галерея накладывается на карту */}
-        <div className={`${styles.carouselWrapper} ${showGallery ? styles.show : ''}`}>
+        {showGallery ? 
+        (<div className={`${styles.carouselWrapper}`}>
           <Carousel
             draggable={true}
             autoplay={false}
@@ -56,20 +58,28 @@ export function OneRoutePage(): React.JSX.Element {
           >
             {images.map((url, index) => (
               <div key={index}>
-                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} />
+                <Image preview={false} src={url} alt={`Gallery image ${index + 1}`} 
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}/>
               </div>
             ))}
           </Carousel>
-        </div>
+        </div>)
+        :
+        <div className={styles.map}>
+        <YandexMap isEditable={false}/>
+      </div>}
+        <button
+          className={styles.toggleGallery}
+          onClick={() => setShowGallery(!showGallery)}
+        >
+          {showGallery ? 'Скрыть галерею' : 'Показать галерею'}
+        </button>
       </div>
 
-      <OneRouteItem route={route} />
-
-      {/* Блок с комментариями */}
-      <div className={styles.commentsSection}>
-        <h3>Комментарии</h3>
-        {/* Здесь будут комментарии */}
+        <OneRouteItem route={route} />
       </div>
-    </div>
+
+      <CommentSection />
+    </>
   );
 }

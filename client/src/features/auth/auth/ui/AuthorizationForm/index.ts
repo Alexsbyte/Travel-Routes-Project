@@ -1,2 +1,4 @@
-export { AuthorizationForm } from "./AuthorizationForm";
+export { AuthorizationForm } from "./ui/AuthorizationForm";
+
+
 
