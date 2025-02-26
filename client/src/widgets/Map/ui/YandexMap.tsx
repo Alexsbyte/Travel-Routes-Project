@@ -28,6 +28,36 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
   // const {id}= useParams()
   // const location = useLocation()
 
+  const [center, setCenter] = useState<[number, number]>([55.751574, 37.573856]);
+  const [zoom, setZoom] = useState(8);
+
+  useEffect(() => {
+    if (points.length > 0) {
+      // 1. Вычисляем средний центр
+      const avgLatitude = points.reduce((sum, p) => sum + p.latitude, 0) / points.length;
+      const avgLongitude = points.reduce((sum, p) => sum + p.longitude, 0) / points.length;
+      setCenter([avgLatitude, avgLongitude]);
+
+      // 2. Определяем максимальное расстояние между точками
+      const minLat = Math.min(...points.map((p) => p.latitude));
+      const maxLat = Math.max(...points.map((p) => p.latitude));
+      const minLon = Math.min(...points.map((p) => p.longitude));
+      const maxLon = Math.max(...points.map((p) => p.longitude));
+
+      const latDiff = maxLat - minLat;
+      const lonDiff = maxLon - minLon;
+
+      // 3. Подбираем зум (чем больше разница координат — тем дальше отдаляем карту)
+      const maxDiff = Math.max(latDiff, lonDiff);
+      let calculatedZoom = 10;
+      if (maxDiff > 10) calculatedZoom = 5;
+      else if (maxDiff > 5) calculatedZoom = 6;
+      else if (maxDiff > 2) calculatedZoom = 8;
+
+      setZoom(calculatedZoom);
+    }
+  }, [points]);
+
   useEffect(() => {
     if (isAddModalOpen) {
       setTimeout(() => {
@@ -35,6 +65,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
       }, 50);
     }
   }, [isAddModalOpen]);
+
 
 
   const handleMapClick = (e: any) => {
@@ -90,7 +121,7 @@ export function YandexMap({isEditable}:{isEditable:boolean}) {
   return (
     <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_API }}>
       <Map
-        defaultState={{ center: [55.751244, 37.618423], zoom: 10 }}
+        defaultState={{ center: center, zoom: zoom }}
         width="100%"
         height="100%"
         onClick={handleMapClick}
