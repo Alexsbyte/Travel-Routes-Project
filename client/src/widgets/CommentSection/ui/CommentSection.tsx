@@ -85,7 +85,7 @@ export function CommentSection(): React.JSX.Element {
 
   return (
     <div className={styles.commentSection}>
-      <Title order={3}>Комментарии:</Title>
+      <Title order={3}>Отзывы</Title>
       <Divider my="sm" />
       <div className={styles.commentForm}>
         <Textarea
@@ -93,7 +93,7 @@ export function CommentSection(): React.JSX.Element {
           onChange={(e) => setNewComment(e.target.value)}
           className={styles.commentInput}
           minRows={3}
-          placeholder="Напишите ваш комментарий..."
+          placeholder="Напишите ваш отзыв..."
         />
         <div className={styles.commentButtonWrapper}>
           <Button
@@ -105,7 +105,7 @@ export function CommentSection(): React.JSX.Element {
           </Button>
         </div>
       </div>
-      
+
       {error && <Text>{error}</Text>}
       {loading ? (
         <Text>Загрузка...</Text>
@@ -149,6 +149,7 @@ export function CommentSection(): React.JSX.Element {
           ))}
         </div>
       )}
+
       <Modal
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
