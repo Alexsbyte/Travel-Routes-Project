@@ -2,13 +2,17 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
 import { AxiosError } from 'axios';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
-import { GenerationPayload, ModerationPayload } from '../model/types';
+import {
+  GenerationPayload,
+  GenerationsResponse,
+  ModerationPayload,
+} from '../model/types';
 
 export const checkModerationThunk = createAsyncThunk<
   IApiResponseSuccess<boolean>,
   ModerationPayload,
   { rejectValue: IApiResponseReject }
->('moderation/check', async (payload, { rejectWithValue }) => {
+>('ai/moderation', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<boolean>>(
       '/api/ai/moderations',
@@ -17,19 +21,17 @@ export const checkModerationThunk = createAsyncThunk<
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
-    console.log(err);
-
     return rejectWithValue(err.response!.data);
   }
 });
 
 export const generateBeautifullThunk = createAsyncThunk<
-  IApiResponseSuccess<string>,
+  IApiResponseSuccess<GenerationsResponse>,
   GenerationPayload,
   { rejectValue: IApiResponseReject }
->('moderation/check', async (payload, { rejectWithValue }) => {
+>('ai/generation', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.post<IApiResponseSuccess<string>>(
+    const { data } = await axiosInstance.post<IApiResponseSuccess<GenerationsResponse>>(
       '/api/ai/generations',
       payload,
     );

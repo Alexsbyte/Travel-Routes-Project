@@ -4,9 +4,13 @@ export interface ModerationPayload {
 }
 
 export interface GenerationPayload {
-  text: string;
+  prompt: string;
 }
 
 export interface ApiResponse {
   success: boolean;
+}
+
+export interface GenerationsResponse {
+  text: string;
 }

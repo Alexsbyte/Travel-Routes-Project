@@ -22,11 +22,9 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { useNavigate } from 'react-router-dom';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 // import { clearPoints, Point } from '@/entities/point';
-import {
-  checkModerationThunk,
-  generateBeautifullThunk,
-} from '@/entities/moderation/api/ModerationThunk';
-import { setError } from '@/entities/moderation/slice/ModerationSlice';
+import { checkModerationThunk, generateBeautifullThunk } from '@/entities/ai/api/AiThunk';
+import { setError } from '@/entities/ai/slice/AiSlice';
+import { RiAiGenerate2 } from 'react-icons/ri';
 // import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type InputsType = {
@@ -47,9 +45,12 @@ const initialState: InputsType = {
 
 export function RouteForm(): React.JSX.Element {
   const [opened, setOpened] = useState(false);
+  const [textModalOpened, setTextModalOpened] = useState(false);
+  const [prompt, setPrompt] = useState({ prompt: '', length: 100 });
+  const [promptError, setPromptError] = useState({ prompt: '', length: '' });
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const { flagged, error } = useAppSelector((state) => state.moderation);
+  const { generatedText, flagged, error } = useAppSelector((state) => state.ai);
   const navigate = useNavigate();
   // const { points } = useAppSelector((state) => state.points);
 
@@ -167,9 +168,32 @@ export function RouteForm(): React.JSX.Element {
   };
 
   const makeBeautiful = async () => {
+    setPromptError({ prompt: '', length: '' });
+    setPromptError({ prompt: '', length: '' });
+
+    if (prompt.prompt.length === 0 || prompt.prompt.length > 50) {
+      setPromptError({
+        prompt: 'Введите текст (до 50 символов)',
+        length: '',
+      });
+      return;
+    }
+
+    const num = prompt.length;
+    if (!num || num <= 0 || num > 499) {
+      setPromptError({ prompt: '', length: 'Введите число от 1 до 499' });
+      return;
+    }
+
     dispatch(
-      generateBeautifullThunk({ text: 'Сгенерируй красивый текст про поход в горах' }),
+      generateBeautifullThunk({
+        prompt: `${prompt.prompt}. Текст должен быть не более ${prompt.length} символов. Не должен прирываться на полуслове`,
+      }),
     );
+
+    setTextModalOpened(false);
+
+    console.log(generatedText);
   };
 
   return (
@@ -193,10 +217,26 @@ export function RouteForm(): React.JSX.Element {
               <div style={{ color: 'red', fontSize: '12px' }}>{form.errors.title}</div>
             )}
             <Space h="md" />
-            <Textarea
-              {...form.getInputProps('description')}
-              placeholder="Описание маршрута (не более 500символов)"
-            />
+            <Input.Wrapper w={800} style={{ position: 'relative' }}>
+              <Textarea
+                {...form.getInputProps('description')}
+                placeholder="Описание маршрута (не более 500 символов)"
+                w="100%"
+              />
+              <Button
+                variant="subtle"
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  padding: '5px',
+                  backgroundColor: 'transparent',
+                }}
+                onClick={() => setTextModalOpened(true)}
+              >
+                <RiAiGenerate2 size={20} />
+              </Button>
+            </Input.Wrapper>
             <Space h="md" />
             <Select
               {...form.getInputProps('category')}
@@ -254,7 +294,7 @@ export function RouteForm(): React.JSX.Element {
           >
             <>
               <Flex direction={'column'} gap={'sm'} align={'center'}>
-                <Title order={3}>Текст не прошел проверку</Title>
+                <Title order={3}>Текст не прошел проверку.</Title>
                 {error && (
                   <Text fz={18} m={20} c="red">
                     {error}
@@ -262,6 +302,53 @@ export function RouteForm(): React.JSX.Element {
                 )}
               </Flex>
             </>
+          </Modal>
+
+          {/* Модальное окно для генерации красивого текста */}
+          <Modal opened={textModalOpened} onClose={() => setTextModalOpened(false)}>
+            <Flex direction="column" gap="md">
+              <Title order={2}>Сгенерировать текст</Title>
+              <Text size="sm" p={1}>
+                Введите описание генерируемого текста:
+              </Text>
+              <Input
+                placeholder="не более 50 символов"
+                value={prompt.prompt}
+                onChange={(event) =>
+                  setPrompt((prev) => ({ ...prev, prompt: event.target.value }))
+                }
+                error={promptError.prompt}
+              />
+              {promptError.prompt && <Text c="red">{promptError.prompt}</Text>}
+
+              <Text size="sm" p={1}>
+                Длинна генерируемого текста:
+              </Text>
+              <Input
+                type="number"
+                value={prompt.length}
+                onChange={(event) =>
+                  setPrompt((prev) => ({ ...prev, length: +event.target.value }))
+                }
+                error={promptError.length}
+              />
+              {promptError.length && <Text c="red">{promptError.length}</Text>}
+
+              <Group justify="flex-end">
+                <Button
+                  onClick={() => {
+                    setTextModalOpened(false);
+                    setPrompt({ prompt: '', length: 100 });
+
+                    setPromptError({ prompt: '', length: '' });
+                  }}
+                  variant="outline"
+                >
+                  Отмена
+                </Button>
+                <Button onClick={makeBeautiful}>Сгенерировать</Button>
+              </Group>
+            </Flex>
           </Modal>
         </Group>
       )}
