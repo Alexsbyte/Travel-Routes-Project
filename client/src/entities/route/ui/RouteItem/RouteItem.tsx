@@ -2,7 +2,6 @@ import React from 'react';
 import { Carousel } from 'antd';
 import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
-import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 

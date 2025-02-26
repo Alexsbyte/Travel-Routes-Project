@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CommentType } from '../model/CommentTypes';
 import { message } from 'antd';
 import {
@@ -48,7 +48,7 @@ export const commentsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createCommentThunk.fulfilled, (state, action) => {
+      .addCase(createCommentThunk.fulfilled, (state, action: PayloadAction<{ data: CommentType; message: string }>) => {
         state.comments = [...state.comments, action.payload.data];
         state.loading = false;
         state.error = null;

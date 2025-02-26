@@ -12,6 +12,7 @@ export type CommentType = {
   user_id: number;
   createdAt: Date;
   updatedAt: Date;
+ 
 };
 
 export type ArrayCommentsType = CommentType[];
