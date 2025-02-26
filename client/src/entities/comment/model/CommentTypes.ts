@@ -1,9 +1,8 @@
-import { UserType } from "@/entities/user";
+import { UserType } from '@/entities/user';
 
 export interface RawCommentData {
   text: string;
 }
-
 
 export type CommentType = {
   id: number;
@@ -15,6 +14,5 @@ export type CommentType = {
   updatedAt: Date;
  
 };
-
 
 export type ArrayCommentsType = CommentType[];

@@ -32,34 +32,37 @@
   transform: translateX(-50%);
   padding: 10px 20px;
   background-color: var(--primary);
-  color: var(--on-primary);
+  color: var(--primary-container);
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 2
+  z-index: 2; /* Делаем кнопку выше галереи */
 }
-
+.toggleGallery:hover {
+  background-color: var(--secondary);
+  color: var(--primary-container);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 2; /* Делаем кнопку выше галереи */
+}
 .toggleGallery:hover {
   background-color: var(--primary-container);
 }
 
-/* Стили для карусели */
 .carouselWrapper {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 1; /* Уменьшаем z-index */
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  pointer-events: none; /* Делает карусель неактивной, когда она скрыта */
 }
 
 .carouselWrapper.show {
   opacity: 1;
-  pointer-events: auto; /* Включаем интерактивность при показе */
+  pointer-events: auto;
 }
 
 .carousel {

@@ -3,7 +3,6 @@ import { Carousel } from 'antd';
 import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
 import { Route } from '../../model/RouteTypes';
-import { Link } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type Props = {
@@ -11,7 +10,6 @@ type Props = {
 };
 
 export function RouteItem({ route }: Props): React.JSX.Element {
-
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;

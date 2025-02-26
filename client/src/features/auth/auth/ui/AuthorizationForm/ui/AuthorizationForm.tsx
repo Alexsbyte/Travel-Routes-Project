@@ -5,8 +5,9 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
 import { UserValidator, ISignInData } from '@/entities/user';
 import { message as antMessage } from 'antd';
-import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 interface AuthFormProps {
   handleSignIn: (data: ISignInData) => Promise<void>;

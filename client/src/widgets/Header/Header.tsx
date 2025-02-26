@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { AuthModal } from '@/features/auth/AuthModal';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { clearPoints } from '@/entities/point';
 
 export function Header(): React.JSX.Element {
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -53,8 +54,15 @@ export function Header(): React.JSX.Element {
   };
 
   const redirectToHomPage = (): void => {
+    dispatch(clearPoints())
     navigate('/');
   };
+
+
+ // const createRouteHandler = (): void => {
+   // dispatch(clearPoints())
+    //navigate('/createRoute');
+  //};
 
   const handleSuccess = () => {
     setIsModalOpen(false);

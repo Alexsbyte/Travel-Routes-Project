@@ -4,12 +4,12 @@ import Layout from '../Layout/Layout';
 import { VerifyEmail } from '@/features/auth/VerifyEmail';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { Suspense, lazy } from 'react';
+import { CommentSection } from '@/widgets/CommentSection';
 // Ленивый импорт страниц
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
-import { CommentSection } from '@/widgets/CommentSection';
 
 export const router = createBrowserRouter([
   {

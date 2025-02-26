@@ -1,3 +1,5 @@
+import { IPoint } from "@/entities/point/model";
+
 export type RawRouteData = {
   title: string;
   description: string;
@@ -6,19 +8,14 @@ export type RawRouteData = {
 
 type Photo = { url: string };
 
-type Point = {
-  id: number
-  description: string;
-  latitude: number;
-  longitude: number;
-};
+
 
 export type Route = {
   id: number;
   user_id: number;
   user: { username: string; email: string };
   photos: Photo[];
-  points: Point[];
+  points: IPoint[];
   createdAt: string;
   updatedAt: string;
 } & RawRouteData;

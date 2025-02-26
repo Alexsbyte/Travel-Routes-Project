@@ -21,7 +21,6 @@ import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk } from '@/entities/moderation/api/ModerationThunk';
 import { setError } from '@/entities/moderation/slice/ModerationSlice';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
-// import { useMediaQuery } from '@mantine/hooks';
 
 type InputsType = {
   title: string;
@@ -163,7 +162,7 @@ export function RouteForm(): React.JSX.Element {
 
           <div className={style.container}>
             <Box className={style.mapContainer}>
-              <YandexMap />
+              <YandexMap isEditable={true}/>
             </Box>
 
             <div className={style.formContainer}>
