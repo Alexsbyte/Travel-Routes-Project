@@ -3,7 +3,6 @@ import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import Layout from '../Layout/Layout';
 import { VerifyEmail } from '@/features/auth/VerifyEmail';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
-import { OneRoutePage } from '@/pages/OneRoutePage/ui/OneRoutePage';
 import { Suspense, lazy } from 'react';
 // Ленивый импорт страниц
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -12,11 +11,6 @@ const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
 import { CommentSection } from '@/widgets/CommentSection';
 
-
-
-
-
-
 export const router = createBrowserRouter([
   {
     path: CLIENT_ROUTES.HOME,
@@ -24,7 +18,6 @@ export const router = createBrowserRouter([
     children: [
       {
         path: CLIENT_ROUTES.HOME,
-        element: <HomePage />,
         element: (
           <Suspense fallback={<div>Загрузка...</div>}>
             <HomePage />
@@ -45,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: CLIENT_ROUTES.COMMENT_FORM,
-        element: <CommentSection  />,
+        element: <CommentSection />,
       },
       {
         path: CLIENT_ROUTES.ROUTE_FORM,
