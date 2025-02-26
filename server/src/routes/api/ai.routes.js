@@ -64,7 +64,7 @@ async function aiOperations(text, type) {
 
       console.log(data.choices);
       console.log(data.choices[0].message.content.length);
-      return { ressult: data.choices[0].message.content, error: null };
+      return { result: data.choices[0].message.content, error: null };
     }
     return {
       result: false,
@@ -117,18 +117,18 @@ router.post('/generations', verifyAccessToken, async (req, res) => {
       return res.status(400).json(formatResponse(400, null, null, generated.error));
     }
 
-    if (!generated.result) {
-      return res
-        .status(400)
-        .json(
-          formatResponse(
-            400,
-            'Ошибка текст не сгенерирован, попробуйте позже',
-            null,
-            'Ошибка текст не сгенерирован, попробуйте позже',
-          ),
-        );
-    }
+    // if (!generated.result) {
+    //   return res
+    //     .status(400)
+    //     .json(
+    //       formatResponse(
+    //         400,
+    //         'Ошибка текст не сгенерирован, попробуйте позже',
+    //         null,
+    //         'Ошибка текст не сгенерирован, попробуйте позже',
+    //       ),
+    //     );
+    // }
 
     res
       .status(200)

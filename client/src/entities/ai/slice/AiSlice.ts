@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { checkModerationThunk, generateBeautifullThunk } from '../api/AiThunk';
 
-interface ModerationState {
+interface aiState {
   isLoading: boolean;
   error: string | null;
   flagged: boolean;
   generatedText: string | null;
 }
 
-const initialState: ModerationState = {
+const initialState: aiState = {
   isLoading: false,
   error: null,
   flagged: false,
@@ -21,6 +21,10 @@ const aiSlice = createSlice({
   reducers: {
     setError: (state) => {
       state.error = null;
+    },
+
+    cleanGeneratedText: (state) => {
+      state.generatedText = '';
     },
   },
   extraReducers: (builder) => {
@@ -45,7 +49,7 @@ const aiSlice = createSlice({
       .addCase(generateBeautifullThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         console.log(action);
-        state.generatedText = action.payload.data.text;
+        state.generatedText = action.payload.data;
       })
       .addCase(generateBeautifullThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -55,5 +59,5 @@ const aiSlice = createSlice({
   },
 });
 
-export const setError = aiSlice.actions;
+export const { setError, cleanGeneratedText } = aiSlice.actions;
 export const aiReducer = aiSlice.reducer;

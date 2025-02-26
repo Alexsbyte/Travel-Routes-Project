@@ -18,21 +18,21 @@ import style from './RouteForm.module.css';
 import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-// import { createRouteThunk } from '@/entities/route';
+import { createRouteThunk } from '@/entities/route';
 import { useNavigate } from 'react-router-dom';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
-// import { clearPoints, Point } from '@/entities/point';
+import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk, generateBeautifullThunk } from '@/entities/ai/api/AiThunk';
-import { setError } from '@/entities/ai/slice/AiSlice';
+import { setError, cleanGeneratedText } from '@/entities/ai/slice/AiSlice';
 import { RiAiGenerate2 } from 'react-icons/ri';
-// import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
 type InputsType = {
   title: string;
   description: string;
   category: '' | 'автомобильный' | 'пеший' | 'велосипедный';
   files: File[];
-  // points: Point[];
+  points: Point[];
 };
 
 const initialState: InputsType = {
@@ -40,7 +40,7 @@ const initialState: InputsType = {
   description: '',
   category: '',
   files: [],
-  // points: [],
+  points: [],
 };
 
 export function RouteForm(): React.JSX.Element {
@@ -52,13 +52,13 @@ export function RouteForm(): React.JSX.Element {
   const { user } = useAppSelector((state) => state.user);
   const { generatedText, flagged, error } = useAppSelector((state) => state.ai);
   const navigate = useNavigate();
-  // const { points } = useAppSelector((state) => state.points);
+  const { points } = useAppSelector((state) => state.points);
 
   useEffect(() => {
     if (error) {
       setOpened(true);
     }
-  }, [error, dispatch]);
+  }, [error]);
 
   const form = useForm({
     initialValues: initialState,
@@ -124,13 +124,30 @@ export function RouteForm(): React.JSX.Element {
     },
   });
 
+  useEffect(() => {
+    if (generatedText) {
+      console.log(generatedText);
+      form.setFieldValue('description', generatedText);
+    }
+
+    return () => {
+      console.log(generatedText);
+      dispatch(cleanGeneratedText());
+
+      form.setFieldValue('title', '');
+      form.setFieldValue('description', '');
+      form.setFieldValue('category', '');
+      form.setFieldValue('files', []);
+    };
+  }, [generatedText]);
+
   const createRoute = async (
     values: InputsType,
     e: FormEvent<HTMLFormElement> | undefined,
   ): Promise<void> => {
     e?.preventDefault();
     try {
-      dispatch(setError.setError());
+      dispatch(setError());
       dispatch(
         checkModerationThunk({ title: values.title, description: values.description }),
       ).unwrap();
@@ -144,20 +161,20 @@ export function RouteForm(): React.JSX.Element {
         return;
       }
 
-      // const formData = new FormData();
-      // formData.append('title', values.title);
-      // formData.append('description', values.description);
-      // formData.append('category', values.category);
-      // formData.append('points', JSON.stringify(points));
-      // values.files.forEach((file) => {
-      //   formData.append('files', file);
-      // });
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description);
+      formData.append('category', values.category);
+      formData.append('points', JSON.stringify(points));
+      values.files.forEach((file) => {
+        formData.append('files', file);
+      });
 
-      // dispatch(createRouteThunk(formData));
-      // dispatch(clearPoints());
-      // form.reset();
+      dispatch(createRouteThunk(formData));
+      dispatch(clearPoints());
+      form.reset();
 
-      // navigate(CLIENT_ROUTES.HOME);
+      navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -167,31 +184,35 @@ export function RouteForm(): React.JSX.Element {
     }
   };
 
-  const makeBeautiful = async () => {
-    setPromptError({ prompt: '', length: '' });
+  const generateBeautifulText = async () => {
     setPromptError({ prompt: '', length: '' });
 
-    if (prompt.prompt.length === 0 || prompt.prompt.length > 50) {
+    if (prompt.prompt.length === 0 || prompt.prompt.length > 100) {
       setPromptError({
-        prompt: 'Введите текст (до 50 символов)',
+        prompt: 'Введите текст (до 100 символов)',
         length: '',
       });
       return;
     }
 
     const num = prompt.length;
-    if (!num || num <= 0 || num > 499) {
-      setPromptError({ prompt: '', length: 'Введите число от 1 до 499' });
+    if (!num || num <= 0 || num > 500) {
+      setPromptError({ prompt: '', length: 'Введите число от 1 до 500' });
       return;
     }
 
     dispatch(
       generateBeautifullThunk({
-        prompt: `${prompt.prompt}. Текст должен быть не более ${prompt.length} символов. Не должен прирываться на полуслове`,
+        prompt: `${prompt.prompt}. Текст должен быть не более ${prompt.length} символов. Не должен прерываться на полуслове`,
       }),
     );
 
+    if (generatedText) {
+      form.setFieldValue('description', generatedText);
+    }
+
     setTextModalOpened(false);
+    setPrompt({ prompt: '', length: 100 });
 
     console.log(generatedText);
   };
@@ -264,16 +285,6 @@ export function RouteForm(): React.JSX.Element {
               Создать
             </Button>
             <Button
-              h={50}
-              m={10}
-              onClick={(event) => {
-                event.preventDefault();
-                form.onSubmit(makeBeautiful)();
-              }}
-            >
-              Сделать красиво!
-            </Button>
-            <Button
               className="cancel"
               w={160}
               h={50}
@@ -312,7 +323,7 @@ export function RouteForm(): React.JSX.Element {
                 Введите описание генерируемого текста:
               </Text>
               <Input
-                placeholder="не более 50 символов"
+                placeholder="не более 100 символов"
                 value={prompt.prompt}
                 onChange={(event) =>
                   setPrompt((prev) => ({ ...prev, prompt: event.target.value }))
@@ -346,7 +357,7 @@ export function RouteForm(): React.JSX.Element {
                 >
                   Отмена
                 </Button>
-                <Button onClick={makeBeautiful}>Сгенерировать</Button>
+                <Button onClick={generateBeautifulText}>Сгенерировать</Button>
               </Group>
             </Flex>
           </Modal>

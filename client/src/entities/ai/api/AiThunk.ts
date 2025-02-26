@@ -2,11 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
 import { AxiosError } from 'axios';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
-import {
-  GenerationPayload,
-  GenerationsResponse,
-  ModerationPayload,
-} from '../model/types';
+import { GenerationPayload, ModerationPayload } from '../model/types';
 
 export const checkModerationThunk = createAsyncThunk<
   IApiResponseSuccess<boolean>,
@@ -26,12 +22,12 @@ export const checkModerationThunk = createAsyncThunk<
 });
 
 export const generateBeautifullThunk = createAsyncThunk<
-  IApiResponseSuccess<GenerationsResponse>,
+  IApiResponseSuccess<string>,
   GenerationPayload,
   { rejectValue: IApiResponseReject }
 >('ai/generation', async (payload, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.post<IApiResponseSuccess<GenerationsResponse>>(
+    const { data } = await axiosInstance.post<IApiResponseSuccess<string>>(
       '/api/ai/generations',
       payload,
     );
