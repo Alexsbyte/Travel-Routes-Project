@@ -11,7 +11,10 @@
   height: auto; /* Убираем фиксированную высоту */
   overflow: hidden; /* Убираем переполнение */
 }
-
+.custom-carousel-control {
+  background-color: rgba(0, 0, 0, 0.87);
+  opacity: 1;
+}
 .sharedBy {
   font-size: 16px;
   font-weight: 500;
@@ -50,7 +53,7 @@
 /* Стиль для карусели */
 .carousel {
   margin-bottom: 10px; /* Убираем лишний отступ снизу */
-  height: 180px; /* Высота карусели */
+  /* height: 180px; Высота карусели */
   border-radius: 8px;
 }
 

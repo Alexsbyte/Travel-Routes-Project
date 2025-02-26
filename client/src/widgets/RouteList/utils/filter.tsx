@@ -7,15 +7,21 @@ interface FilterProps {
 }
 
 export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
-  const categories = ['автомобильный', 'пеший', 'велосипедный'];
+  const allCategories = ['автомобильный', 'пеший', 'велосипедный'];
   const [category, setCategory] = useState<string>('');
   const [keyword, setKeyword] = useState<string>('');
 
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleCategoryChange = (value: string | null) => {
-    setCategory(value || ''); // Преобразуем значение в строку, если оно null
-    onFilterChange(value || '', keyword); // Отправляем выбранную категорию и ключевое слово
+    setCategory(value || ''); 
+    if (value === 'все') {
+
+      onFilterChange('', keyword);
+    } else {
+
+      onFilterChange(value || '', keyword);
+    }
   };
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +37,9 @@ export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
       onFilterChange(category, event.target.value); // Фильтруем маршруты после задержки
     }, 1000);
   };
+
+  // Динамическое добавление категории "все", если была выбрана категория
+  const categories = category ? ['все', ...allCategories] : allCategories;
 
   return (
     <Flex direction={'row'}>
