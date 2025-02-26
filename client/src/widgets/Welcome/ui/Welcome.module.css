@@ -2,7 +2,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
 @import url('../../../app/colors.css');
 
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.container img {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'PT Sans';
+  font-size: 50px;
+  font-weight: 300;
+  margin: 0 0 30px 0;
+}
+
+.mainText {
+  position: absolute;
+  top: 50%;
+  color: white;
+  font-weight: bold;
+  font-family: 'PT Sans';
+  text-align: end;
+  line-height: 1.05;
+}
+
+.btn {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  top: 85%;
+  right: 60px;
+}
+
 .customButton.buttonGreen {
+  right: 20px;
   height: 55px;
   background: var(--primary-container);
   border-color: var(--primary-container);
@@ -13,15 +55,16 @@
   transition: background-color 0.3s ease;
 }
 
-.buttonGreen:hover {
+.customButton.buttonGreen:hover {
   background: var(--on-primary);
-  color: var(--primary-container);
+  color: #149263;
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
 .customButton.buttonBlue {
+  right: 20px;
   height: 55px;
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: var(--primary);
   color: var(--on-primary);
   border: none;
   font-size: 16px;
@@ -29,40 +72,35 @@
   transition: background-color 0.3s ease;
 }
 
-.buttonBlue:hover {
+.customButton.buttonBlue:hover {
   background: var(--on-primary);
   color: #007bff;
   box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
-.container {
-  display: 'flex';
-  justify-content: 'center';
-  width: 100%;
-}
-
-.container img {
-  width: 100%;
-  height: 600px;
-}
-
-.description {
-  display: 'flex';
-  flex-direction: 'column';
-  align-items: 'center';
-}
-
 .font {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   font-size: 35px;
   font-family: 'PT Sans';
 }
 
 .svg {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-bottom: 20px;
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  margin-top: 10px;
+  width: 90px;
+  transition: transform 0.3s ease;
 }
 
 .icon:hover {
@@ -81,100 +119,106 @@
   }
 }
 
-/* Медиазапросы */
+/* Адаптивные стили для текста */
+.mainTextExtraSmall {
+  width: 60%;
+  font-size: 20px;
+  right: 10px;
+}
 
-/* Ноутбуки (1024px — 1199px) */
+.mainTextSmall {
+  width: 300px;
+  font-size: 25px;
+  right: 20px;
+}
+
+.mainTextMedium {
+  width: 500px;
+  font-size: 50px;
+  right: 30px;
+}
+
+.mainTextLarge {
+  width: 800px;
+  font-size: 70px;
+  right: 50px;
+}
+
+/* Адаптивные стили для кнопок */
+.buttonContainerExtraSmall {
+  display: none;
+}
+
+.buttonContainerSmall {
+  display: none;
+}
+
+.buttonContainerMedium {
+  flex-direction: row;
+  top: 85%;
+  right: 30px;
+}
+
+.buttonContainerLarge {
+  position: absolute;
+  flex-direction: row;
+  top: 85%;
+  right: 60px;
+}
+
+.customButton.btnOnSmallScreen {
+  display: flex;
+  margin: 30px auto;
+  height: 55px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  font-size: 16px;
+  padding: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.customButton.btnOnSmallScreen:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}
+
 @media (max-width: 1199px) {
-  .container {
-    height: 300px;
-    font-size: 100px;
-  }
-
-  .container img {
-    max-height: 400px;
-  }
-
-  .description {
-    margin-top: 110px;
-  }
-
-  .customButton.buttonGreen,
-  .customButton.buttonBlue {
-    margin-top: 35px;
-    height: 45px;
-    font-size: 14px;
-    padding: 0px 25px;
+  .mainText {
+    margin-top: -20px;
+    font-size: 62px;
+    line-height: 1.01;
   }
 }
-
-/* Планшеты (768px — 1023px) */
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .title {
-    font-size: 30px !important;
-  }
-
-  .container img {
-    max-height: 350px;
+    font-size: 40px;
   }
 
   .mainText {
-    margin-top: 60px;
-    font-size: 40px !important;
-  }
-
-  .customButton.buttonGreen,
-  .customButton.buttonBlue {
-    margin-bottom: 100px;
-    height: 40px;
-    font-size: 12px;
-    margin-top: 35px;
-    font-size: 14px;
-  }
-
-  .description {
-    margin-top: 60px;
-  }
-
-  .font {
-    font-size: 24px;
+    margin-top: -20px;
+    font-size: 40px;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .title {
-    font-size: 25px !important;
+    font-size: 30px;
   }
+}
 
-  .container img {
-    margin-left: -80px;
-    width: 150%;
-    max-height: 300px;
+@media (max-width: 420px) {
+  .title {
+    font-size: 30px;
   }
 
   .mainText {
-    margin-top: 30px;
-    width: 300px !important;
-    font-size: 35px !important;
+    font-size: 30px;
   }
 
-  .customButton.buttonGreen,
-  .customButton.buttonBlue {
-    margin-bottom: 50px;
-    height: 40px;
-    font-size: 12px;
-    margin-top: 35px;
-    font-size: 14px;
-  }
-
-  .description {
-    margin-top: 50px;
-  }
-
-  .font {
-    font-size: 25px;
-  }
   .svg {
-    display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
   }
 }

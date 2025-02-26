@@ -12,8 +12,9 @@
 }
 
 .routeForm h1 {
-  font-family: 'Eagle Lake', serif;
-  font-weight: 400;
+  font-family: 'PT Sans';
+  font-weight: 300;
+  font-size: 50px;
   text-align: center;
 }
 
@@ -38,7 +39,11 @@
 }
 
 .formContainer p {
-  margin-top: 70px;
+  margin-top: 30px;
+  font-family: 'PT Sans';
+  font-weight: 300;
+  font-size: 25px;
+  text-align: center;
 }
 
 .buttonsToAdd {
@@ -79,14 +84,19 @@
   .buttonsToAdd {
     flex-flow: column;
   }
+
+  .formContainer p {
+    margin-top: 3px;
+    font-size: 25px;
+  }
 }
 
 @media (max-width: 1024px) {
   .routeForm h1 {
-    font-family: 'Eagle Lake', serif;
-    font-weight: 400;
+    font-family: 'PT Sans';
+    font-weight: 300;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
   }
 
   .container {
@@ -103,6 +113,11 @@
   .formContainer {
     width: 100%;
     max-width: none;
+  }
+
+  .formContainer p {
+    margin-top: 20px;
+    font-size: 20px;
   }
 
   .buttonsToAdd {

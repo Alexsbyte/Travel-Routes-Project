@@ -30,27 +30,8 @@
   font-size: 30px;
 }
 
-/* Медиазапросы для адаптивности */
-
-/* Ноутбуки (1024px — 1199px) */
-@media (max-width: 1199px) {
-  .container {
-    padding-left: 50px;
-  }
-
-  .carousel {
-    width: 45%;
-  }
-
-  .description {
-    width: 55%;
-    padding-left: 40px;
-    font-size: 26px;
-  }
-}
-
 /* Планшеты (768px — 1023px) */
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .container {
     flex-direction: column;
     align-items: center;
@@ -59,7 +40,7 @@
   }
 
   .carousel {
-    width: 80%;
+    width: 90%;
     margin-left: 0;
     justify-content: center;
   }
@@ -69,21 +50,20 @@
     min-width: unset;
     padding-left: 0;
     align-items: center;
-    text-align: center;
     font-size: 24px;
   }
 }
 
 /* Мобильные устройства (до 767px) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .container {
     padding-left: 10px;
     padding-right: 10px;
   }
 
   .carousel {
-    width: 100%;
-    padding: 10px 0;
+    width: 90%;
+    margin: 20px;
   }
 
   .description {
