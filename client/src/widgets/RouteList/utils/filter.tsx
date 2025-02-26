@@ -7,7 +7,7 @@ interface FilterProps {
 }
 
 export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
-  const allCategories = ['автомобильный', 'пеший', 'велосипедный'];
+  const allCategories = ['все','автомобильный', 'пеший', 'велосипедный'];
   const [category, setCategory] = useState<string>('');
   const [keyword, setKeyword] = useState<string>('');
 
@@ -39,15 +39,15 @@ export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
   };
 
   // Динамическое добавление категории "все", если была выбрана категория
-  const categories = category ? ['все', ...allCategories] : allCategories;
+  // const categories = category ? ['все', ...allCategories] : allCategories;
 
   return (
     <Flex direction={'row'}>
       {/* Поле для ввода ключевого слова */}
       <Input
-        w={350}
+        w={270}
         h={50}
-        m={10}
+        m={"10 0 0 0"}
         className={styles.input}
         type="text"
         placeholder="Введите ключевое слово"
@@ -59,12 +59,13 @@ export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
       <Select
         w={200}
         h={50}
-        m={10}
+        m={"10 0 0 10"}
         className={styles.select}
         value={category}
+        defaultValue={allCategories[0]}
         onChange={handleCategoryChange} // Передаем обработчик, который принимает значение и опцию
-        placeholder="Выберите категорию"
-        data={categories.map((cat) => ({ value: cat, label: cat }))}
+        placeholder="Категория"
+        data={allCategories.map((cat) => ({ value: cat, label: cat }))}
       />
     </Flex>
   );

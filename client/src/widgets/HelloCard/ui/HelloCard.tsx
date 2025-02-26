@@ -5,10 +5,10 @@ import styles from './HelloCard.module.css';
 import { Image } from '@mantine/core';
 
 const images = [
-  'public/0001.jpg',
-  'public/0002.avif',
-  'public/0003.avif',
-  'public/0004.avif',
+  '/0001.jpg',
+  '/0002.avif',
+  '/0003.avif',
+  '/0004.avif',
 ];
 
 export function HelloCard(): React.JSX.Element {

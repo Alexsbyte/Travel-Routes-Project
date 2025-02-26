@@ -59,13 +59,15 @@ export function RoutesPage(): React.JSX.Element {
     <div>
       <div style={{ display: 'flex' }}>
         <div style={{ width: '70%' }}>
-          <div style={{ width: '100%', height: '622px', padding: '0px 40px' }}>
+          <div style={{ width: '100%', height: '622px', padding: '0px 30px' }}>
             {/* Передаем все маршруты в MapHome */}
             <MapHome filteredRoutes={routes} onPointClick={handlePointClick} onMapClick={handleMapClick} />
           </div>
         </div>
+
         <div style={{ width: '30%' }}>
-          <div style={{padding: '0px 40px' }}> <Filter onFilterChange={handleFilterChange} />
+          <div style={{padding: '0px 40px 0 0' }}> 
+            <Filter onFilterChange={handleFilterChange} />
 
         <ScrollArea.Autosize mah={550} maw={500} mx="auto">
         <RouteList 
@@ -76,7 +78,7 @@ export function RoutesPage(): React.JSX.Element {
       </ScrollArea.Autosize>
 
           {/* Передаем отсортированные маршруты */}
-</div>
+        </div>
         </div>
       </div>
     </div>

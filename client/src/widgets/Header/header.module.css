@@ -1,6 +1,9 @@
 @import url('../../app/colors.css');
 
 .header {
+  width: 100%;
+  background: linear-gradient(45deg, rgb(240, 249, 252), rgb(240, 226, 229));
+
   padding: 12px 24px;
 }
 
@@ -27,6 +30,23 @@
   font-size: 16px;
   padding: 8px 16px;
   transition: background-color 0.3s ease;
+}
+
+.header button.cretaRoute {
+  background: var(--on-primary);
+  color: var(--secondary);
+  border: none;
+  /* border-color: var(--secondary); /
+  / border-radius: 8px; */
+  font-size: 16px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.header button.cretaRoute:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }
 
 .header button:hover,
