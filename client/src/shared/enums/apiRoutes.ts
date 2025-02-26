@@ -20,3 +20,11 @@ export enum COMMENT_API_ROUTES {
   DELETE_COMMENT = 'api/comments/:comment_id',
   GET_ONE_ROUTE_COMMENTS = 'api/comments/routes', // все комменты маршрута
 }
+
+
+export enum FAVORITE_API_ROUTES {
+  GET_ALL_USER_FAVORITES = 'api/favorites/user', //все лайки  юзера
+  ADD_FAVORITE = 'api/favorites',
+  DELETE_FAVORITE = 'api/favorites/:route_id',
+  GET_ONE_ROUTE_FAVORITE = 'api/favorites/routes/:route_id', // проверяем есть ли лайк 
+}

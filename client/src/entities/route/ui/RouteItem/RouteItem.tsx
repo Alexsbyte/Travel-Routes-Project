@@ -4,6 +4,8 @@ import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { Link } from 'react-router-dom';
+import { FavoriteSection } from '@/widgets/FavoriteSection';
 
 type Props = {
   route: Route;
@@ -30,45 +32,50 @@ export function RouteItem({ route }: Props): React.JSX.Element {
   ));
 
   return (
-    <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}>
-      <div className={styles.container}>
-        {/* Поделился */}
-        <div className={styles.sharedBy}>
-          Поделился: <strong>{route.user.username}</strong>
-        </div>
-        {/* Теги */}
-        <div className={styles.tags}>
-          {route.category.split(',').map((category, index) => (
-            <Tag key={index} color="blue" style={{ marginRight: '8px' }}>
-              {category}
-            </Tag>
-          ))}
-        </div>
-        {/* Карусель */}
-        <div>
-          <Carousel
-            dots
-            autoplay={false}
-            arrows={false}
-            swipeToSlide={true}
-            slidesToScroll={1}
-            touchMove={true}
-            speed={500}
-            draggable={true}
-            easing="ease-in-out"
-            className={styles.carousel}
-          >
-            {slides}
-          </Carousel>
-        </div>
-        {/* Описание */}
-        <div className={styles.separator}></div>
-        <div className={styles.description}>
-          <h3 className={styles.title}>{route.title}</h3>
+    <>
+      <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}>
+        <div className={styles.container}>
+          {/* Поделился */}
+          <div className={styles.sharedBy}>
+            Поделился: <strong>{route.user.username}</strong>
+          </div>
+          {/* Теги */}
+          <div className={styles.tags}>
+            {route.category.split(',').map((category, index) => (
+              <Tag key={index} color="blue" style={{ marginRight: '8px' }}>
+                {category}
+              </Tag>
+            ))}
+          </div>
+          {/* Карусель */}
+          <div>
+            <Carousel
+              dots
+              autoplay={false}
+              arrows={false}
+              swipeToSlide={true}
+              slidesToScroll={1}
+              touchMove={true}
+              speed={500}
+              draggable={true}
+              easing="ease-in-out"
+              className={styles.carousel}
+            >
+              {slides}
+            </Carousel>
+          </div>
+          {/* Описание */}
           <div className={styles.separator}></div>
-          <p className={styles.text}>{route.description}</p>
+          <div className={styles.description}>
+            <h3 className={styles.title}>{route.title}</h3>
+            <div className={styles.separator}></div>
+            <p className={styles.text}>{route.description}</p>
+          </div>
         </div>
+      </Link>
+      <div>
+        <FavoriteSection route_id={route.id} />
       </div>
-    </Link>
+    </>
   );
 }

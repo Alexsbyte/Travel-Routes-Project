@@ -8,10 +8,11 @@ class FavoriteController {
       const user_id = user.id;
       const { route_id } = req.params;
       const favorite = await FavoriteService.getByRouteId(user_id, route_id);
+ 
       if (!favorite) {
         return res.status(200).json(formatResponse(200, 'success', null));
       }
-      return res.status(200).json(formatResponse(200, 'success', favorite));
+  return res.status(200).json(formatResponse(200, 'success', favorite));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
@@ -35,7 +36,13 @@ class FavoriteController {
       const { user } = res.locals;
       const user_id = user.id;
       const { route_id } = req.body;
+
       const favorite = await FavoriteService.createFavorite(user_id, route_id);
+      if (!favorite) {
+        return res
+          .status(400)
+          .json(formatResponse(400, 'Маршрут уже добавлен в избранное', null));
+      }
       return res.status(201).json(formatResponse(201, 'success', favorite));
     } catch ({ message }) {
       console.error(message);
@@ -48,15 +55,9 @@ class FavoriteController {
       const { user } = res.locals;
       const user_id = user.id;
       const { route_id } = req.params;
+      //const { route_id } = req.body;
       const favorite = await FavoriteService.getByRouteId(user_id, route_id);
 
-      if (!favorite) {
-        return res
-          .status(404)
-          .json(
-            formatResponse(404, 'Избранное не найдено', null, 'Избранное не найдено'),
-          );
-      }
       if (favorite.user_id !== user.id) {
         return res
           .status(400)
@@ -69,7 +70,20 @@ class FavoriteController {
             ),
           );
       }
+
+      if (!favorite) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(404, 'Избранное не найдено', null, 'Избранное не найдено'),
+          );
+      }
+
       const deleteFavorite = await FavoriteService.deleteFavorite(user_id, route_id);
+      if (!deleteFavorite) {
+        return res.status(404).json(formatResponse(404, 'Лайк не найден', null));
+      }
+
       res
         .status(200)
         .json(formatResponse(200, 'Избранное успешно удалено', deleteFavorite));

@@ -8,7 +8,7 @@ class FavoriteService {
   static async getAllFavorites(user_id) {
     return await Favorite.findAll({
       where: { user_id },
-      include: [{ model: Route, as: 'routeFav' }],
+      include: [{ model: Route, as: 'route' }],
     });
   }
 
@@ -17,8 +17,10 @@ class FavoriteService {
   }
 
   static async createFavorite(user_id, route_id) {
-    const newFavorite = await Favorite.create({ user_id, route_id });
-    return newFavorite;
+    const existingFavorite = await this.getByRouteId(user_id, route_id); // есть ли уже лайк?
+    if (existingFavorite) return null;
+
+    return await Favorite.create({ user_id, route_id });
   }
 
   static async deleteFavorite(user_id, route_id) {
