@@ -4,6 +4,7 @@ import { Image, Tag } from 'antd';
 import styles from './RouteItem.module.css';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { Link } from 'react-router-dom';
 
 type Props = {
   route: Route;

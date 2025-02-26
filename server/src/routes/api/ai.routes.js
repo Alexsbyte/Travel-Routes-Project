@@ -28,11 +28,7 @@ async function aiOperations(text, type) {
           httpsAgent: agent,
         },
       );
-
-      console.log(data.results[0].flagged);
-      console.log(data.results);
-      // console.log(res.data.results[0].category_applied_input_types);
-      // console.log(res);
+      // console.log(data.results);
 
       return { result: data.results[0].flagged, error: null };
     }
@@ -61,9 +57,7 @@ async function aiOperations(text, type) {
           httpsAgent: agent,
         },
       );
-
-      console.log(data.choices);
-      console.log(data.choices[0].message.content.length);
+      // console.log(data.choices[0].message.content.length);
       return { result: data.choices[0].message.content, error: null };
     }
     return {
@@ -71,7 +65,7 @@ async function aiOperations(text, type) {
       error: new Error('Ошибка aiOperations: не передан аргумент "type"'),
     };
   } catch (error) {
-    console.error('Ошибка openAI:', error?.response?.data || error.message);
+    // console.error('Ошибка openAI:', error?.response?.data || error.message);
     return { result: false, error }; //
   }
 }
@@ -83,17 +77,17 @@ router.post('/moderations', verifyAccessToken, async (req, res) => {
     const isProfane = await aiOperations(title + ' ' + description, 'moderations');
 
     if (isProfane.error) {
-      return res.status(400).json(formatResponse(400, null, null, isProfane.error));
+      return res.status(200).json(formatResponse(200, null, null, isProfane.error));
     }
 
     if (isProfane.result) {
       return res
-        .status(400)
+        .status(200)
         .json(
           formatResponse(
-            400,
+            200,
             'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
-            null,
+            isProfane.result,
             'Текст содержит нецензурные слова или не удовлетворяет нормам приличия',
           ),
         );
@@ -117,25 +111,10 @@ router.post('/generations', verifyAccessToken, async (req, res) => {
       return res.status(400).json(formatResponse(400, null, null, generated.error));
     }
 
-    // if (!generated.result) {
-    //   return res
-    //     .status(400)
-    //     .json(
-    //       formatResponse(
-    //         400,
-    //         'Ошибка текст не сгенерирован, попробуйте позже',
-    //         null,
-    //         'Ошибка текст не сгенерирован, попробуйте позже',
-    //       ),
-    //     );
-    // }
-
     res
       .status(200)
       .json(formatResponse(200, 'Гененрация прошла успешно', generated.result));
   } catch (error) {
-    console.log(error);
-
     res
       .status(500)
       .json(formatResponse(500, 'Ошибка обращения к внешнему API', null, error.message));
