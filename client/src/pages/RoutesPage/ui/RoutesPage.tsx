@@ -8,14 +8,15 @@ import { MapHome } from '@/widgets/MapHome';
 import { Route } from '@/entities/route';  // Тип маршрута
 import { ScrollArea } from '@mantine/core';
 
+
 export function RoutesPage(): React.JSX.Element {
   usePageTitle();
   const dispatch = useAppDispatch();
-  const routes = useAppSelector((store) => store.route.routes);  // Все маршруты
-  const [filteredRoutes, setFilteredRoutes] = useState(routes);  // Отфильтрованные маршруты
+  const routes = useAppSelector((store) => store.route.routes); // Все маршруты
+  const [filteredRoutes, setFilteredRoutes] = useState(routes); // Отфильтрованные маршруты
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);  // Состояние для выбранного маршрута
+  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null); // Состояние для выбранного маршрута
 
   useEffect(() => {
     dispatch(getAllRoutesThunk());
@@ -26,14 +27,14 @@ export function RoutesPage(): React.JSX.Element {
   }, [selectedCategory, searchKeyword, routes]);
 
   const filterRoutes = (category: string, keyword: string) => {
-    const filtered = routes.filter(route => {
+    const filtered = routes.filter((route) => {
       const matchesCategory = category ? route.category === category : true;
       const matchesKeyword = keyword
         ? route.title.toLowerCase().includes(keyword.toLowerCase())
         : true;
       return matchesCategory && matchesKeyword;
     });
-    setFilteredRoutes(filtered);  // Обновляем отфильтрованные маршруты
+    setFilteredRoutes(filtered); // Обновляем отфильтрованные маршруты
   };
 
   const handleFilterChange = (category: string, keyword: string) => {
@@ -42,16 +43,16 @@ export function RoutesPage(): React.JSX.Element {
   };
 
   const handlePointClick = (route: Route) => {
-    setSelectedRoute(route);  // Обновляем информацию о выбранном маршруте
+    setSelectedRoute(route); // Обновляем информацию о выбранном маршруте
   };
 
   const handleMapClick = () => {
-    setSelectedRoute(null);  // Сбрасываем выбранный маршрут при клике на пустое место карты
-    filterRoutes(selectedCategory, searchKeyword);  // Восстанавливаем фильтрацию или показываем все маршруты
+    setSelectedRoute(null); // Сбрасываем выбранный маршрут при клике на пустое место карты
+    filterRoutes(selectedCategory, searchKeyword); // Восстанавливаем фильтрацию или показываем все маршруты
   };
 
   const sortedRoutes = selectedRoute
-    ? [selectedRoute, ...filteredRoutes.filter(route => route.id !== selectedRoute.id)]
+    ? [selectedRoute, ...filteredRoutes.filter((route) => route.id !== selectedRoute.id)]
     : filteredRoutes;
 
   return (

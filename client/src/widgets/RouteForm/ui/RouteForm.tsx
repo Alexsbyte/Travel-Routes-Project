@@ -5,6 +5,7 @@ import {
   Flex,
   Group,
   Input,
+  Loader,
   Modal,
   Select,
   Space,
@@ -22,7 +23,11 @@ import { useNavigate } from 'react-router-dom';
 import { YandexMap } from '@/widgets/Map/ui/YandexMap';
 import { clearPoints, Point } from '@/entities/point';
 import { checkModerationThunk, generateBeautifullThunk } from '@/entities/ai/api/AiThunk';
-import { setError, cleanGeneratedText } from '@/entities/ai/slice/AiSlice';
+import {
+  clearError,
+  cleanGeneratedText,
+  clearFlagged,
+} from '@/entities/ai/slice/AiSlice';
 import { RiAiGenerate2 } from 'react-icons/ri';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
@@ -43,28 +48,32 @@ const initialState: InputsType = {
 };
 
 export function RouteForm(): React.JSX.Element {
-  const [opened, setOpened] = useState(false);
+  const [moderModalOpened, setModerModalOpened] = useState(false);
   const [textModalOpened, setTextModalOpened] = useState(false);
   const [prompt, setPrompt] = useState({ prompt: '', length: 100 });
   const [promptError, setPromptError] = useState({ prompt: '', length: '' });
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
-  const { generatedText, flagged, error } = useAppSelector((state) => state.ai);
+  const { generatedText } = useAppSelector((state) => state.ai);
   const navigate = useNavigate();
   const { points } = useAppSelector((state) => state.points);
+  const [createButtonDisabled, setCreateButtonDisabled] = useState(false);
+  const [generateButtonDisabled, setGenerateButtonDisabled] = useState(false);
 
-  useEffect(() => {
-    if (error) {
-      setOpened(true);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(error, '---', isLoading);
+
+  //     setModerModalOpened(true);
+  //   }
+  // }, [error, isLoading]);
 
   const form = useForm({
     initialValues: initialState,
     validate: {
       title: (value) => {
         if (value.trim().length === 0) {
-          return 'Это поле обязательно для заполнения';
+          return 'Это поле обязательно для заполнения.';
         } else if (value.trim().length > 30) {
           return `Это поле не должно быть длинее 30 символов, сейчас ${
             value.trim().length
@@ -76,7 +85,7 @@ export function RouteForm(): React.JSX.Element {
 
       description: (value) => {
         if (value.trim().length === 0) {
-          return 'Это поле обязательно для заполнения';
+          return 'Это поле обязательно для заполнения!';
         } else if (value.trim().length > 500) {
           return `Это поле не должно быть длинее 500 символов, сейчас ${
             value.trim().length
@@ -125,20 +134,14 @@ export function RouteForm(): React.JSX.Element {
 
   useEffect(() => {
     if (generatedText) {
-      console.log(generatedText);
       form.setFieldValue('description', generatedText);
     }
-
     return () => {
-      console.log(generatedText);
       dispatch(cleanGeneratedText());
-
-      form.setFieldValue('title', '');
-      form.setFieldValue('description', '');
-      form.setFieldValue('category', '');
-      form.setFieldValue('files', []);
+      dispatch(clearFlagged());
+      dispatch(clearError());
     };
-  }, [generatedText]);
+  }, [generatedText, dispatch]);
 
   const createRoute = async (
     values: InputsType,
@@ -146,34 +149,34 @@ export function RouteForm(): React.JSX.Element {
   ): Promise<void> => {
     e?.preventDefault();
     try {
-      dispatch(setError());
       dispatch(
         checkModerationThunk({ title: values.title, description: values.description }),
-      ).unwrap();
+      ).then((res) => {
+        if (res.payload?.data) {
+          console.log(res.payload?.data);
+          setModerModalOpened(true);
+          setCreateButtonDisabled(false);
+          return;
+        }
 
-      console.log(flagged);
-      console.log(error);
+        console.log(res.payload?.data);
 
-      if (flagged) {
-        console.log(error);
+        const formData = new FormData();
+        formData.append('title', values.title);
+        formData.append('description', values.description);
+        formData.append('category', values.category);
+        formData.append('points', JSON.stringify(points));
+        values.files.forEach((file) => {
+          formData.append('files', file);
+        });
 
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('description', values.description);
-      formData.append('category', values.category);
-      formData.append('points', JSON.stringify(points));
-      values.files.forEach((file) => {
-        formData.append('files', file);
+        dispatch(createRouteThunk(formData));
+        dispatch(clearPoints());
+        form.reset();
+        antMessage.success('Успешно создано!');
+        navigate(CLIENT_ROUTES.HOME);
+        setCreateButtonDisabled(false);
       });
-
-      dispatch(createRouteThunk(formData));
-      dispatch(clearPoints());
-      form.reset();
-      antMessage.success('Успешно создано!');
-      navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
@@ -204,7 +207,9 @@ export function RouteForm(): React.JSX.Element {
       generateBeautifullThunk({
         prompt: `${prompt.prompt}. Текст должен быть не более ${prompt.length} символов. Не должен прерываться на полуслове`,
       }),
-    );
+    ).then(() => {
+      setGenerateButtonDisabled((prev) => !prev);
+    });
 
     if (generatedText) {
       form.setFieldValue('description', generatedText);
@@ -212,7 +217,6 @@ export function RouteForm(): React.JSX.Element {
 
     setTextModalOpened(false);
     setPrompt({ prompt: '', length: 100 });
-
     console.log(generatedText);
   };
 
@@ -223,7 +227,7 @@ export function RouteForm(): React.JSX.Element {
           <h1>Создай свой маршрут</h1>
           <div className={style.container}>
             <Box className={style.mapContainer}>
-              <YandexMap isEditable={true}/>
+              <YandexMap isEditable={true} />
             </Box>
 
             <div className={style.formContainer}>
@@ -246,17 +250,48 @@ export function RouteForm(): React.JSX.Element {
                 )}
               </Input.Wrapper>
               <Space h="md" />
+
               <Input.Wrapper
                 label="Описание маршрута"
                 labelProps={{
-                  style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
+                  style: {
+                    textAlign: 'left',
+                    width: '100%',
+                    marginLeft: '3px',
+                  },
+                }}
+                style={{
+                  position: 'relative',
                 }}
               >
                 <Textarea
+                  rows={5}
                   {...form.getInputProps('description')}
-                  placeholder="Описание маршрута (не более 500символов)"
+                  placeholder="Описание маршрута (не более 500 символов)"
                 />
+                <Button
+                  variant="subtle"
+                  style={{
+                    position: 'absolute',
+                    top: '100px',
+                    right: '10px',
+                    padding: '5px',
+                    backgroundColor: 'transparent',
+                  }}
+                  disabled={generateButtonDisabled}
+                  onClick={() => {
+                    setTextModalOpened(true);
+                    setGenerateButtonDisabled((prev) => !prev);
+                  }}
+                >
+                  {generateButtonDisabled ? (
+                    <Loader size="sm" color="white" />
+                  ) : (
+                    <RiAiGenerate2 size={20} />
+                  )}
+                </Button>
               </Input.Wrapper>
+
               <Space h="md" />
               <Input.Wrapper
                 label="Тип маршрута"
@@ -299,12 +334,16 @@ export function RouteForm(): React.JSX.Element {
                   w={160}
                   h={50}
                   mt={25}
+                  disabled={createButtonDisabled}
                   onClick={(event) => {
                     event.preventDefault();
+                    if (form.isValid()) {
+                      setCreateButtonDisabled((prev) => !prev);
+                    }
                     form.onSubmit(createRoute)();
                   }}
                 >
-                  Создать
+                  {createButtonDisabled ? <Loader size="sm" color="white" /> : 'Создать'}
                 </Button>
                 <Space h="md" />
 
@@ -323,19 +362,18 @@ export function RouteForm(): React.JSX.Element {
             </div>
           </div>
           <Modal
-            opened={opened}
+            opened={moderModalOpened}
             onClose={() => {
-              setOpened(false);
+              setModerModalOpened(false);
             }}
           >
             <>
               <Flex direction={'column'} gap={'sm'} align={'center'}>
                 <Title order={3}>Текст не прошел проверку.</Title>
-                {error && (
-                  <Text fz={18} m={20} c="red">
-                    {error}
-                  </Text>
-                )}
+
+                <Text fz={18} m={20} c="red">
+                  Текст содержит нецензурные слова или не удовлетворяет нормам приличия
+                </Text>
               </Flex>
             </>
           </Modal>

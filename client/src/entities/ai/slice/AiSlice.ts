@@ -19,12 +19,16 @@ const aiSlice = createSlice({
   name: 'ai',
   initialState,
   reducers: {
-    setError: (state) => {
+    clearError: (state) => {
       state.error = null;
     },
 
     cleanGeneratedText: (state) => {
       state.generatedText = '';
+    },
+
+    clearFlagged: (state) => {
+      state.flagged = false;
     },
   },
   extraReducers: (builder) => {
@@ -59,5 +63,5 @@ const aiSlice = createSlice({
   },
 });
 
-export const { setError, cleanGeneratedText } = aiSlice.actions;
+export const { clearError, cleanGeneratedText, clearFlagged } = aiSlice.actions;
 export const aiReducer = aiSlice.reducer;
