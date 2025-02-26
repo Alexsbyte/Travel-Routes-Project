@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../AuthorizationForm/ui/AuthorizationForm.module.css';
+import styles from './AuthorizationForm.module.css';
 import { useNavigate } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
