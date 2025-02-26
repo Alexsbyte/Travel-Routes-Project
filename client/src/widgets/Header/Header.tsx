@@ -54,14 +54,13 @@ export function Header(): React.JSX.Element {
   };
 
   const redirectToHomPage = (): void => {
-    dispatch(clearPoints())
+    dispatch(clearPoints());
     navigate('/');
   };
 
-
- // const createRouteHandler = (): void => {
-   // dispatch(clearPoints())
-    //navigate('/createRoute');
+  // const createRouteHandler = (): void => {
+  // dispatch(clearPoints())
+  //navigate('/createRoute');
   //};
 
   const handleSuccess = () => {
@@ -100,6 +99,14 @@ export function Header(): React.JSX.Element {
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.HOME)}>
                   Маршруты
                 </Button>
+                <Button
+                  h={55}
+                  onClick={() => {
+                    navigate(CLIENT_ROUTES.FAVORITE_FORM);
+                  }}
+                >
+                  Профиль
+                </Button>
 
                 <Button h={55} onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}>
                   Создать маршрут
@@ -133,6 +140,7 @@ export function Header(): React.JSX.Element {
               </Group>
             )}
           </Group>
+
           <Burger
             // bg={rgba('gray', 0.07)}
             pl={5}
@@ -180,15 +188,15 @@ export function Header(): React.JSX.Element {
             </Button>
             {user ? (
               <>
-                {/* <Button
+                <Button
                   className={classes.buttons}
                   onClick={() => {
-                    navigate('/profile');
+                    navigate(CLIENT_ROUTES.FAVORITE_FORM);
                     closeDrawer();
                   }}
                 >
                   Профиль
-                </Button> */}
+                </Button>
 
                 <Button
                   className={classes.buttons}

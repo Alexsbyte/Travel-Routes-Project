@@ -15,7 +15,7 @@ interface RouteFavoriteProps {
 
 export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Element {
   const dispatch = useAppDispatch();
-  const { currentFavorite, loading, error } = useAppSelector((state) => state.favorites);
+  const { currentFavorite, loading } = useAppSelector((state) => state.favorites);
   const user = useAppSelector((state) => state.user.user);
   const [errorState, setErrorState] = useState<string | null>(null);
 
@@ -35,15 +35,12 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
   };
 
   useEffect(() => {
-    if (error) {
-      setErrorState(error); // используем ошибку из состояния Redux
-      return;
-    }
-    if (route_id) {
+    console.log(route_id, currentFavorite)
+    if (route_id && !currentFavorite ) {
+        console.log(route_id, 'renderrenderrendrreerreererererwfafdsvavwrbgwrgj')
       dispatch(getOneRouteFavoriteThunk(route_id));
     }
-    setErrorState(null);
-  }, [dispatch, route_id, error]);
+  }, [dispatch, route_id]);
 
   if (loading) {
     return <Spin size="large" />;

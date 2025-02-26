@@ -1,5 +1,6 @@
 // import { UserType } from "@/entities/user";
 
+import { Route } from "@/entities/route";
 import { UserType } from "@/entities/user";
 
 export type FavoriteType = {
@@ -8,6 +9,7 @@ export type FavoriteType = {
   user_id: number;
   userFav: UserType;
   currentFavorite: FavoriteType | null; // Текущий лайк для маршрута
+  route: Route;
   createdAt: Date;
   updatedAt: Date;
 };

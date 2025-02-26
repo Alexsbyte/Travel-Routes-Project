@@ -5,6 +5,7 @@ import { VerifyEmail } from '@/features/auth/VerifyEmail';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { Suspense, lazy } from 'react';
 import { CommentSection } from '@/widgets/CommentSection';
+import { UserProfilePage } from '@/pages/UserProfilePage';
 // Ленивый импорт страниц
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
@@ -40,6 +41,11 @@ export const router = createBrowserRouter([
         path: CLIENT_ROUTES.COMMENT_FORM,
         element: <CommentSection />,
       },
+      {
+        path: CLIENT_ROUTES.FAVORITE_FORM,
+        element: <UserProfilePage />,
+      },
+
       {
         path: CLIENT_ROUTES.ROUTE_FORM,
         element: (

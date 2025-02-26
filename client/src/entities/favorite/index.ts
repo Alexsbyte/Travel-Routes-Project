@@ -7,4 +7,4 @@ export {
   getOneRouteFavoriteThunk,
 } from './api/FavoriteThunk';
 
-export type { FavoriteType, ArrayFavoriteType, FavoriteCheckState } from './model/FavoriteType';
+export type { FavoriteType, ArrayFavoriteType} from './model/FavoriteType';
