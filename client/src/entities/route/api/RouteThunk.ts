@@ -23,6 +23,24 @@ export const getAllRoutesThunk = createAsyncThunk<
   }
 });
 
+
+export const getOneRouteThunk = createAsyncThunk<
+  IApiResponseSuccess<Route>,
+  number,
+  { rejectValue: IApiResponseReject }
+>(ROUTE_THUNKS_TYPES.GET_ONE_ROUTE, async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosInstance.get<IApiResponseSuccess<Route>>(
+      `${ROUTE_API_ROUTES.GET_ALL}/${id}`,
+    );
+
+    return data;
+  } catch (error) {
+    const err = error as AxiosError<IApiResponseReject>;
+    return rejectWithValue(err.response!.data);
+  }
+});
+
 export const createRouteThunk = createAsyncThunk<
   IApiResponseSuccess<Route>,
   FormData,

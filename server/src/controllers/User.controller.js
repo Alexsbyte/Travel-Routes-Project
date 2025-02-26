@@ -62,7 +62,7 @@ class UserController {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const verificationToken = crypto.randomBytes(32).toString('hex');
-      // const resetTokenExpiry = Date.now() + 3600000;
+       const resetTokenExpiry = Date.now() + 3600000;
       const newUser = await UserService.create({
         email: normalizedEmail,
         username,
@@ -70,7 +70,7 @@ class UserController {
         password: hashedPassword,
         isVerified: false,
         verificationToken,
-        // verificationTokenExpiry: resetTokenExpiry, // ✅ Сохраняем срок действия
+        verificationTokenExpiry: resetTokenExpiry, // ✅ Сохраняем срок действия
       });
 
       const confirmLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
@@ -100,7 +100,6 @@ class UserController {
 
       res
         .status(201)
-        // .cookie('refreshToken', refreshToken, cookiesConfig)
         .json(
           formatResponse(
             201,

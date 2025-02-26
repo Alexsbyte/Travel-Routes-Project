@@ -2,8 +2,11 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate({ Route }) {
+    static associate({ Route, Comment }) {
       this.hasMany(Route, { foreignKey: 'user_id' });
+      this.hasMany(Comment, {foreignKey: 'user_id',
+        as: 'comments',
+      });
     }
   }
   User.init(

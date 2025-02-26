@@ -3,14 +3,20 @@ const { Comment, Route, User } = require('../db/models');
 class CommentService {
   static async getById(id) {
     return await Comment.findByPk(id, {
-      include: [{ model: Route, as: 'routeComment' }], // Включаем информацию о трассе
+      include: [
+        { model: Route, as: 'routeComment' },
+        { model: User, as: 'userComment' },
+      ], // Включаем информацию о трассе
     });
   }
 
-  static async getAll(user_id) {
+  static async getAll(user_id, route_id) {
     return await Comment.findAll({
-      where: { user_id },
-      include: [{ model: Route, as: 'routeComment' }],
+      where: { user_id, route_id },
+      include: [
+        { model: Route, as: 'routeComment' },
+        { model: User, as: 'userComment' },
+      ],
     });
   }
 
@@ -29,6 +35,7 @@ class CommentService {
 
   static async delete(comment_id) {
     const comment = await this.getById(comment_id);
+    if (!comment) return null;
     if (comment) {
       await comment.destroy();
     }

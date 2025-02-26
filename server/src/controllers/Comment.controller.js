@@ -2,7 +2,7 @@ const CommentService = require('../services/Comment.service');
 const formatResponse = require('../utils/formatResponse');
 
 class CommentController {
-  static async getOneRouteItem(req, res) {
+  static async getOneRouteComments(req, res) {
     try {
       const { route_id } = req.params;
       const comments = await CommentService.getByRouteId(route_id);
@@ -20,10 +20,10 @@ class CommentController {
       const comments = await CommentService.getAll(user_id);
 
       if (!comments || comments.length === 0) {
-        return res.status(200).json(formatResponse(200, 'No comments found', []));
+        return res.status(200).json(formatResponse(200, 'Комментарии отсутствуют', []));
       }
 
-      return res.status(200).json(formatResponse(200, 'Comments found', comments));
+      return res.status(200).json(formatResponse(200, 'Комментарии успешно найдены', comments));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
@@ -38,7 +38,7 @@ class CommentController {
       if (!text || !route_id) {
         return res
           .status(400)
-          .json(formatResponse(400, 'Text and trailId are required', null));
+          .json(formatResponse(400, 'Заполните все поля', null));
       }
       const comment = await CommentService.create(user_id, route_id, text);
       return res.status(201).json(formatResponse(201, 'success', comment));
@@ -62,18 +62,18 @@ class CommentController {
       if (!comment) {
         return res
           .status(404)
-          .json(formatResponse(404, 'comment not found', null, 'comment not found'));
+          .json(formatResponse(404, 'Комментарий не найден', null, 'Комментарий не найден'));
       }
       if (comment.user_id !== user_id) {
         console.log('User IDs do not match');
         return res
-          .status(400)
+          .status(403)
           .json(
             formatResponse(
-              400,
-              'No rights to delete comment',
+              403,
+              'Нет прав для удаления комментария',
               null,
-              'No rights to delete comment',
+              'Нет прав для удаления комментария',
             ),
           );
       }
@@ -81,7 +81,7 @@ class CommentController {
 
       res
         .status(200)
-        .json(formatResponse(200, 'Comment successfully deleted', deleteComment));
+        .json(formatResponse(200, 'Комментарий успешно удален', deleteComment));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));

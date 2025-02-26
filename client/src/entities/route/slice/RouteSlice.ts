@@ -4,6 +4,7 @@ import {
   createRouteThunk,
   deleteRouteThunk,
   updateRouteThunk,
+  getOneRouteThunk,
 } from '../api/RouteThunk';
 import { Route } from '../model/RouteTypes';
 import { message } from 'antd';
@@ -11,13 +12,14 @@ import { message } from 'antd';
 
 interface RouteState {
   routes: Route[];
-
+  route: Route | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: RouteState = {
   routes: [],
+  route:  null,
   loading: false,
   error: null,
 };
@@ -37,7 +39,7 @@ export const routeSlice = createSlice({
         state.routes = action.payload.data;
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(getAllRoutesThunk.rejected, (state, action) => {
         state.loading = false;
@@ -51,7 +53,7 @@ export const routeSlice = createSlice({
         state.error = null;
       })
       .addCase(createRouteThunk.fulfilled, (state, action) => {
-        state.routes = [...state.routes, action.payload.data];
+        state.routes.push(action.payload.data);
         state.loading = false;
         state.error = null;
         message.success(action.payload.message);
@@ -91,6 +93,21 @@ export const routeSlice = createSlice({
         message.success(action.payload.message);
       })
       .addCase(deleteRouteThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload!.error;
+      })
+      //Get one route
+      .addCase(getOneRouteThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOneRouteThunk.fulfilled, (state, action) => {
+        state.route = action.payload.data;
+        state.loading = false;
+        state.error = null;
+        message.success(action.payload.message);
+      })
+      .addCase(getOneRouteThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload!.error;
       });
