@@ -31,12 +31,14 @@ export const commentsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createCommentThunk.fulfilled, (state, action: PayloadAction<{ data: CommentType; message: string }>) => {
-        state.comments = [...state.comments, action.payload.data];
-        state.loading = false;
-        state.error = null;
-        message.success("Комментарий добавлен");
-      })
+      .addCase(
+        createCommentThunk.fulfilled,
+        (state, action: PayloadAction<{ data: CommentType; message: string }>) => {
+          state.comments = [...state.comments, action.payload.data];
+          state.loading = false;
+          state.error = null;
+        },
+      )
       .addCase(createCommentThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload!.error;

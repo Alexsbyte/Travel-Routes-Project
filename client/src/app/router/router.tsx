@@ -41,7 +41,11 @@ export const router = createBrowserRouter([
       },
       {
         path: CLIENT_ROUTES.COMMENT_FORM,
-        element: <CommentSection />,
+        element: (
+          <AuthGuard>
+            <CommentSection />
+          </AuthGuard>
+        ),
       },
       {
         path: CLIENT_ROUTES.FAVORITE_FORM,

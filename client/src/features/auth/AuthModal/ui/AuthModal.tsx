@@ -42,17 +42,22 @@ export const AuthModal: React.FC<ModalProps> = ({
       onSuccess?.(); // ✅ Вызываем, если передан
       onClose();
     } catch (error) {
-      antMessage.error(error instanceof Error ? error.message : 'Ошибка регистрации');
+      antMessage.error(
+        error instanceof Error
+          ? error.message
+          : 'Ошибка при регистрации. Попробуйте снова ',
+      );
     }
   };
 
   const handleSignIn = async (data: ISignInData) => {
     try {
       await dispatch(signInThunk(data)).unwrap();
-      antMessage.success('Авторизация успешна!');
       onClose();
     } catch (error) {
-      antMessage.error(error instanceof Error ? error.message : 'Ошибка авторизации');
+      antMessage.error(
+        error instanceof Error ? error.message : 'Неверный логин или пароль',
+      );
       onClose();
     }
   };

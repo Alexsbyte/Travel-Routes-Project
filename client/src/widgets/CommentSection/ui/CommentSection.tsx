@@ -7,21 +7,11 @@ import {
   getOneRouteCommentsThunk,
 } from '@/entities/comment/api/CommentThunk';
 import { CommentType } from '@/entities/comment/model/CommentTypes';
-import {
-  Button,
-  Card,
-  Title,
-  Divider,
-  Modal,
-  Text,
-  Group,
-  Avatar,
-} from '@mantine/core';
+import { Button, Card, Title, Divider, Modal, Text, Group, Avatar } from '@mantine/core';
 import { message as antMessage } from 'antd';
 import { useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 
 export function CommentSection(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -87,21 +77,21 @@ export function CommentSection(): React.JSX.Element {
 
   return (
     <div className={styles.commentSection}>
-      <Title className={styles.title} order={3}>Комментарии</Title>
+      <Title className={styles.title} order={3}>
+        Комментарии
+      </Title>
       <Divider my="sm" />
       <div className={styles.commentForm}>
-      
-      <ReactQuill 
-        value={newComment} 
-        onChange={setNewComment} 
-        theme="snow" 
-        
-        placeholder="Напишите комментарий..." 
-        className={styles.customQuill} // Используем стили из модуля
-      />
+        <ReactQuill
+          value={newComment}
+          onChange={setNewComment}
+          theme="snow"
+          placeholder="Напишите комментарий..."
+          className={styles.customQuill} // Используем стили из модуля
+        />
 
         <div className={styles.commentButtonWrapper}>
-          <Button h={40} fz={18}
+          <Button
             onClick={handleAddComment}
             disabled={loading}
             className={styles.commentButton}
@@ -117,61 +107,72 @@ export function CommentSection(): React.JSX.Element {
       ) : (
         <div className={styles.commentList}>
           {comments?.map((comment: CommentType) => (
-           <Card key={comment.id} className={styles.commentItem}>
-          <div className={styles.commentHeader}>
-          <div className={styles.commentInfo}>
-            {user?.avatar && (
-              <Avatar
-                src={`${import.meta.env.VITE_API}images/avatars/${user.avatar}`}
-                alt="User Avatar"
-                className={styles.avatar}
+            <Card key={comment.id} className={styles.commentItem}>
+              <div className={styles.commentHeader}>
+                <div className={styles.commentInfo}>
+                  {user?.avatar && (
+                    <Avatar
+                      src={`${import.meta.env.VITE_API}images/avatars/${user.avatar}`}
+                      alt="User Avatar"
+                      className={styles.avatar}
+                    />
+                  )}
+                  <Text fw={'bold'} className={styles.commentUsername}>
+                    {comment.userComment?.username}
+                  </Text>
+                  <p className={styles.date}>
+                    {new Date(comment.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+
+                {user?.id === comment.user_id && (
+                  <Button
+                    h={40}
+                    fz={18}
+                    onClick={() => confirmDelete(comment.id)}
+                    className={styles.commentDelete}
+                    size="xs"
+                    variant="subtle"
+                  >
+                    Удалить
+                  </Button>
+                )}
+              </div>
+
+              {/* Текст комментария */}
+              <div
+                className={styles.commentText}
+                dangerouslySetInnerHTML={{ __html: comment.text }}
               />
-            )}
-            <Text fw={'bold'} className={styles.commentUsername}>
-              {comment.userComment?.username}
-            </Text>
-            <p className={styles.date}>
-              {new Date(comment.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-
-  {user?.id === comment.user_id && (
-    <Button
-      h={40}
-      fz={18}
-      onClick={() => confirmDelete(comment.id)}
-      className={styles.commentDelete}
-      size="xs"
-      variant="subtle"
-    >
-      Удалить
-    </Button>
-  )}
-</div>
-
-         
-           {/* Текст комментария */}
-           <div
-             className={styles.commentText}
-             dangerouslySetInnerHTML={{ __html: comment.text }}
-           />
-         </Card>
-         
-            
+            </Card>
           ))}
-          
         </div>
       )}
 
-      <Modal 
+      <Modal
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         className={styles.modalText}
       >
-        <Text fz={24} mb={20} className={styles.text} >Вы уверены, что хотите удалить этот комментарий?</Text>
-        <Group  pt={10} justify="flex-end">
-          <Button  h={40} fz={18} className={styles.modalButtons} onClick={handleDeleteComment}>Удалить</Button>
-          <Button  h={40} fz={18} className={styles.modalButtons} onClick={() => setModalOpen(false)} variant="outline">
+        <Text fz={24} mb={20} className={styles.text}>
+          Вы уверены, что хотите удалить этот комментарий?
+        </Text>
+        <Group pt={10} justify="flex-end">
+          <Button
+            h={40}
+            fz={18}
+            className={styles.modalButtons}
+            onClick={handleDeleteComment}
+          >
+            Удалить
+          </Button>
+          <Button
+            h={40}
+            fz={18}
+            className={styles.modalButtons}
+            onClick={() => setModalOpen(false)}
+            variant="outline"
+          >
             Отмена
           </Button>
         </Group>
@@ -179,4 +180,3 @@ export function CommentSection(): React.JSX.Element {
     </div>
   );
 }
-
