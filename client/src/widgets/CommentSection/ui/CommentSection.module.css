@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 .commentSection {
     padding: 20px;
     max-width: 1000px; /* Ограничиваем ширину формы */
     margin: 0 auto;  /* Выравнивание по центру */
+
   }
   .commentForm {
     display: flex;
@@ -13,7 +18,7 @@
   }
 
   .commentButtonWrapper {
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: flex-end; /* Выравнивание кнопки по правому краю */
 
@@ -50,13 +55,15 @@
   .date {
     color: #6c757d;
     font-size: 12px;
-    margin-bottom: 4px;
+    margin-left: 8px; /* Даем небольшой отступ от имени */
+    white-space: nowrap;
   }
   
   .commentHeader {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between; /* Распределяем контент по краям */
+    width: 100%;
     margin-bottom: 8px;
   }
   .avatar {
@@ -67,27 +74,64 @@
     margin-right: 10px; /* Немного отступа от имени */
   }
   
-  .username {
+  .username .commentHeader {
     font-weight: bold;
     font-size: 16px;
+    font-family: 'Exo 2' !important;
+    
   }
   
-  .commentText {
+  .commentText .username {
     font-size: 15px;
     line-height: 1.4;
     color: #333;
     font-family: 'Verdana', sans-serif;  /* Пример изменения шрифта */
   }
   
+  .commentUsername {
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Exo 2', sans-serif;
+    margin-right: auto; /* Прижимает к левому краю */
+    color: var(--secondary) !important;
+
+  }
+
+
   .commentDelete {
-    align-self: flex-end;
-    margin-left: auto;  /* Кнопка справа */
-    color: rgb(30, 179, 130);
-    font-size: 20px;
-    background: #007bff;
+    color: rgb(174, 6, 6) !important;
+    font-size: 14px;
+    margin-left: 10px; /* Отделяем кнопку от даты */}
+  
+  .modalButtons  {
+    font-family: 'Exo 2';
   }
   
-  .modalButtons .Button {
-    background: #007bff;
+  .customQuill {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    min-height: 200px ;
+    padding: 10px ;
+    width: 90%;
+    font-family: 'Exo 2';
   }
   
+  .customQuill {
+    min-height: 80px !important;
+    font-size: 16px !important;
+    font-family: 'Exo 2';
+  }
+  
+  .modalText {
+    font-family: 'Exo 2' !important;
+  }
+    
+.title {
+  font-family: 'Exo 2'!important
+}
+
+.commentInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}

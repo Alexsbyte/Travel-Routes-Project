@@ -60,21 +60,13 @@ export function RouteForm(): React.JSX.Element {
   const [createButtonDisabled, setCreateButtonDisabled] = useState(false);
   const [generateButtonDisabled, setGenerateButtonDisabled] = useState(false);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error, '---', isLoading);
-
-  //     setModerModalOpened(true);
-  //   }
-  // }, [error, isLoading]);
-
   const form = useForm({
     initialValues: initialState,
     validate: {
       title: (value) => {
         if (value.trim().length === 0) {
           return 'Это поле обязательно для заполнения.';
-        } else if (value.trim().length > 30) {
+        } else if (value.trim().length > 50) {
           return `Это поле не должно быть длинее 30 символов, сейчас ${
             value.trim().length
           }`;
@@ -85,7 +77,7 @@ export function RouteForm(): React.JSX.Element {
 
       description: (value) => {
         if (value.trim().length === 0) {
-          return 'Это поле обязательно для заполнения!';
+          return 'Это поле обязательно для заполнения.';
         } else if (value.trim().length > 500) {
           return `Это поле не должно быть длинее 500 символов, сейчас ${
             value.trim().length
@@ -96,7 +88,7 @@ export function RouteForm(): React.JSX.Element {
       },
       category: (value) => {
         if (!value || value?.trim().length === 0) {
-          return 'Выберите тип маршрута';
+          return 'Выберите тип маршрута.';
         } else {
           return null;
         }
@@ -118,13 +110,13 @@ export function RouteForm(): React.JSX.Element {
         });
 
         if (notSupported) {
-          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт';
+          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт.';
         }
         if (value.length === 0) {
-          return 'Это поле обязательно для заполнения';
+          return 'Добавьте минимум 1 фотографию.';
         }
         if (value.length > 6) {
-          return 'Вы не можите добавить больше 6 фотографий';
+          return 'Вы не можите добавить больше 6 фотографий.';
         }
 
         return null;
@@ -150,7 +142,10 @@ export function RouteForm(): React.JSX.Element {
     e?.preventDefault();
     try {
       dispatch(
-        checkModerationThunk({ title: values.title, description: values.description }),
+        checkModerationThunk({
+          title: values.title,
+          description: values.description,
+        }),
       ).then((res) => {
         if (res.payload?.data) {
           console.log(res.payload?.data);
@@ -170,11 +165,14 @@ export function RouteForm(): React.JSX.Element {
           formData.append('files', file);
         });
 
-        dispatch(createRouteThunk(formData));
+        dispatch(createRouteThunk(formData)).then(() => {
+          antMessage.success('Успешно создано!');
+          navigate(CLIENT_ROUTES.HOME);
+          setCreateButtonDisabled(false);
+        });
+
         dispatch(clearPoints());
         form.reset();
-        antMessage.success('Успешно создано!');
-        navigate(CLIENT_ROUTES.HOME);
         setCreateButtonDisabled(false);
       });
     } catch (error) {
@@ -233,7 +231,9 @@ export function RouteForm(): React.JSX.Element {
             </Box>
 
             <div className={style.formContainer}>
-              <p>Конструктор маршрутов</p>
+              <Title mt={20} order={2}>
+                Конструктор маршрутов
+              </Title>
               <Space h="md" />
               <Input.Wrapper
                 label="Название маршрута"
@@ -243,10 +243,10 @@ export function RouteForm(): React.JSX.Element {
               >
                 <Input
                   {...form.getInputProps('title')}
-                  placeholder="Название маршрута (не более 30 смволов)"
+                  placeholder="Название маршрута (не более 50 смволов)"
                 />
                 {form.errors.title && (
-                  <div style={{ color: 'red', fontSize: '12px' }}>
+                  <div style={{ textAlign: 'left', color: 'red', fontSize: '12px' }}>
                     {form.errors.title}
                   </div>
                 )}
@@ -272,11 +272,12 @@ export function RouteForm(): React.JSX.Element {
                   placeholder="Описание маршрута (не более 500 символов)"
                 />
                 <Button
-                  variant="subtle"
+                  w={40}
+                  h={40}
                   style={{
                     position: 'absolute',
                     top: '100px',
-                    right: '10px',
+                    right: '5px',
                     padding: '5px',
                     backgroundColor: 'transparent',
                   }}
@@ -289,7 +290,7 @@ export function RouteForm(): React.JSX.Element {
                   {generateButtonDisabled ? (
                     <Loader size="sm" color="white" />
                   ) : (
-                    <RiAiGenerate2 size={20} />
+                    <RiAiGenerate2 size={30} />
                   )}
                 </Button>
               </Input.Wrapper>
@@ -310,7 +311,7 @@ export function RouteForm(): React.JSX.Element {
               <Space h="md" />
               <div className={style.buttonsToAdd}>
                 <Input.Wrapper
-                  label="Добавьте до 6 файлов"
+                  label="Добавьте до 6 фото"
                   labelProps={{
                     style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
                   }}
@@ -371,9 +372,11 @@ export function RouteForm(): React.JSX.Element {
                 <Space h="md" />
 
                 <Button
+                  className={style.cancel}
                   w={160}
                   h={50}
                   mt={25}
+                  bd={'1px solid blue'}
                   onClick={(event) => {
                     event.preventDefault();
                     navigate('/');
@@ -401,7 +404,6 @@ export function RouteForm(): React.JSX.Element {
             </>
           </Modal>
 
-          {/* Модальное окно для генерации красивого текста */}
           <Modal opened={textModalOpened} onClose={() => setTextModalOpened(false)}>
             <Flex direction="column" gap="md">
               <Title order={2}>Сгенерировать текст</Title>
@@ -432,18 +434,21 @@ export function RouteForm(): React.JSX.Element {
               {promptError.length && <Text c="red">{promptError.length}</Text>}
 
               <Group justify="flex-end">
+                <Button size="md" onClick={generateBeautifulText}>
+                  Сгенерировать
+                </Button>
                 <Button
+                  size="md"
                   onClick={() => {
                     setTextModalOpened(false);
                     setPrompt({ prompt: '', length: 100 });
-
                     setPromptError({ prompt: '', length: '' });
+                    setGenerateButtonDisabled((prev) => !prev);
                   }}
                   variant="outline"
                 >
                   Отмена
                 </Button>
-                <Button onClick={generateBeautifulText}>Сгенерировать</Button>
               </Group>
             </Flex>
           </Modal>
