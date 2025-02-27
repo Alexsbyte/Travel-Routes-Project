@@ -12,16 +12,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(to, subject, text, html) {
+async function sendEmail(to, subject, text) {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"Travel Routes" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     text,
-    html,
-    headers: {
-      'Content-Type': 'text/html; charset=UTF-8',
-    },
   };
 
   try {

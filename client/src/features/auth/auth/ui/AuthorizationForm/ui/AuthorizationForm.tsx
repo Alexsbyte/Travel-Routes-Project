@@ -34,7 +34,9 @@ AuthFormProps): React.JSX.Element {
       navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
       console.error(error);
-      antMessage.error('Ошибка авторизации');
+      antMessage.error(
+        'Подтвердите, пожалуйста, свой аккаунт. Ссылка для подтверждения отправлена вам на почту. ',
+      );
     }
   };
 

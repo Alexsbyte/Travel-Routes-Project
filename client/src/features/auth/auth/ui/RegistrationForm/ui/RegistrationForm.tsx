@@ -13,10 +13,7 @@ interface RegFormProps {
   onSwitch: () => void;
 }
 
-export function RegistrationForm({
-  handleSignUp,
-}: // onSwitch,
-RegFormProps): React.JSX.Element {
+export function RegistrationForm({ handleSignUp }: RegFormProps): React.JSX.Element {
   const { register, handleSubmit } = useForm<ISignUpData>();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);

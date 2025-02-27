@@ -6,7 +6,7 @@ export enum CLIENT_ROUTES {
   SIGN_OUT = '/signOut',
   ROUTE_FORM = '/createRoute',
   ROUTE_PAGE = '/route',
-  VERIFY_EMAIL = '/verify-email',
+  VERIFY_EMAIL = '/verify-email/:token',
   COMMENT_FORM = '/comments',
   FAVORITE_FORM = '/favorites',
 }

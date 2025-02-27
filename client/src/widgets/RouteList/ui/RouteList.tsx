@@ -29,7 +29,7 @@ export function RouteList({
             }`} // Добавляем класс для выделения выбранного маршрута
             key={route.id}
           >
-            <RouteItem route={route} key={route.id} selectedRoute={selectedRoute} />
+            <RouteItem route={route} key={route.id} showFavorite={false} />
           </div>
         ))}
     </div>

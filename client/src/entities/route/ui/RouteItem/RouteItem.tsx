@@ -1,23 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tag } from 'antd';
 import { Carousel } from '@mantine/carousel';
 import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import { FavoriteSection } from '@/widgets/FavoriteSection';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
-import { createFavoriteThunk } from '@/entities/favorite';
-// import styles from './RouteItem.module.css';
-
 
 type Props = {
   route: Route;
-  selectedRoute: Route | null;
+  showFavorite?: boolean;
 };
 
-export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
-  const user = useAppSelector((state) => state.user.user);
+export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Element {
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -25,25 +20,6 @@ export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
       return `${import.meta.env.VITE_API}images/routes/${url}`;
     }
   };
-
-  const [isLiked, setIsLiked] = useState(false);  // Локальное состояние для лайка маршрута
-  const dispatch = useAppDispatch();
-  const handleLikeClick = async () => {
-    if (!user) {
-      return; // Если пользователь не авторизован, ничего не делаем
-    }
-
-    try {
-      // Отправляем запрос на сервер для добавления маршрута в избранное
-      await dispatch(createFavoriteThunk({ user_id: user.id, route_id: route.id }));
-      setIsLiked(true);  // Обновляем локальное состояние лайка
-    } catch (error) {
-      console.error('Ошибка при добавлении в избранное:', error);
-    }
-  };
-
-
-  
 
   const slides = route.photos.map((photo, id) => (
     <Carousel.Slide key={id}>
@@ -136,8 +112,9 @@ export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
         </Text>
 
         <div>
-        <FavoriteSection route_id={route.id} />
-      </div>
+          {/* Показываем лайк только если showFavorite === true */}
+          {showFavorite && <FavoriteSection route_id={route.id}  />}
+        </div>
         <Link
           to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
           style={{ textDecoration: 'none' }}
@@ -146,20 +123,6 @@ export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
             Перейти к маршруту
           </Button>
         </Link>
-
-
-        <Button
-          color={isLiked ? 'red' : 'gray'}
-          onClick={handleLikeClick}
-          mt="md"
-          radius="md"
-          fullWidth
-        >
-          {isLiked ? 'Отменить лайк' : 'Понравился маршрут'}
-        </Button>
-
-
-        
       </Card>
     </>
   );

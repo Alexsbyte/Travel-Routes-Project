@@ -42,7 +42,9 @@ export const AuthModal: React.FC<ModalProps> = ({
       onSuccess?.(); // ✅ Вызываем, если передан
       onClose();
     } catch (error) {
-      antMessage.error(error instanceof Error ? error.message : 'Ошибка регистрации');
+      antMessage.error(
+        error instanceof Error ? error.message : 'Ошибка регистрации, попробуйте снова.',
+      );
     }
   };
 
@@ -52,7 +54,11 @@ export const AuthModal: React.FC<ModalProps> = ({
       antMessage.success('Авторизация успешна!');
       onClose();
     } catch (error) {
-      antMessage.error(error instanceof Error ? error.message : 'Ошибка авторизации');
+      antMessage.error(
+        error instanceof Error
+          ? error.message
+          : 'Подтвердите, пожалуйста, свой аккаунт. Ссылка для подтверждения отправлена вам на почту.',
+      );
       onClose();
     }
   };
