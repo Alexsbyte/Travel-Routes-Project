@@ -1,4 +1,4 @@
-const { Favorite, Route } = require('../db/models');
+const { Favorite, Route, Photo } = require('../db/models');
 
 class FavoriteService {
   static async getById(id) {
@@ -8,7 +8,19 @@ class FavoriteService {
   static async getAllFavorites(user_id) {
     return await Favorite.findAll({
       where: { user_id },
-      include: [{ model: Route, as: 'route' }],
+      include: [
+        {
+          model: Route,
+          as: 'route',
+          include: [
+            {
+              model: Photo,
+              as: 'photos',
+              attributes: ['id', 'url'],
+            },
+          ],
+        },
+      ],
     });
   }
 

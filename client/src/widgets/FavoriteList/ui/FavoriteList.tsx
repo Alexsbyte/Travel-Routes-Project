@@ -3,6 +3,7 @@ import { RouteItem } from '@/entities/route';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Spin } from 'antd';
 import React, { useEffect } from 'react';
+import styles from './FavoriteList.module.css';
 
 export function FavoriteList(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -16,28 +17,29 @@ export function FavoriteList(): React.JSX.Element {
   }, [dispatch, user?.id]);
 
   if (loading) {
-    console.log(loading, favorites, 111111111);
-
-    return <Spin size="large" />;
+    return (
+      <div className={styles.spinner}>
+        <Spin size="large" />
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className={styles.error}>{error}</div>;
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       {!favorites || favorites.length === 0 ? (
-        <p>Вы ещё не добавили маршруты в избранное.</p>
+        <p className={styles.emptyMessage}>Вы ещё не добавили маршруты в избранное.</p>
       ) : (
         favorites
-        .filter((favorite) => favorite.route)
-        .map((favorite) => (
-          <RouteItem
-             key={favorite.route.id}
-            route={favorite.route} // Передаём `Route` без изменений
-          />
-        ))
+          .filter((favorite) => favorite.route)
+          .map((favorite) => (
+            <div key={favorite.route.id} className={styles.card}>
+              <RouteItem route={favorite.route} />
+            </div>
+          ))
       )}
     </div>
   );

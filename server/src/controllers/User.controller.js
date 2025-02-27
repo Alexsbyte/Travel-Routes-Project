@@ -163,18 +163,18 @@ class UserController {
           .status(404)
           .json(formatResponse(404, 'User with this email not found', null));
       }
-      if (!user.isVerified) {
-        return res
-          .status(401)
-          .json(
-            formatResponse(
-              401,
-              'Please verify your email first.',
-              null,
-              'Email not verified',
-            ),
-          );
-      }
+      // if (!user.isVerified) {
+      //   return res
+      //     .status(401)
+      //     .json(
+      //       formatResponse(
+      //         401,
+      //         'Please verify your email first.',
+      //         null,
+      //         'Email not verified',
+      //       ),
+      //     );
+      // }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {

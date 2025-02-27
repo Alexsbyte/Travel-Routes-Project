@@ -1,20 +1,8 @@
-/* .favoriteButton {
-    font-size: 24px;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .liked {
-    color: red !important;
-  }
-  
-  .notLiked {
-    color: #000;
-  }
-   */
+
 
 
    .favoriteButton {
-    font-size: 36px;  /* Основной размер кнопки */
+    font-size: 30px;  /* Основной размер кнопки */
     transition: color 0.3s ease-in-out;
     display: flex; /* Для выравнивания иконки */
     align-items: center; /* Выравнивание по вертикали */
@@ -25,12 +13,12 @@
   
   .liked {
     color: red !important;
-    font-size: 38px; /* Размер лайка, когда он выбран */
+    font-size: 30px; /* Размер лайка, когда он выбран */
   }
   
   .notLiked {
     color: #000;
-    font-size: 38px; /* Размер лайка, когда он не выбран */
+    font-size: 30px; /* Размер лайка, когда он не выбран */
   }
   
   .buttonContainer {

@@ -10,9 +10,9 @@ class FavoriteController {
       const favorite = await FavoriteService.getByRouteId(user_id, route_id);
  
       if (!favorite) {
-        return res.status(200).json(formatResponse(200, 'success', null));
+        return res.status(200).json(formatResponse(200, 'Избранные маршруты отсутствуют', null));
       }
-  return res.status(200).json(formatResponse(200, 'success', favorite));
+  return res.status(200).json(formatResponse(200, 'Маршрут успешно добавлен в избранное', favorite));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
@@ -22,9 +22,15 @@ class FavoriteController {
   static async getAllFavorites(req, res) {
     try {
       const { user } = res.locals;
+      if (!user) {
+        return res.status(401).json(formatResponse(401, 'Пользователь не авторизован', null));
+      }
+      if (!user || !user.id) {
+        return res.status(400).json(formatResponse(400, 'Авторизуйтесь, чтобы добавить маршрут в избранное'));
+      }
       const user_id = user.id;
       const favorites = await FavoriteService.getAllFavorites(user_id);
-      return res.status(200).json(formatResponse(200, 'success', favorites));
+      return res.status(200).json(formatResponse(200, 'Успешно', favorites));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
@@ -43,7 +49,7 @@ class FavoriteController {
           .status(400)
           .json(formatResponse(400, 'Маршрут уже добавлен в избранное', null));
       }
-      return res.status(201).json(formatResponse(201, 'success', favorite));
+      return res.status(201).json(formatResponse(201, 'Список избранных маршрутов успешно загружен', favorite));
     } catch ({ message }) {
       console.error(message);
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
@@ -53,10 +59,20 @@ class FavoriteController {
   static async deleteFavorite(req, res) {
     try {
       const { user } = res.locals;
+      if (!user) {
+        return res.status(401).json(formatResponse(401, 'Пользователь не авторизован', null));
+      }
       const user_id = user.id;
       const { route_id } = req.params;
       //const { route_id } = req.body;
       const favorite = await FavoriteService.getByRouteId(user_id, route_id);
+      if (!favorite) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(404, 'Избранное не найдено', null, 'Избранное не найдено'),
+          );
+      }
 
       if (favorite.user_id !== user.id) {
         return res
