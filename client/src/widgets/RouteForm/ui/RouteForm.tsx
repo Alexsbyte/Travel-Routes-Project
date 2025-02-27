@@ -121,7 +121,7 @@ export function RouteForm(): React.JSX.Element {
           return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт';
         }
         if (value.length === 0) {
-          return 'Это поле обязательно для заполнения';
+          return 'Добавьте минимум 1 фотографию';
         }
         if (value.length > 6) {
           return 'Вы не можите добавить больше 6 фотографий';
@@ -170,12 +170,14 @@ export function RouteForm(): React.JSX.Element {
           formData.append('files', file);
         });
 
-        dispatch(createRouteThunk(formData));
+        dispatch(createRouteThunk(formData)).then(() => {
+          antMessage.success('Успешно создано!');
+          navigate(CLIENT_ROUTES.HOME);
+          setCreateButtonDisabled(false);
+        });
+
         dispatch(clearPoints());
         form.reset();
-        antMessage.success('Успешно создано!');
-        navigate(CLIENT_ROUTES.HOME);
-        setCreateButtonDisabled(false);
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -231,7 +233,9 @@ export function RouteForm(): React.JSX.Element {
             </Box>
 
             <div className={style.formContainer}>
-              <p>Конструктор маршрутов</p>
+              <Title mt={20} order={2}>
+                Конструктор маршрутов
+              </Title>
               <Space h="md" />
               <Input.Wrapper
                 label="Название маршрута"
@@ -244,7 +248,7 @@ export function RouteForm(): React.JSX.Element {
                   placeholder="Название маршрута (не более 30 смволов)"
                 />
                 {form.errors.title && (
-                  <div style={{ color: 'red', fontSize: '12px' }}>
+                  <div style={{ textAlign: 'left', color: 'red', fontSize: '12px' }}>
                     {form.errors.title}
                   </div>
                 )}
@@ -308,7 +312,7 @@ export function RouteForm(): React.JSX.Element {
               <Space h="md" />
               <div className={style.buttonsToAdd}>
                 <Input.Wrapper
-                  label="Добавьте до 6 файлов"
+                  label="Добавьте до 6 фото"
                   labelProps={{
                     style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
                   }}
@@ -325,7 +329,7 @@ export function RouteForm(): React.JSX.Element {
                     }}
                     multiple
                     accept="image/*"
-                    placeholder="Добавьте файлы"
+                    placeholder="Добавить фото"
                   />
                 </Input.Wrapper>
                 <Space h="md" />
@@ -348,9 +352,11 @@ export function RouteForm(): React.JSX.Element {
                 <Space h="md" />
 
                 <Button
+                  className={style.cancel}
                   w={160}
                   h={50}
                   mt={25}
+                  bd={'1px solid blue'}
                   onClick={(event) => {
                     event.preventDefault();
                     navigate('/');
@@ -378,7 +384,6 @@ export function RouteForm(): React.JSX.Element {
             </>
           </Modal>
 
-          {/* Модальное окно для генерации красивого текста */}
           <Modal opened={textModalOpened} onClose={() => setTextModalOpened(false)}>
             <Flex direction="column" gap="md">
               <Title order={2}>Сгенерировать текст</Title>
@@ -409,18 +414,21 @@ export function RouteForm(): React.JSX.Element {
               {promptError.length && <Text c="red">{promptError.length}</Text>}
 
               <Group justify="flex-end">
+                <Button size="md" onClick={generateBeautifulText}>
+                  Сгенерировать
+                </Button>
                 <Button
+                  size="md"
                   onClick={() => {
                     setTextModalOpened(false);
                     setPrompt({ prompt: '', length: 100 });
-
                     setPromptError({ prompt: '', length: '' });
+                    setGenerateButtonDisabled((prev) => !prev);
                   }}
                   variant="outline"
                 >
                   Отмена
                 </Button>
-                <Button onClick={generateBeautifulText}>Сгенерировать</Button>
               </Group>
             </Flex>
           </Modal>
