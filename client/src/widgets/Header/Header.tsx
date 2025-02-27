@@ -54,14 +54,13 @@ export function Header(): React.JSX.Element {
   };
 
   const redirectToHomPage = (): void => {
-    dispatch(clearPoints())
+    dispatch(clearPoints());
     navigate('/');
   };
 
-
- // const createRouteHandler = (): void => {
-   // dispatch(clearPoints())
-    //navigate('/createRoute');
+  // const createRouteHandler = (): void => {
+  // dispatch(clearPoints())
+  //navigate('/createRoute');
   //};
 
   const handleSuccess = () => {
@@ -81,7 +80,7 @@ export function Header(): React.JSX.Element {
   }, [token, navigate]);
 
   return (
-    <Box bg={rgba('gray', 0.07)}  mb={20}>
+    <Box bg={rgba('gray', 0.07)} mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group onClick={redirectToHomPage} style={{ cursor: 'pointer' }}>
@@ -120,7 +119,10 @@ export function Header(): React.JSX.Element {
                     />
                   </Menu.Target>
                   <Menu.Dropdown bd={'2 solid blue'}>
-                    {/* <Menu.Item onClick={() => navigate('/profile')}>Профиль</Menu.Item> */}
+                    <Menu.Item onClick={() => navigate(CLIENT_ROUTES.PROFILE)}>
+                      Профиль
+                    </Menu.Item>
+                    <Menu.Item>Избранное(в работе)</Menu.Item>
                     <Divider />
                     <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
                   </Menu.Dropdown>

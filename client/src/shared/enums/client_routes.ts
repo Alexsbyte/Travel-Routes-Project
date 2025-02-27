@@ -8,4 +8,5 @@ export enum CLIENT_ROUTES {
   ROUTE_PAGE = '/route',
   VERIFY_EMAIL = '/verify-email',
   COMMENT_FORM = '/comments',
+  PROFILE = '/profile',
 }
