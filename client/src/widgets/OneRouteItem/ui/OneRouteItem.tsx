@@ -3,6 +3,7 @@ import React from 'react';
 import { Route } from '@/entities/route';
 import { Box, Button } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { FavoriteSection } from '@/widgets/FavoriteSection';
 
 type Props = {
   route: Route;
@@ -32,6 +33,18 @@ export function OneRouteItem({ route }: Props): React.JSX.Element {
           </Button>
         </Box>
       </div>
+      <Box pb={20} pos={'relative'}>
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Назад
+        </Button>
+      </Box>
+     <div>
+     <FavoriteSection route_id={route.id} />
+   </div>
     </>
   );
 }

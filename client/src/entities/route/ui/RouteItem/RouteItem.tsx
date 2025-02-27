@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { Carousel } from '@mantine/carousel';
 import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { FavoriteSection } from '@/widgets/FavoriteSection';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
+import { createFavoriteThunk } from '@/entities/favorite';
+// import styles from './RouteItem.module.css';
+
 
 type Props = {
   route: Route;
+  selectedRoute: Route | null;
 };
 
-export function RouteItem({ route }: Props): React.JSX.Element {
+export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
+  const user = useAppSelector((state) => state.user.user);
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -18,6 +25,25 @@ export function RouteItem({ route }: Props): React.JSX.Element {
       return `${import.meta.env.VITE_API}images/routes/${url}`;
     }
   };
+
+  const [isLiked, setIsLiked] = useState(false);  // Локальное состояние для лайка маршрута
+  const dispatch = useAppDispatch();
+  const handleLikeClick = async () => {
+    if (!user) {
+      return; // Если пользователь не авторизован, ничего не делаем
+    }
+
+    try {
+      // Отправляем запрос на сервер для добавления маршрута в избранное
+      await dispatch(createFavoriteThunk({ user_id: user.id, route_id: route.id }));
+      setIsLiked(true);  // Обновляем локальное состояние лайка
+    } catch (error) {
+      console.error('Ошибка при добавлении в избранное:', error);
+    }
+  };
+
+
+  
 
   const slides = route.photos.map((photo, id) => (
     <Carousel.Slide key={id}>
@@ -37,14 +63,28 @@ export function RouteItem({ route }: Props): React.JSX.Element {
 
   return (
     <>
-      <Card shadow="sm" padding="lg" radius="md" withBorder mb={10}>
+      <Card
+        shadow="sm"
+        padding="lg"
+        radius="md"
+        withBorder
+        mb={10}
+        style={{
+          border:
+            selectedRoute?.id === route.id ? '3px solid rgba(16, 198, 46, 0.7)' : '',
+          backgroundColor:
+            selectedRoute?.id === route.id
+              ? 'rgba(127, 187, 244, 0.18)'
+              : 'rgba(127, 187, 244, 0.18)',
+        }}
+      >
         <Card.Section>
           {/* Обновили Box для карусели с фиксированной высотой */}
           <Box style={{ width: '100%', height: '230px', overflow: 'hidden' }}>
             <Carousel
-            mt={21}
-            mr={21}
-            ml={21}
+              mt={21}
+              mr={21}
+              ml={21}
               key={route.id}
               align="start"
               slidesToScroll={1}
@@ -66,24 +106,60 @@ export function RouteItem({ route }: Props): React.JSX.Element {
           </Box>
         </Card.Section>
 
-        <Group justify="space-between" mt="md" mb="xs">
-          <Text fw={500}>{route.title}</Text>
-          {route.category.split(',').map((category, id) => (
-            <Tag key={id} color="blue" style={{ marginRight: '8px' }}>
-              {category}
-            </Tag>
-          ))}
+        <Group
+          justify="space-between"
+          mt="md"
+          mb="xs"
+          style={{ position: 'relative', display: 'flex' }}
+        >
+          <Text fw={500} style={{ marginRight: '120px' }}>
+            {route.title}
+          </Text>
+          <div
+            style={{
+              position: 'absolute',
+              top: '0',
+              right: '0',
+              zIndex: 10,
+            }}
+          >
+            {route.category.split(',').map((category, id) => (
+              <Tag key={id} color="blue" style={{ marginRight: '8px' }}>
+                {category}
+              </Tag>
+            ))}
+          </div>
         </Group>
 
         <Text size="sm" c="dimmed">
           {route.description}
         </Text>
 
-        <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`} style={{ textDecoration: 'none' }} >
+        <div>
+        <FavoriteSection route_id={route.id} />
+      </div>
+        <Link
+          to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
+          style={{ textDecoration: 'none' }}
+        >
           <Button color="blue" fullWidth mt="md" radius="md">
             Перейти к маршруту
           </Button>
         </Link>
+
+
+        <Button
+          color={isLiked ? 'red' : 'gray'}
+          onClick={handleLikeClick}
+          mt="md"
+          radius="md"
+          fullWidth
+        >
+          {isLiked ? 'Отменить лайк' : 'Понравился маршрут'}
+        </Button>
+
+
+        
       </Card>
     </>
   );

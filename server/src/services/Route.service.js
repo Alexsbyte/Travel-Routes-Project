@@ -1,4 +1,4 @@
-const { Route, User, Photo, Point } = require('../db/models');
+const { Route, User, Photo, Point, Favorite } = require('../db/models');
 
 class RouteService {
   static async create(data) {
@@ -23,6 +23,11 @@ class RouteService {
           as: 'points',
           attributes: ['id', 'description', 'latitude', 'longitude'],
         },
+        // {
+        //   model: Favorite,
+        //   as: 'favorite',
+        //   attributes: ['id'],
+        // },
       ],
     });
   }

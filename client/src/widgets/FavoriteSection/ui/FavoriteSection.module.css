@@ -1,0 +1,29 @@
+
+
+
+   .favoriteButton {
+    font-size: 30px;  /* Основной размер кнопки */
+    transition: color 0.3s ease-in-out;
+    display: flex; /* Для выравнивания иконки */
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: flex-end; /* Расположение справа */
+    padding: 0; /* Убираем лишний padding */
+    width: 100%; /* Кнопка будет растягиваться по ширине */
+  }
+  
+  .liked {
+    color: red !important;
+    font-size: 30px; /* Размер лайка, когда он выбран */
+  }
+  
+  .notLiked {
+    color: #000;
+    font-size: 30px; /* Размер лайка, когда он не выбран */
+  }
+  
+  .buttonContainer {
+    display: flex;
+    justify-content: flex-end; /* Выравнивание кнопки по правому краю */
+    width: 100%;
+  }
+  
