@@ -1,3 +1,5 @@
+@import url('../../../app/colors.css');
+
 /* Общие стили */
 .routePage {
   padding: 20px;
@@ -27,12 +29,14 @@
 
 .toggleGallery {
   position: absolute;
+  font-size: 18px;
+  font-weight: bold;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 20px;
-  background-color: var(--primary);
-  color: var(--primary-container);
+  background-color: rgba(0, 180, 255, 0.7);
+  color: var(--on-primary);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -71,9 +75,6 @@
   border-radius: 8px;
 }
 
-
-
-
 /* Медиазапросы для мобильных устройств */
 @media (max-width: 768px) {
   .routeTitle {
@@ -92,5 +93,3 @@
     padding: 15px;
   }
 }
-
-

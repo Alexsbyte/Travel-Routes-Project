@@ -35,10 +35,11 @@ export const routeSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllRoutesThunk.fulfilled, (state, action) => {
-        state.routes = action.payload.data.sort((a, b) => b.id - a.id);
+
+        state.routes = action.payload.data.sort((a, b) => a.id - b.id);
         state.loading = false;
         state.error = null;
-        // message.success(action.payload.message);
+
       })
       .addCase(getAllRoutesThunk.rejected, (state, action) => {
         state.loading = false;
@@ -55,7 +56,7 @@ export const routeSlice = createSlice({
         state.routes.push(action.payload.data);
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(createRouteThunk.rejected, (state, action) => {
         state.loading = false;
@@ -89,7 +90,7 @@ export const routeSlice = createSlice({
         );
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(deleteRouteThunk.rejected, (state, action) => {
         state.loading = false;
@@ -104,12 +105,12 @@ export const routeSlice = createSlice({
         state.route = action.payload.data;
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(getOneRouteThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload!.error;
-      });
+      })
   },
 });
 

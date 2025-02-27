@@ -25,35 +25,20 @@ export const commentsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // GET ALL USER COMMENTS
-      // .addCase(getAllCommentsThunk.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(getAllCommentsThunk.fulfilled, (state, action) => {
-      //   state.comments = action.payload.data;
-      //   state.loading = false;
-      //   state.error = null;
-      //   message.success(action.payload.message);
-      // })
-      // .addCase(getAllCommentsThunk.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.comments = [];
-      //   state.error = action.payload!.error;
-      //   message.error(action.payload!.error);
-      // })
-
+ 
       // CREATE COMMENT
       .addCase(createCommentThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(createCommentThunk.fulfilled, (state, action: PayloadAction<{ data: CommentType; message: string }>) => {
-        state.comments = [...state.comments, action.payload.data];
-        state.loading = false;
-        state.error = null;
-        message.success(action.payload.message);
-      })
+      .addCase(
+        createCommentThunk.fulfilled,
+        (state, action: PayloadAction<{ data: CommentType; message: string }>) => {
+          state.comments = [...state.comments, action.payload.data];
+          state.loading = false;
+          state.error = null;
+        },
+      )
       .addCase(createCommentThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload!.error;

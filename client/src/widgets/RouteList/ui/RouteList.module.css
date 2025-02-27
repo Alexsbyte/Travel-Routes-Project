@@ -25,7 +25,7 @@
 
 /* Если выбран маршрут */
 /* .selected {
-  border: 5px solid green;
+  border: 5px solid rgb(149, 238, 149);
   background-color: #f0fff0;
 } */
 
@@ -41,4 +41,3 @@
   color: #888;
   margin-top: 20px;
 }
-

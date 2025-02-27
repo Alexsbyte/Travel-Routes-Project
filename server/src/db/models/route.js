@@ -17,13 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  Route.associate = function ({ User, Photo, Point }) {
+  Route.associate = function ({ User, Photo, Point, Favorite }) {
     Route.hasMany(Photo, { foreignKey: 'route_id', as: 'photos' });
     Route.belongsTo(User, {
       foreignKey: 'user_id',
       as: 'user',
     });
     Route.hasMany(Point, { foreignKey: 'route_id', as: 'points' });
+    Route.hasMany(Favorite, { foreignKey: 'route_id', as: 'favorite' });
   };
 
   return Route;

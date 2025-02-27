@@ -218,6 +218,8 @@ export function RouteForm(): React.JSX.Element {
     console.log(generatedText);
   };
 
+  const [files, setFiles] = useState<File[]>([]);
+
   return (
     <>
       {user && (
@@ -314,7 +316,7 @@ export function RouteForm(): React.JSX.Element {
                     style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
                   }}
                 >
-                  <FileInput
+                  {/* <FileInput
                     {...form.getInputProps('files')}
                     w={160}
                     h={50}
@@ -326,13 +328,34 @@ export function RouteForm(): React.JSX.Element {
                     }}
                     multiple
                     accept="image/*"
-                    placeholder="Добавить фото"
+                    placeholder="Добавьте файлы"
+                  /> */}
+                  <FileInput
+                    value={files}
+                    onChange={(newFiles) => setFiles(newFiles)}
+                    multiple
+                    accept="image/*"
+                    placeholder={
+                      files.length > 0
+                        ? `Выбрано файлов: ${files.length}`
+                        : 'Добавьте файлы'
+                    }
+                    styles={{
+                      input: {
+                        paddingTop: '12px',
+                        paddingBottom: '12px',
+                        height: files.length > 0 ? 'auto' : '50px', // Автоматическая высота при наличии файлов
+                        minHeight: '50px', // Минимальная высота
+                        width: files.length > 0 ? '100%' : '170px', // Динамическая ширина
+                        maxWidth: '95%',
+                      },
+                    }}
                   />
                 </Input.Wrapper>
                 <Space h="md" />
 
                 <Button
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   disabled={createButtonDisabled}
@@ -350,7 +373,7 @@ export function RouteForm(): React.JSX.Element {
 
                 <Button
                   className={style.cancel}
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   bd={'1px solid blue'}

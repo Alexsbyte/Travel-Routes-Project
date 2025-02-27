@@ -1,28 +1,30 @@
 import { usePageTitle } from '@/shared/hooks/pageTitle';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { getAllRoutesThunk } from '@/entities/route';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { RouteList } from '@/widgets';
 import { Filter } from '@/widgets/RouteList/utils/filter';
 import { MapHome } from '@/widgets/MapHome';
-import { Route } from '@/entities/route';  // Тип маршрута
+import { Route } from '@/entities/route'; // Тип маршрута
 import { ScrollArea } from '@mantine/core';
-
+import { Loader } from '@/shared/ui/Loader';
 
 export function RoutesPage(): React.JSX.Element {
   usePageTitle();
   const dispatch = useAppDispatch();
   const routes = useAppSelector((store) => store.route.routes); // Все маршруты
+  const loading = useAppSelector((store) => store.route.loading);
   const [filteredRoutes, setFilteredRoutes] = useState(routes); // Отфильтрованные маршруты
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null); // Состояние для выбранного маршрута
+  console.log(filteredRoutes);
 
   useEffect(() => {
     dispatch(getAllRoutesThunk());
   }, [dispatch]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     filterRoutes(selectedCategory, searchKeyword);
   }, [selectedCategory, searchKeyword, routes]);
 
@@ -55,30 +57,51 @@ export function RoutesPage(): React.JSX.Element {
     ? [selectedRoute, ...filteredRoutes.filter((route) => route.id !== selectedRoute.id)]
     : filteredRoutes;
 
+  if (loading && routes.length === 0) {
+    return <Loader loading={loading} />;
+  }
+
   return (
     <div>
       <div style={{ display: 'flex' }}>
         <div style={{ width: '70%' }}>
-          <div style={{ width: '100%', height: '622px', padding: '0px 30px' }}>
+          {/* Оборачиваем карту в контейнер с скруглением и скрываем переполнение */}
+          <div
+            style={{
+              width: '100%',
+              height: '622px',
+              padding: '10px 0px 0px 30px',
+              borderRadius: '15px', // Скругление углов
+              overflow: 'hidden', // Скрытие переполнения
+            }}
+          >
             {/* Передаем все маршруты в MapHome */}
-            <MapHome filteredRoutes={routes} onPointClick={handlePointClick} onMapClick={handleMapClick} />
+            <MapHome
+              filteredRoutes={filteredRoutes}
+              onPointClick={handlePointClick}
+              onMapClick={handleMapClick}
+            />
           </div>
         </div>
-
+        {/* Контейнер под Фильтры и Карточки */}
         <div style={{ width: '30%' }}>
-          <div style={{padding: '0px 40px 0 0' }}> 
+          <div style={{ padding: '0px 40px  0 40px' }}>
+            {/* Фильтры */}
             <Filter onFilterChange={handleFilterChange} />
 
-        <ScrollArea.Autosize mah={550} maw={500} mx="auto">
-        <RouteList 
-            filteredRoutes={sortedRoutes}
-            selectedRoute={selectedRoute}
-            sortedRoutes={sortedRoutes}
-          />
-      </ScrollArea.Autosize>
+            <Loader loading={loading}>
+              <ScrollArea.Autosize mah={550} maw={500} mx="auto">
+                {/* Карточки */}
+                <RouteList
+                  filteredRoutes={sortedRoutes}
+                  selectedRoute={selectedRoute}
+                  sortedRoutes={sortedRoutes}
+                />
+              </ScrollArea.Autosize>
+            </Loader>
 
-          {/* Передаем отсортированные маршруты */}
-        </div>
+            {/* Передаем отсортированные маршруты */}
+          </div>
         </div>
       </div>
     </div>

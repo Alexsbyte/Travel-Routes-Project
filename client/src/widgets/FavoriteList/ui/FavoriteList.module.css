@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .spinner {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .emptyMessage {
+    text-align: center;
+    font-size: 16px;
+    color: var(--on-surface);
+  }
+  
+  .card {
+    width: 100%;
+    max-width: 600px; /* Уменьшенная карточка */
+    padding: 12px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  

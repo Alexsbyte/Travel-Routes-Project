@@ -9,4 +9,5 @@ export enum CLIENT_ROUTES {
   VERIFY_EMAIL = '/verify-email',
   COMMENT_FORM = '/comments',
   PROFILE = '/profile',
+  FAVORITE_FORM = '/favorites',
 }
