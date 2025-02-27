@@ -122,8 +122,11 @@ export function Header(): React.JSX.Element {
                     <Menu.Item onClick={() => navigate(CLIENT_ROUTES.PROFILE)}>
                       Профиль
                     </Menu.Item>
-                    <Menu.Item>Избранное(в работе)</Menu.Item>
+
+                    {/* <Menu.Item >Избранное(в работе)</Menu.Item> */}
+
                     <Divider />
+
                     <Menu.Item onClick={signOutHandler}>Выйти</Menu.Item>
                     <Menu.Item onClick={() => navigate("/favorites")}>Избранное</Menu.Item>
                   </Menu.Dropdown>

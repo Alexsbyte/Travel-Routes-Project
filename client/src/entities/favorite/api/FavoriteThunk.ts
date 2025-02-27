@@ -5,6 +5,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '@/shared/lib/axiosInstance';
 import { FAVORITE_API_ROUTES } from '@/shared/enums/apiRoutes';
 import { AxiosError } from 'axios';
+import { Route } from '@/entities/route';
 
 export const createFavoriteThunk = createAsyncThunk<
   IApiResponseSuccess<FavoriteType>,
@@ -57,16 +58,17 @@ export const getOneRouteFavoriteThunk = createAsyncThunk<
 });
 
 export const getAllUserFavoritesThunk = createAsyncThunk<
-  IApiResponseSuccess<FavoriteType[]>,
+  IApiResponseSuccess<Route[]>,
   undefined,
   { rejectValue: IApiResponseReject }
 >(
   FAVORITE_API_ROUTES.GET_ALL_USER_FAVORITES,
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.get<IApiResponseSuccess<FavoriteType[]>>(
+      const { data } = await axiosInstance.get<IApiResponseSuccess<Route[]>>(
         `${FAVORITE_API_ROUTES.GET_ALL_USER_FAVORITES}`,
       );
+
       return data;
     } catch (error) {
       const err = error as AxiosError<IApiResponseReject>;

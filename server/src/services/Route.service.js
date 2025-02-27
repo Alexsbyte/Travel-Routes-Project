@@ -23,11 +23,11 @@ class RouteService {
           as: 'points',
           attributes: ['id', 'description', 'latitude', 'longitude'],
         },
-        // {
-        //   model: Favorite,
-        //   as: 'favorite',
-        //   attributes: ['id'],
-        // },
+        {
+          model: Favorite,
+          as: 'favorite',
+          attributes: ['id','user_id'],
+        },
       ],
     });
   }
