@@ -4,6 +4,7 @@ import { routeReducer } from '@/entities/route';
 import { pointsReducer } from '@/entities/point/slice';
 import { aiReducer } from '@/entities/ai/slice/AiSlice';
 import { commentsReducer } from '@/entities/comment/slice/CommentSlice';
+import { favoriteReducer } from '@/entities/favorite';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     points: pointsReducer,
     ai: aiReducer,
     comments: commentsReducer,
+    favorites: favoriteReducer,
   },
 });
 

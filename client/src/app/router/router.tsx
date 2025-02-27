@@ -5,11 +5,14 @@ import { VerifyEmail } from '@/features/auth/VerifyEmail';
 import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { Suspense, lazy } from 'react';
 import { CommentSection } from '@/widgets/CommentSection';
+import { FavoritePage } from '@/pages/FavoritePage';
+
 // Ленивый импорт страниц
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
+
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +43,11 @@ export const router = createBrowserRouter([
         path: CLIENT_ROUTES.COMMENT_FORM,
         element: <CommentSection />,
       },
+      {
+        path: CLIENT_ROUTES.FAVORITE_FORM,
+        element: <FavoritePage />,
+      },
+
       {
         path: CLIENT_ROUTES.ROUTE_FORM,
         element: (
