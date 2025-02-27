@@ -60,21 +60,13 @@ export function RouteForm(): React.JSX.Element {
   const [createButtonDisabled, setCreateButtonDisabled] = useState(false);
   const [generateButtonDisabled, setGenerateButtonDisabled] = useState(false);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error, '---', isLoading);
-
-  //     setModerModalOpened(true);
-  //   }
-  // }, [error, isLoading]);
-
   const form = useForm({
     initialValues: initialState,
     validate: {
       title: (value) => {
         if (value.trim().length === 0) {
           return 'Это поле обязательно для заполнения.';
-        } else if (value.trim().length > 30) {
+        } else if (value.trim().length > 50) {
           return `Это поле не должно быть длинее 30 символов, сейчас ${
             value.trim().length
           }`;
@@ -85,7 +77,7 @@ export function RouteForm(): React.JSX.Element {
 
       description: (value) => {
         if (value.trim().length === 0) {
-          return 'Это поле обязательно для заполнения!';
+          return 'Это поле обязательно для заполнения.';
         } else if (value.trim().length > 500) {
           return `Это поле не должно быть длинее 500 символов, сейчас ${
             value.trim().length
@@ -96,7 +88,7 @@ export function RouteForm(): React.JSX.Element {
       },
       category: (value) => {
         if (!value || value?.trim().length === 0) {
-          return 'Выберите тип маршрута';
+          return 'Выберите тип маршрута.';
         } else {
           return null;
         }
@@ -118,13 +110,13 @@ export function RouteForm(): React.JSX.Element {
         });
 
         if (notSupported) {
-          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт';
+          return 'Поддерживаются только: jpg, jpeg, png, либо один из файлов более 5 МБайт.';
         }
         if (value.length === 0) {
-          return 'Добавьте минимум 1 фотографию';
+          return 'Добавьте минимум 1 фотографию.';
         }
         if (value.length > 6) {
-          return 'Вы не можите добавить больше 6 фотографий';
+          return 'Вы не можите добавить больше 6 фотографий.';
         }
 
         return null;
@@ -150,7 +142,10 @@ export function RouteForm(): React.JSX.Element {
     e?.preventDefault();
     try {
       dispatch(
-        checkModerationThunk({ title: values.title, description: values.description }),
+        checkModerationThunk({
+          title: values.title,
+          description: values.description,
+        }),
       ).then((res) => {
         if (res.payload?.data) {
           console.log(res.payload?.data);
@@ -178,6 +173,7 @@ export function RouteForm(): React.JSX.Element {
 
         dispatch(clearPoints());
         form.reset();
+        setCreateButtonDisabled(false);
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -245,7 +241,7 @@ export function RouteForm(): React.JSX.Element {
               >
                 <Input
                   {...form.getInputProps('title')}
-                  placeholder="Название маршрута (не более 30 смволов)"
+                  placeholder="Название маршрута (не более 50 смволов)"
                 />
                 {form.errors.title && (
                   <div style={{ textAlign: 'left', color: 'red', fontSize: '12px' }}>
