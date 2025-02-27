@@ -5,11 +5,14 @@ import { useAppSelector } from '@/shared/hooks/reduxHooks';
 
 interface RouteListProps {
   filteredRoutes: Route[];
-  selectedRoute: Route | null; 
-  sortedRoutes: Route[]
+  selectedRoute: Route | null;
+  sortedRoutes: Route[];
 }
 
-export function RouteList({ filteredRoutes, selectedRoute }: RouteListProps): React.JSX.Element {
+export function RouteList({
+  filteredRoutes,
+  selectedRoute,
+}: RouteListProps): React.JSX.Element {
   const loading = useAppSelector((store) => store.route.loading);
 
   return (
@@ -21,10 +24,12 @@ export function RouteList({ filteredRoutes, selectedRoute }: RouteListProps): Re
       {filteredRoutes.length > 0 &&
         filteredRoutes.map((route) => (
           <div
-            className={`${styles.card} ${selectedRoute?.id === route.id ? styles.selected : ''}`}  // Добавляем класс для выделения выбранного маршрута
+            className={`${styles.card} ${
+              selectedRoute?.id === route.id ? styles.selected : ''
+            }`} // Добавляем класс для выделения выбранного маршрута
             key={route.id}
           >
-            <RouteItem route={route} key={route.id} />
+            <RouteItem route={route} key={route.id} selectedRoute={selectedRoute} />
           </div>
         ))}
     </div>
