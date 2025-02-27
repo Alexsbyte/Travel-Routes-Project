@@ -9,7 +9,6 @@ import {
 import { Route } from '../model/RouteTypes';
 import { message } from 'antd';
 
-
 interface RouteState {
   routes: Route[];
   route: Route | null;
@@ -19,7 +18,7 @@ interface RouteState {
 
 const initialState: RouteState = {
   routes: [],
-  route:  null,
+  route: null,
   loading: false,
   error: null,
 };
@@ -36,7 +35,7 @@ export const routeSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllRoutesThunk.fulfilled, (state, action) => {
-        state.routes = action.payload.data.sort((a,b)=>a.id-b.id);
+        state.routes = action.payload.data.sort((a, b) => b.id - a.id);
         state.error = null;
         state.loading = false;
         // message.success(action.payload.message);
