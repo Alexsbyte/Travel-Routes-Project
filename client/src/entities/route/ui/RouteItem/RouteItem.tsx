@@ -47,7 +47,7 @@ export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
         mb={10}
         style={{
           border:
-            selectedRoute?.id === route.id ? '5px solid rgba(24, 151, 255, 0.08)' : '',
+            selectedRoute?.id === route.id ? '3px solid rgba(16, 198, 46, 0.7)' : '',
           backgroundColor:
             selectedRoute?.id === route.id
               ? 'rgba(127, 187, 244, 0.18)'
