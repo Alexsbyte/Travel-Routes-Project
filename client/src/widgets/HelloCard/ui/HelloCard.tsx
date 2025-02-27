@@ -4,17 +4,12 @@ import '@mantine/carousel/styles.css';
 import styles from './HelloCard.module.css';
 import { Image } from '@mantine/core';
 
-const images = [
-  '/0001.jpg',
-  '/0002.avif',
-  '/0003.avif',
-  '/0004.avif',
-];
+const images = ['/0002.avif', '/0005.avif', '/0003.avif', '/0004.avif', '/0006.avif'];
 
 export function HelloCard(): React.JSX.Element {
   const slides = images.map((url) => (
     <Carousel.Slide key={url}>
-      <Image src={url} />
+      <Image src={url} radius="md" />
     </Carousel.Slide>
   ));
 

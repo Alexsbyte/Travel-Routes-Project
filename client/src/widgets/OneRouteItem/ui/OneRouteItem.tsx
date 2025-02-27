@@ -33,18 +33,9 @@ export function OneRouteItem({ route }: Props): React.JSX.Element {
           </Button>
         </Box>
       </div>
-      <Box pb={20} pos={'relative'}>
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Назад
-        </Button>
-      </Box>
-     <div>
-     <FavoriteSection route_id={route.id} />
-   </div>
+      <div>
+        <FavoriteSection route_id={route.id} />
+      </div>
     </>
   );
 }
