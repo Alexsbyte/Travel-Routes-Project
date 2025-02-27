@@ -7,15 +7,18 @@ import {
   getOneRouteFavoriteThunk,
 } from '../api/FavoriteThunk';
 import { message } from 'antd';
+import { Route } from '@/entities/route';
 
 interface FavoriteState {
-  favorites: FavoriteType[];
+  favorites: Route[] 
+  favorite: FavoriteType | null
   loading: boolean;
   error: string | null;
   currentFavorite: boolean; // // новое состояние для текущего маршрута
 }
 
 const initialState: FavoriteState = {
+  favorite: null,
   favorites: [],
   loading: false,
   error: null,
@@ -34,7 +37,6 @@ export const favoriteSlice = createSlice({
         state.error = null;
       })
       .addCase(createFavoriteThunk.fulfilled, (state, action) => {
-        state.favorites = [...state.favorites, action.payload.data];
         state.loading = false;
         state.error = null;
         state.currentFavorite = true;
@@ -52,8 +54,11 @@ export const favoriteSlice = createSlice({
       })
       .addCase(deleteFavoriteThunk.fulfilled, (state, action) => {
         state.favorites = state.favorites.filter(
-          (route) => route.id !== action.payload.data.id,
+          (route) => {
+            return route.favorite[0].id!== action.payload.data.id}
         );
+        console.log(action.payload.data,"<<<<<<<<<<<<<<<<<<<<<<<");
+        
         state.loading = false;
         state.error = null;
         state.currentFavorite = false;
