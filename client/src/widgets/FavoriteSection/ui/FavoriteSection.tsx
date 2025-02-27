@@ -35,7 +35,6 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
   };
 
   useEffect(() => {
-    console.log(route_id, currentFavorite);
     if (route_id && !currentFavorite) {
       dispatch(getOneRouteFavoriteThunk(route_id));
     }

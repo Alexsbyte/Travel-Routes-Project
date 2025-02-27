@@ -18,7 +18,6 @@ export function RoutesPage(): React.JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null); // Состояние для выбранного маршрута
-  console.log(filteredRoutes);
 
   useEffect(() => {
     dispatch(getAllRoutesThunk());
