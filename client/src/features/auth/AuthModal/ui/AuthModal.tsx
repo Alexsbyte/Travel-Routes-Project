@@ -66,7 +66,10 @@ export const AuthModal: React.FC<ModalProps> = ({
     <Modal
       display={!isOpen ? 'none' : 'block'}
       opened={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        return authType === 'signin' ? setIsSignUp(false) : setIsSignUp(true);
+      }}
       centered
       overlayProps={{ backgroundOpacity: 0.6, blur: 3 }}
       transitionProps={{ transition: 'fade', duration: 200 }}
