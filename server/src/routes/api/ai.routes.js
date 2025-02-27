@@ -16,7 +16,7 @@ async function aiOperations(text, type) {
       const { data } = await axios.post(
         `https://api.openai.com/v1/${type}`,
         {
-          model: 'omni-moderation-latest',
+          model: 'text-moderation-latest',
           input: text.toLowerCase().trim(),
         },
         {

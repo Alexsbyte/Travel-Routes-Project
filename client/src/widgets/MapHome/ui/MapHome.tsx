@@ -42,9 +42,19 @@ export const MapHome: React.FC<YandexMapProps> = ({
   };
 
   return (
+    <div
+    style={{
+      width: '100%',
+      height: '100%',
+      borderRadius: '15px', // Скругление углов контейнера
+      overflow: 'hidden', // Скрытие содержимого, выходящего за пределы контейнера
+      position: 'relative', // Для корректного отображения
+    }}
+  >
+
     <YMaps query={{ apikey: import.meta.env.VITE_YANDEX_API }}>
       <Map
-        defaultState={{ center: [55.751244, 37.618423], zoom: 5 }} // Центр карты
+        defaultState={{ center: [55.751244, 37.618423], zoom: 8 }} // Центр карты
         width="100%"
         height="100%"
         onClick={handleMapClick} // Обработчик клика на пустое место карты
@@ -75,6 +85,6 @@ export const MapHome: React.FC<YandexMapProps> = ({
         <SearchControl options={{ float: 'right' }} />
         <GeolocationControl options={{ float: 'left' }} />
       </Map>
-    </YMaps>
+    </YMaps></div>
   );
 };

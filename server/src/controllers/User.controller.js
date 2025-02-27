@@ -62,7 +62,7 @@ class UserController {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const verificationToken = crypto.randomBytes(32).toString('hex');
-       const resetTokenExpiry = Date.now() + 3600000;
+      const resetTokenExpiry = Date.now() + 3600000;
       const newUser = await UserService.create({
         email: normalizedEmail,
         username,

@@ -25,7 +25,7 @@ export const generateBeautifullThunk = createAsyncThunk<
   IApiResponseSuccess<string>,
   GenerationPayload,
   { rejectValue: IApiResponseReject }
->('ai/generation', async (payload, { rejectWithValue }) => {
+>('api/ai/generations', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await axiosInstance.post<IApiResponseSuccess<string>>(
       '/api/ai/generations',
