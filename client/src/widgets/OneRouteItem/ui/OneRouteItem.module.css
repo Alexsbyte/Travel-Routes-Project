@@ -1,16 +1,18 @@
+@import url('../../../app/colors.css');
+
 /* Стили для текста и комментариев */
 
 .routeTitle {
   font-family: 'PT Sans';
-  font-size: 30px;
-  font-weight: 600;
+  font-size: 50px;
+  font-weight: 300;
   color: var(--on-surface);
   margin-bottom: 10px;
 }
 
 .routeCategory {
   font-family: 'PT Sans';
-  font-size: 26px;
+  font-size: 30px;
   color: var(--secondary);
   margin-bottom: 10px;
 }
@@ -18,9 +20,23 @@
 .routeDescription {
   font-family: 'PT Sans';
   color: var(--on-surface);
-  font-size: 26px;
+  font-size: 30px;
   line-height: 1.6;
   margin-bottom: 20px;
   white-space: normal;
   overflow-wrap: break-word;
+}
+
+.btn button {
+  background: var(--primary);
+  color: var(--on-primary);
+  height: 55px;
+  font-size: 18px;
+}
+
+.btn button:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  border: 1px solid blue;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
 }

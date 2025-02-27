@@ -10,6 +10,7 @@ type Props = {
 
 export function OneRouteItem({ route }: Props): React.JSX.Element {
   const navigate = useNavigate();
+
   return (
     <>
       <h1 className={styles.routeTitle}>{route.title}</h1>
@@ -20,15 +21,17 @@ export function OneRouteItem({ route }: Props): React.JSX.Element {
         <strong>Описание: </strong>
         {route.description}
       </div>
-      <Box pb={20} pos={'relative'}>
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Назад
-        </Button>
-      </Box>
+      <div className={styles.btn}>
+        <Box pb={20} pos={'relative'}>
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Назад
+          </Button>
+        </Box>
+      </div>
     </>
   );
 }

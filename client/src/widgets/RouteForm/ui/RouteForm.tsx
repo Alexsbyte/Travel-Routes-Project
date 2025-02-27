@@ -346,7 +346,7 @@ export function RouteForm(): React.JSX.Element {
                         paddingBottom: '12px',
                         height: files.length > 0 ? 'auto' : '50px', // Автоматическая высота при наличии файлов
                         minHeight: '50px', // Минимальная высота
-                        width: files.length > 0 ? '100%' : '160px', // Динамическая ширина
+                        width: files.length > 0 ? '100%' : '170px', // Динамическая ширина
                         maxWidth: '95%',
                       },
                     }}
@@ -355,7 +355,7 @@ export function RouteForm(): React.JSX.Element {
                 <Space h="md" />
 
                 <Button
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   disabled={createButtonDisabled}
@@ -373,7 +373,7 @@ export function RouteForm(): React.JSX.Element {
 
                 <Button
                   className={style.cancel}
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   bd={'1px solid blue'}

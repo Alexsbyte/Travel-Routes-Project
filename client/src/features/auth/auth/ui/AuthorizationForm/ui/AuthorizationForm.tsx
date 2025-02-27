@@ -15,7 +15,8 @@ interface AuthFormProps {
 }
 export function AuthorizationForm({
   handleSignIn,
-}: // onSwitch,
+  onSwitch,
+}: //
 AuthFormProps): React.JSX.Element {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -64,9 +65,9 @@ AuthFormProps): React.JSX.Element {
       <button className={styles.button} type="submit" disabled={loading}>
         {loading ? 'Вход...' : 'Авторизоваться'}
       </button>
-      {/* <p className={styles.switchText}>
+      <p className={styles.switchText}>
         Нет аккаунта? <span onClick={onSwitch}>Зарегистрироваться </span>
-      </p> */}
+      </p>
     </form>
   );
 }
