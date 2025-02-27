@@ -176,6 +176,7 @@ export function ProfilePage(): React.JSX.Element {
               variant="default"
               fullWidth
               mt="md"
+              h={55}
               onClick={() => navigate(CLIENT_ROUTES.FAVORITE_FORM)}
             >
               Перейти в избранное
@@ -236,6 +237,7 @@ export function ProfilePage(): React.JSX.Element {
 
             <Button
               mt={20}
+              h={55}
               disabled={passwordButtonDisabled}
               onClick={() => {
                 changePasswordHandler();
@@ -262,6 +264,7 @@ export function ProfilePage(): React.JSX.Element {
 
             <Button
               mt={20}
+              h={55}
               disabled={usernameButtonDisabled}
               onClick={() => {
                 changeUsernameHandler();
