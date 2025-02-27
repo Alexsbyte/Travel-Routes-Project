@@ -6,6 +6,7 @@ import { AuthGuard } from '@/shared/hocs/AuthGuard';
 import { Suspense, lazy } from 'react';
 import { CommentSection } from '@/widgets/CommentSection';
 import { FavoritePage } from '@/pages/FavoritePage';
+import { NotFound } from '@/pages';
 
 // Ленивый импорт страниц
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -13,7 +14,6 @@ const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
-
 
 export const router = createBrowserRouter([
   {
@@ -80,6 +80,10 @@ export const router = createBrowserRouter([
             </Suspense>
           </AuthGuard>
         ),
+      },
+      {
+        path: CLIENT_ROUTES.NOT_FOUND,
+        element: <NotFound />,
       },
     ],
   },

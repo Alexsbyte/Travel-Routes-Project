@@ -218,8 +218,6 @@ export function RouteForm(): React.JSX.Element {
     console.log(generatedText);
   };
 
-  const [files, setFiles] = useState<File[]>([]);
-
   return (
     <>
       {user && (
@@ -309,6 +307,7 @@ export function RouteForm(): React.JSX.Element {
                 />
               </Input.Wrapper>
               <Space h="md" />
+
               <div className={style.buttonsToAdd}>
                 <Input.Wrapper
                   label="Добавьте до 6 фото"
@@ -316,7 +315,7 @@ export function RouteForm(): React.JSX.Element {
                     style: { textAlign: 'left', width: '100%', marginLeft: '3px' },
                   }}
                 >
-                  {/* <FileInput
+                  <FileInput
                     {...form.getInputProps('files')}
                     w={160}
                     h={50}
@@ -329,27 +328,6 @@ export function RouteForm(): React.JSX.Element {
                     multiple
                     accept="image/*"
                     placeholder="Добавьте файлы"
-                  /> */}
-                  <FileInput
-                    value={files}
-                    onChange={(newFiles) => setFiles(newFiles)}
-                    multiple
-                    accept="image/*"
-                    placeholder={
-                      files.length > 0
-                        ? `Выбрано файлов: ${files.length}`
-                        : 'Добавьте файлы'
-                    }
-                    styles={{
-                      input: {
-                        paddingTop: '12px',
-                        paddingBottom: '12px',
-                        height: files.length > 0 ? 'auto' : '50px', // Автоматическая высота при наличии файлов
-                        minHeight: '50px', // Минимальная высота
-                        width: files.length > 0 ? '100%' : '170px', // Динамическая ширина
-                        maxWidth: '95%',
-                      },
-                    }}
                   />
                 </Input.Wrapper>
                 <Space h="md" />

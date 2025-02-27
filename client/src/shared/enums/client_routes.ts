@@ -10,4 +10,5 @@ export enum CLIENT_ROUTES {
   COMMENT_FORM = '/comments',
   PROFILE = '/profile',
   FAVORITE_FORM = '/favorites',
+  NOT_FOUND = '*',
 }

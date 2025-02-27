@@ -2,6 +2,7 @@ const ProfileService = require('../services/Profile.service');
 const formatResponse = require('../utils/formatResponse');
 const UserService = require('../services/User.service');
 const bcrypt = require('bcrypt');
+const UserValidator = require('../utils/User.validator');
 // const sendEmail = require('../utils/sendEmail');
 
 class ProfileController {
@@ -35,8 +36,35 @@ class ProfileController {
         .json(formatResponse(400, 'Не передан новый или текущий пароль'));
     }
 
+    if (oldPass.length > 30 || newPass.length > 30) {
+      return res
+        .status(400)
+        .json(formatResponse(400, 'Пароль не может быть больше 30 символов'));
+    }
+
+    const isValidPass = UserValidator.validatePassword(newPass);
+
+    if (!isValidPass) {
+      return res
+        .status(400)
+        .json(
+          formatResponse(
+            400,
+            'Пароль должен быть непустой строкой, содержать только символы английского алфавита, содержать не менее 8 символов, одну заглавную букву, одну строчную букву, одну цифру и один специальный символ.',
+          ),
+        );
+    }
+
     try {
       const userFromDb = await UserService.getByEmail(user.email);
+
+      const isSamePassword = await bcrypt.compare(newPass, userFromDb.password);
+
+      if (isSamePassword) {
+        return res
+          .status(400)
+          .json(formatResponse(400, 'Старый и новый пароль совпадают!'));
+      }
       const isPasswordValid = await bcrypt.compare(oldPass, userFromDb.password);
 
       if (!isPasswordValid) {
@@ -61,16 +89,30 @@ class ProfileController {
     const { user } = res.locals;
     const { newUsername } = req.body;
 
-    console.log(newUsername);
-
     if (!newUsername) {
       return res
         .status(400)
         .json(formatResponse(400, 'Новое имя пользователя не передано.'));
     }
 
+    if (newUsername.length > 15) {
+      return res
+        .status(400)
+        .json(formatResponse(400, 'Имя пользователя не может быть больше 15 символов'));
+    }
+
     try {
+      console.log(newUsername, user.username);
+
+      if (newUsername === user.username) {
+        return res
+          .status(400)
+          .json(formatResponse(400, 'Вы ввели тоже самое имя пользователя.'));
+      }
+
       const updatedUser = await ProfileService.updateUsername(user.id, newUsername);
+
+      delete updatedUser.password;
 
       res
         .status(200)

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import styles from './AuthorizationForm.module.css';
 import { useNavigate } from 'react-router-dom';
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
 import { UserValidator, ISignInData } from '@/entities/user';
 import { message as antMessage } from 'antd';
-
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 
@@ -59,7 +58,7 @@ AuthFormProps): React.JSX.Element {
           required
         />
         <span className={styles.eyeIcon} onClick={() => setShowPassword((prev) => !prev)}>
-          {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
         </span>
       </div>
       <button className={styles.button} type="submit" disabled={loading}>

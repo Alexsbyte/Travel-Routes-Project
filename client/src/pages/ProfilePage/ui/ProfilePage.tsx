@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   Flex,
-  Input,
+  Modal,
   Paper,
   Text,
   TextInput,
@@ -11,16 +11,19 @@ import {
 } from '@mantine/core';
 import { TbPhotoCog } from 'react-icons/tb';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from '@mantine/form';
 import styles from './ProfilePage.module.css';
 import { useNavigate } from 'react-router-dom';
-// import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import {
   changePasswordThunk,
   // changePhotoThunk,
   changeUsernameThunk,
 } from '@/entities/user/api';
+import { IApiResponseReject } from '@/shared/types';
+import { useDisclosure } from '@mantine/hooks';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 interface PassForm {
   oldPass: string;
@@ -35,6 +38,13 @@ interface UsernameForm {
 export function ProfilePage(): React.JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [error, setError] = useState('');
+  const [showOldPass, setShowOldPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [passwordButtonDisabled, setPasswordButtonDisabled] = useState(false);
+  const [usernameButtonDisabled, setUsernameButtonDisabled] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const { user } = useAppSelector((state) => state.user);
 
   const passForm = useForm<PassForm>({
@@ -45,6 +55,7 @@ export function ProfilePage(): React.JSX.Element {
       confirmPass: '',
     },
   });
+
   const usernameForm = useForm<UsernameForm>({
     mode: 'controlled',
     initialValues: {
@@ -54,30 +65,44 @@ export function ProfilePage(): React.JSX.Element {
 
   const changeUsernameHandler = async () => {
     const newUsername = usernameForm.values.newUsername.trim();
-    console.log(newUsername);
-    if (!newUsername) return;
+    if (!newUsername) {
+      setError('Имя пользователя не может быть пустым');
+      open();
+      setUsernameButtonDisabled(false);
+      return;
+    }
 
     try {
       await dispatch(changeUsernameThunk({ newUsername })).unwrap();
       usernameForm.reset();
+      setUsernameButtonDisabled(false);
     } catch (error) {
-      console.error('Ошибка при изменении имени:', error);
+      const { message } = error as IApiResponseReject;
+      setError(message);
+      open();
+      setUsernameButtonDisabled(false);
     }
   };
+
   const changePasswordHandler = async () => {
     const { oldPass, newPass, confirmPass } = passForm.values;
-    console.log(oldPass, newPass, confirmPass);
-
     if (newPass !== confirmPass) {
-      console.error('Пароли не совпадают');
+      setError('Пароли не совпадают!');
+      open();
+
+      setPasswordButtonDisabled(false);
       return;
     }
 
     try {
       await dispatch(changePasswordThunk({ oldPass, newPass })).unwrap();
       passForm.reset();
+      setPasswordButtonDisabled(false);
     } catch (error) {
-      console.error('Ошибка при изменении пароля:', error);
+      const { message } = error as IApiResponseReject;
+      setError(message);
+      open();
+      setPasswordButtonDisabled(false);
     }
   };
   const changePhotoHandler = async () => {
@@ -91,6 +116,8 @@ export function ProfilePage(): React.JSX.Element {
     // try {
     //   await dispatch(changePhotoThunk(formData)).unwrap();
     // } catch (error) {
+    // const { message } = error as IApiResponseReject;
+    // antMessage.error(message);
     //   console.error('Ошибка при изменении фото:', error);
     // }
   };
@@ -149,7 +176,8 @@ export function ProfilePage(): React.JSX.Element {
               variant="default"
               fullWidth
               mt="md"
-              onClick={() => navigate('/favorites')}
+              h={55}
+              onClick={() => navigate(CLIENT_ROUTES.FAVORITE_FORM)}
             >
               Перейти в избранное
             </Button>
@@ -163,26 +191,59 @@ export function ProfilePage(): React.JSX.Element {
             </Title>
             <TextInput
               label="Старый пароль"
-              type="password"
+              type={showOldPass ? 'text' : 'password'}
               placeholder="Введите старый пароль"
               {...passForm.getInputProps('oldPass')}
+              rightSection={
+                <span
+                  // size={40}
+                  // bg={rgba('white', 0)}
+                  // variant="subtle"
+                  onClick={() => setShowOldPass((prev) => !prev)}
+                >
+                  {showOldPass ? <FaRegEye /> : <FaRegEyeSlash />}
+                </span>
+              }
             />
             <TextInput
               mt="sm"
               label="Новый пароль"
-              type="password"
+              type={showNewPass ? 'text' : 'password'}
               placeholder="Введите новый пароль"
               {...passForm.getInputProps('newPass')}
+              rightSection={
+                <span
+                  // size={40}
+                  // bg={rgba('white', 0)}
+                  // variant="subtle"
+                  onClick={() => setShowNewPass((prev) => !prev)}
+                >
+                  {showNewPass ? <FaRegEye /> : <FaRegEyeSlash />}
+                </span>
+              }
             />
             <TextInput
               mt="sm"
               label="Подтвердите пароль"
-              type="password"
+              type={showConfirmPass ? 'text' : 'password'}
               placeholder="Подтвердите новый пароль"
               {...passForm.getInputProps('confirmPass')}
+              rightSection={
+                <span onClick={() => setShowConfirmPass((prev) => !prev)}>
+                  {showConfirmPass ? <FaRegEye /> : <FaRegEyeSlash />}
+                </span>
+              }
             />
 
-            <Button mt={20} onClick={changePasswordHandler} disabled>
+            <Button
+              mt={20}
+              h={55}
+              disabled={passwordButtonDisabled}
+              onClick={() => {
+                changePasswordHandler();
+                setPasswordButtonDisabled(true);
+              }}
+            >
               Отправить
             </Button>
           </Flex>
@@ -191,23 +252,42 @@ export function ProfilePage(): React.JSX.Element {
             <Title fz={30} fw={600} order={3}>
               Изменить имя пользователя
             </Title>
-            <Input
+            <TextInput
               mt="sm"
-              // label="Новое имя пользователя"
+              label="Новое имя пользователя"
               placeholder="Ввидите новое имя пользователя"
-              // {...usernameForm.getInputProps('newUsername')}
-              value={usernameForm.values.newUsername} // ✅ Теперь данные обновляются
+              value={usernameForm.values.newUsername}
               onChange={(event) =>
                 usernameForm.setFieldValue('newUsername', event.currentTarget.value)
               }
             />
 
-            <Button mt={20} onClick={changeUsernameHandler}>
+            <Button
+              mt={20}
+              h={55}
+              disabled={usernameButtonDisabled}
+              onClick={() => {
+                changeUsernameHandler();
+                setUsernameButtonDisabled(true);
+              }}
+            >
               Отправить
             </Button>
           </Flex>
         </Flex>
       </Flex>
+      <Modal
+        opened={opened}
+        onClose={() => {
+          close();
+          setError('');
+        }}
+        withCloseButton={false}
+      >
+        <Text ta={'center'} c={'red'}>
+          {error}
+        </Text>
+      </Modal>
     </Flex>
   );
 }
