@@ -114,7 +114,7 @@ const userSlice = createSlice({
       })
       .addCase(changePhotoThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.data.user;
+        state.user = action.payload.data;
         state.error = null;
       })
       .addCase(changePhotoThunk.rejected, (state, action) => {
@@ -127,7 +127,7 @@ const userSlice = createSlice({
       })
       .addCase(changePasswordThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.data.user;
+        state.user = action.payload.data;
         state.error = null;
       })
       .addCase(changePasswordThunk.rejected, (state, action) => {
@@ -140,7 +140,7 @@ const userSlice = createSlice({
       })
       .addCase(changeUsernameThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.data.user;
+        state.user = action.payload.data;
         state.error = null;
       })
       .addCase(changeUsernameThunk.rejected, (state, action) => {

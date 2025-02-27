@@ -3,7 +3,7 @@ const authRoutes = require('./user.routes');
 const routerRoutes = require('./api/router.routes');
 const aiRouter = require('./api/ai.routes');
 const commentRoutes = require('./comment.routes');
-const profileRoutes = require('./comment.routes');
+const profileRoutes = require('./api/profile.routes');
 const formatResponse = require('../utils/formatResponse');
 
 router.use('/auth', authRoutes);

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance, setAccessToken } from '@/shared/lib/axiosInstance';
 import { IApiResponseReject, IApiResponseSuccess } from '@/shared/types';
-import { ISignInData, UserWithTokenType } from '../model';
+import { ISignInData, UserType, UserWithTokenType } from '../model';
 import { AxiosError } from 'axios';
 
 enum AUTH_API_ROUTES {
@@ -21,15 +21,15 @@ enum USER_THUNKS_TYPES {
 }
 
 enum PROFILE_API_ROUTES {
-  CHANGE_PHOTO = 'api/profile/changePhoto',
-  CHANGE_PASSWORD = 'api/profile/changePassword',
-  CHANGE_USERNAME = 'api/profile/changeUsername',
+  CHANGE_PHOTO = 'api/profiles/changePhoto',
+  CHANGE_PASSWORD = 'api/profiles/changePassword',
+  CHANGE_USERNAME = 'api/profiles/changeUsername',
 }
 
 enum PROFILE_THUNKS_TYPES {
-  CHANGE_PHOTO = 'profile/changePhoto',
-  CHANGE_PASSWORD = 'profile/changePassword',
-  CHANGE_USERNAME = 'profile/changeUsername',
+  CHANGE_PHOTO = 'profiles/changePhoto',
+  CHANGE_PASSWORD = 'profiles/changePassword',
+  CHANGE_USERNAME = 'profiles/changeUsername',
 }
 
 export const refreshTokensThunk = createAsyncThunk<
@@ -130,12 +130,12 @@ export const verifyEmailThunk = createAsyncThunk<
 });
 
 export const changePhotoThunk = createAsyncThunk<
-  IApiResponseSuccess<UserWithTokenType>,
+  IApiResponseSuccess<UserType>,
   FormData,
   { rejectValue: IApiResponseReject }
 >(PROFILE_THUNKS_TYPES.CHANGE_PHOTO, async (photoData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put<IApiResponseSuccess<UserWithTokenType>>(
+    const { data } = await axiosInstance.put<IApiResponseSuccess<UserType>>(
       PROFILE_API_ROUTES.CHANGE_PHOTO,
       photoData,
       {
@@ -145,7 +145,6 @@ export const changePhotoThunk = createAsyncThunk<
       },
     );
 
-    setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
@@ -154,17 +153,16 @@ export const changePhotoThunk = createAsyncThunk<
 });
 
 export const changePasswordThunk = createAsyncThunk<
-  IApiResponseSuccess<UserWithTokenType>,
-  { currentPassword: string; newPassword: string },
+  IApiResponseSuccess<UserType>,
+  { oldPass: string; newPass: string },
   { rejectValue: IApiResponseReject }
 >(PROFILE_THUNKS_TYPES.CHANGE_PASSWORD, async (passwordData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put<IApiResponseSuccess<UserWithTokenType>>(
+    const { data } = await axiosInstance.put<IApiResponseSuccess<UserType>>(
       PROFILE_API_ROUTES.CHANGE_PASSWORD,
       passwordData,
     );
 
-    setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;
@@ -173,17 +171,16 @@ export const changePasswordThunk = createAsyncThunk<
 });
 
 export const changeUsernameThunk = createAsyncThunk<
-  IApiResponseSuccess<UserWithTokenType>,
+  IApiResponseSuccess<UserType>,
   { newUsername: string },
   { rejectValue: IApiResponseReject }
 >(PROFILE_THUNKS_TYPES.CHANGE_USERNAME, async (usernameData, { rejectWithValue }) => {
   try {
-    const { data } = await axiosInstance.put<IApiResponseSuccess<UserWithTokenType>>(
+    const { data } = await axiosInstance.put<IApiResponseSuccess<UserType>>(
       PROFILE_API_ROUTES.CHANGE_USERNAME,
       usernameData,
     );
 
-    setAccessToken(data.data.accessToken);
     return data;
   } catch (error) {
     const err = error as AxiosError<IApiResponseReject>;

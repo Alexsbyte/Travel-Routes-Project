@@ -25,11 +25,11 @@ class ProfileController {
     }
   }
 
-  static async update(req, res) {
+  static async changePassword(req, res) {
     const { user } = res.locals;
-    const { currentPassword, newPassword } = req.body;
+    const { oldPass, newPass } = req.body;
 
-    if (!currentPassword || !newPassword) {
+    if (!oldPass || !newPass) {
       return res
         .status(400)
         .json(formatResponse(400, 'Не передан новый или текущий пароль'));
@@ -37,7 +37,7 @@ class ProfileController {
 
     try {
       const userFromDb = await UserService.getByEmail(user.email);
-      const isPasswordValid = await bcrypt.compare(currentPassword, userFromDb.password);
+      const isPasswordValid = await bcrypt.compare(oldPass, userFromDb.password);
 
       if (!isPasswordValid) {
         return res
@@ -45,7 +45,7 @@ class ProfileController {
           .json(formatResponse(401, 'Неверно введен текущий пароль.'));
       }
 
-      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      const hashedNewPassword = await bcrypt.hash(newPass, 10);
       const updatedUser = await ProfileService.updatePassword(user.id, hashedNewPassword);
 
       res.status(200).json(formatResponse(200, 'Пароль успешно обновлен', updatedUser));
@@ -61,6 +61,8 @@ class ProfileController {
     const { user } = res.locals;
     const { newUsername } = req.body;
 
+    console.log(newUsername);
+
     if (!newUsername) {
       return res
         .status(400)
@@ -69,6 +71,7 @@ class ProfileController {
 
     try {
       const updatedUser = await ProfileService.updateUsername(user.id, newUsername);
+
       res
         .status(200)
         .json(formatResponse(200, 'Имя пользователя успешно обновлено', updatedUser));

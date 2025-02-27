@@ -5,7 +5,7 @@ const upload = require('../../config/multerConfig');
 
 router
   .put('/changePhoto', upload.single('avatar'), ProfileController.changePhoto)
-  .put('/changePassword', verifyAccessToken, ProfileController.update)
-  .put('/changeUsername', verifyAccessToken, ProfileController.delete);
+  .put('/changePassword', verifyAccessToken, ProfileController.changePassword)
+  .put('/changeUsername', verifyAccessToken, ProfileController.changeUsername);
 
 module.exports = router;
