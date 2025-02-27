@@ -9,7 +9,6 @@ import {
 import { Route } from '../model/RouteTypes';
 import { message } from 'antd';
 
-
 interface RouteState {
   routes: Route[];
   route: Route | null;
@@ -19,7 +18,7 @@ interface RouteState {
 
 const initialState: RouteState = {
   routes: [],
-  route:  null,
+  route: null,
   loading: false,
   error: null,
 };
@@ -36,10 +35,9 @@ export const routeSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllRoutesThunk.fulfilled, (state, action) => {
-        state.routes = action.payload.data.sort((a,b)=>a.id-b.id);
+        state.routes = action.payload.data.sort((a, b) => a.id - b.id);
         state.loading = false;
         state.error = null;
-        // message.success(action.payload.message);
       })
       .addCase(getAllRoutesThunk.rejected, (state, action) => {
         state.loading = false;
@@ -56,7 +54,7 @@ export const routeSlice = createSlice({
         state.routes.push(action.payload.data);
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(createRouteThunk.rejected, (state, action) => {
         state.loading = false;
@@ -90,7 +88,7 @@ export const routeSlice = createSlice({
         );
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(deleteRouteThunk.rejected, (state, action) => {
         state.loading = false;
@@ -105,7 +103,6 @@ export const routeSlice = createSlice({
         state.route = action.payload.data;
         state.loading = false;
         state.error = null;
-        message.success(action.payload.message);
       })
       .addCase(getOneRouteThunk.rejected, (state, action) => {
         state.loading = false;

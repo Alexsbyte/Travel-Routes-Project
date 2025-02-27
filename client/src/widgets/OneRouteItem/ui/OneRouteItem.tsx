@@ -17,7 +17,8 @@ export function OneRouteItem({ route }: Props): React.JSX.Element {
         <strong>Категория:</strong> {route.category}
       </div>
       <div className={styles.routeDescription}>
-        <p>{route.description}</p>
+        <strong>Описание: </strong>
+        {route.description}
       </div>
       <Box pb={20} pos={'relative'}>
         <Button

@@ -41,6 +41,7 @@
 .buttonsToAdd {
   display: flex;
   flex-flow: row nowrap;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
