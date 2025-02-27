@@ -1,6 +1,6 @@
+import styles from './RouteList.module.css';
 import React from 'react';
 import { Route, RouteItem } from '@/entities/route';
-import styles from './RouteList.module.css';
 import { useAppSelector } from '@/shared/hooks/reduxHooks';
 
 interface RouteListProps {
@@ -24,7 +24,7 @@ export function RouteList({ filteredRoutes, selectedRoute }: RouteListProps): Re
             className={`${styles.card} ${selectedRoute?.id === route.id ? styles.selected : ''}`}  // Добавляем класс для выделения выбранного маршрута
             key={route.id}
           >
-            <RouteItem route={route} />
+            <RouteItem route={route} key={route.id} />
           </div>
         ))}
     </div>

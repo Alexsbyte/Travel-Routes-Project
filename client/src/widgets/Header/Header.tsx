@@ -80,7 +80,7 @@ export function Header(): React.JSX.Element {
   }, [token, navigate]);
 
   return (
-    <Box bg={rgba('gray', 0.07)} pb={10} mb={20}>
+    <Box bg={rgba('gray', 0.07)}  mb={20}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group onClick={redirectToHomPage} style={{ cursor: 'pointer' }}>
@@ -100,7 +100,11 @@ export function Header(): React.JSX.Element {
                   Маршруты
                 </Button>
 
-                <Button h={55} onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}>
+                <Button
+                  className={classes.cretaRoute}
+                  h={55}
+                  onClick={() => navigate(CLIENT_ROUTES.ROUTE_FORM)}
+                >
                   Создать маршрут
                 </Button>
                 <Menu withArrow width={180}>

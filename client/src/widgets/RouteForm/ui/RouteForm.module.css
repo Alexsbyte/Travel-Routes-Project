@@ -12,8 +12,9 @@
 }
 
 .routeForm h1 {
-  font-family: 'Eagle Lake', serif;
-  font-weight: 400;
+  font-family: 'PT Sans';
+  font-weight: 300;
+  font-size: 50px;
   text-align: center;
 }
 
@@ -29,16 +30,12 @@
   height: 600px;
 }
 
-.formContainer {
-  text-align: center;
-  background: var(--on-primary);
-  color: var(--primary);
-  padding: 12px 24px;
-  box-shadow: 0 4px 15px rgba(139, 85, 14, 0.308);
-}
-
 .formContainer p {
-  margin-top: 70px;
+  margin-top: 30px;
+  font-family: 'PT Sans';
+  font-weight: 300;
+  font-size: 25px;
+  text-align: center;
 }
 
 .buttonsToAdd {
@@ -79,14 +76,19 @@
   .buttonsToAdd {
     flex-flow: column;
   }
+
+  .formContainer p {
+    margin-top: 3px;
+    font-size: 25px;
+  }
 }
 
 @media (max-width: 1024px) {
   .routeForm h1 {
-    font-family: 'Eagle Lake', serif;
-    font-weight: 400;
+    font-family: 'PT Sans';
+    font-weight: 300;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
   }
 
   .container {
@@ -105,8 +107,20 @@
     max-width: none;
   }
 
+  .formContainer p {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+
   .buttonsToAdd {
     flex-flow: row nowrap;
     justify-content: space-around;
+  }
+}
+
+@media (max-width: 425px) {
+  .buttonsToAdd {
+    flex-flow: column;
+    align-items: center;
   }
 }

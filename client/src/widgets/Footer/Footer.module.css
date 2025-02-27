@@ -1,10 +1,15 @@
 /* Footer.module.css */
+.footerBackground {
+  width: 100%;
+  background: linear-gradient(45deg, rgb(218, 246, 255), rgb(240, 226, 229));
+}
+
 .footerLink {
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  margin: 10px;
-  background-color: rgba(128, 128, 128, 0.05); /* Серый цвет с прозрачностью 0.05 */
+  margin: 20px;
+  background-color: rgba(128, 128, 128, 0.05);
   color: inherit;
   text-decoration: none;
   border: none;
@@ -15,6 +20,5 @@
 
 .footerLink:hover {
   background-color: rgb(255, 255, 255);
-  border: 1px solid gray;
-  color: black; /* Или любой другой цвет текста при наведении */
+  color: black;
 }

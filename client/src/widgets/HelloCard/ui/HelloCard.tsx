@@ -5,11 +5,10 @@ import styles from './HelloCard.module.css';
 import { Image } from '@mantine/core';
 
 const images = [
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png',
-  'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-5.png',
+  '/0001.jpg',
+  '/0002.avif',
+  '/0003.avif',
+  '/0004.avif',
 ];
 
 export function HelloCard(): React.JSX.Element {
@@ -22,7 +21,7 @@ export function HelloCard(): React.JSX.Element {
   return (
     <>
       <div className={styles.container}>
-        <Carousel className={styles.carousel} withIndicators>
+        <Carousel className={styles.carousel} withIndicators loop>
           {slides}
         </Carousel>
         <div className={styles.description}>
@@ -31,6 +30,7 @@ export function HelloCard(): React.JSX.Element {
             <li>Добавь свои любимые маршруты</li>
             <li>Загрузи фотографии, опиши ключевые точки</li>
             <li>Комментируй маршруты других</li>
+            <li>Ставь лайки</li>
           </ul>
         </div>
       </div>
