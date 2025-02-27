@@ -7,19 +7,17 @@ interface FilterProps {
 }
 
 export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
-  const allCategories = ['все','автомобильный', 'пеший', 'велосипедный'];
+  const allCategories = ['все', 'автомобильный', 'пеший', 'велосипедный'];
   const [category, setCategory] = useState<string>('');
   const [keyword, setKeyword] = useState<string>('');
 
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleCategoryChange = (value: string | null) => {
-    setCategory(value || ''); 
+    setCategory(value || '');
     if (value === 'все') {
-
       onFilterChange('', keyword);
     } else {
-
       onFilterChange(value || '', keyword);
     }
   };
@@ -47,7 +45,7 @@ export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
       <Input
         w={270}
         h={50}
-        m={"10 0 0 0"}
+        m={'10 0 0 0'}
         className={styles.input}
         type="text"
         placeholder="Введите ключевое слово"
@@ -59,7 +57,7 @@ export const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
       <Select
         w={200}
         h={50}
-        m={"10 0 0 10"}
+        m={'10 0 0 10'}
         className={styles.select}
         value={category}
         defaultValue={allCategories[0]}

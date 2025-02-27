@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
+// import styles from './RouteItem.module.css';
 
 type Props = {
   route: Route;
+  selectedRoute: Route | null;
 };
 
-export function RouteItem({ route }: Props): React.JSX.Element {
+export function RouteItem({ route, selectedRoute }: Props): React.JSX.Element {
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -37,14 +39,28 @@ export function RouteItem({ route }: Props): React.JSX.Element {
 
   return (
     <>
-      <Card shadow="sm" padding="lg" radius="md" withBorder mb={10}>
+      <Card
+        shadow="sm"
+        padding="lg"
+        radius="md"
+        withBorder
+        mb={10}
+        style={{
+          border:
+            selectedRoute?.id === route.id ? '5px solid rgba(24, 151, 255, 0.08)' : '',
+          backgroundColor:
+            selectedRoute?.id === route.id
+              ? 'rgba(127, 187, 244, 0.18)'
+              : 'rgba(127, 187, 244, 0.18)',
+        }}
+      >
         <Card.Section>
           {/* Обновили Box для карусели с фиксированной высотой */}
           <Box style={{ width: '100%', height: '230px', overflow: 'hidden' }}>
             <Carousel
-            mt={21}
-            mr={21}
-            ml={21}
+              mt={21}
+              mr={21}
+              ml={21}
               key={route.id}
               align="start"
               slidesToScroll={1}
@@ -66,20 +82,39 @@ export function RouteItem({ route }: Props): React.JSX.Element {
           </Box>
         </Card.Section>
 
-        <Group justify="space-between" mt="md" mb="xs">
-          <Text fw={500}>{route.title}</Text>
-          {route.category.split(',').map((category, id) => (
-            <Tag key={id} color="blue" style={{ marginRight: '8px' }}>
-              {category}
-            </Tag>
-          ))}
+        <Group
+          justify="space-between"
+          mt="md"
+          mb="xs"
+          style={{ position: 'relative', display: 'flex' }}
+        >
+          <Text fw={500} style={{ marginRight: '120px' }}>
+            {route.title}
+          </Text>
+          <div
+            style={{
+              position: 'absolute',
+              top: '0',
+              right: '0',
+              zIndex: 10,
+            }}
+          >
+            {route.category.split(',').map((category, id) => (
+              <Tag key={id} color="blue" style={{ marginRight: '8px' }}>
+                {category}
+              </Tag>
+            ))}
+          </div>
         </Group>
 
         <Text size="sm" c="dimmed">
           {route.description}
         </Text>
 
-        <Link to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`} style={{ textDecoration: 'none' }} >
+        <Link
+          to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
+          style={{ textDecoration: 'none' }}
+        >
           <Button color="blue" fullWidth mt="md" radius="md">
             Перейти к маршруту
           </Button>
