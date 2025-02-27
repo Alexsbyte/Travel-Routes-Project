@@ -14,14 +14,11 @@ export type UserType = {
   email: string;
   username: string;
   avatar: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type UserWithTokenType = {
   user: UserType;
   accessToken: string;
 };
-
-
-

@@ -12,6 +12,7 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const RouteFormPage = lazy(() => import('@/pages/RouteFormPage'));
 const WelcomePage = lazy(() => import('@/pages/WelcomePage'));
 const OneRoutePage = lazy(() => import('@/pages/OneRoutePage/'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
 
 
 export const router = createBrowserRouter([
@@ -68,6 +69,16 @@ export const router = createBrowserRouter([
           <Suspense fallback={<div>Загрузка...</div>}>
             <OneRoutePage />
           </Suspense>
+        ),
+      },
+      {
+        path: `${CLIENT_ROUTES.PROFILE}`,
+        element: (
+          <AuthGuard>
+            <Suspense fallback={<div>Загрузка...</div>}>
+              <ProfilePage />
+            </Suspense>
+          </AuthGuard>
         ),
       },
     ],
