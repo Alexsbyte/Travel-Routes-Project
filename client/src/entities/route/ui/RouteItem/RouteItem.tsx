@@ -55,7 +55,7 @@ console.log(userFavorite);
 
   useEffect(() => {
     if (!isFavoriteList) {
-      const userFavoriteRoute = route.favorite.some(el => el.user_id === user?.id);
+      const userFavoriteRoute = route.favorite?.some(el => el.user_id === user?.id);
       setUserFavorite(userFavoriteRoute);
     } else {
       setUserFavorite(true);

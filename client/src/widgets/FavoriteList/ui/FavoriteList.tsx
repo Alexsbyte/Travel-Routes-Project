@@ -30,10 +30,6 @@ export function FavoriteList(): React.JSX.Element {
           .map((favorite) => (
             <div key={favorite.id} className={styles.card}>
               <RouteItem route={favorite} isFavoriteList={true} />
-
-              {*<div key={favorite.route.id} className={styles.card}>
-              <RouteItem route={favorite.route} selectedRoute={null} />*}
-
             </div>
           ))
       )}
