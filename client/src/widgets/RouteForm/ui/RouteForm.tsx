@@ -274,11 +274,12 @@ export function RouteForm(): React.JSX.Element {
                   placeholder="Описание маршрута (не более 500 символов)"
                 />
                 <Button
-                  variant="subtle"
+                  w={40}
+                  h={40}
                   style={{
                     position: 'absolute',
                     top: '100px',
-                    right: '10px',
+                    right: '5px',
                     padding: '5px',
                     backgroundColor: 'transparent',
                   }}
@@ -291,7 +292,7 @@ export function RouteForm(): React.JSX.Element {
                   {generateButtonDisabled ? (
                     <Loader size="sm" color="white" />
                   ) : (
-                    <RiAiGenerate2 size={20} />
+                    <RiAiGenerate2 size={30} />
                   )}
                 </Button>
               </Input.Wrapper>
