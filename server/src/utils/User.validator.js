@@ -2,35 +2,35 @@ class UserValidator {
   static validateSignUp(data) {
     const { username, email, password } = data;
 
-    if (!username || typeof username !== "string" || username.trim() === "") {
+    if (!username || typeof username !== 'string' || username.trim() === '') {
       return {
         isValid: false,
-        error: "Username is required and must be a non-empty string.",
+        error: 'Username is required and must be a non-empty string.',
       };
     }
     if (
       !email ||
-      typeof email !== "string" ||
-      email.trim() === "" ||
+      typeof email !== 'string' ||
+      email.trim() === '' ||
       !this.validateEmail(email)
     ) {
       return {
         isValid: false,
         error:
-          "Email is required, must be a non-empty string, and must be a valid email address.",
+          'Email is required, must be a non-empty string, and must be a valid email address.',
       };
     }
 
     if (
       !password ||
-      typeof password !== "string" ||
-      password.trim() === "" ||
+      typeof password !== 'string' ||
+      password.trim() === '' ||
       !this.validatePassword(password)
     ) {
       return {
         isValid: false,
         error:
-          "Password is required, must be a non-empty string, contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.",
+          'Пароль должен быть непустой строкой, содержать только символы английского алфавита, содержать не менее 8 символов, одну заглавную букву, одну строчную букву, одну цифру и один специальный символ.',
       };
     }
     return {
@@ -44,20 +44,21 @@ class UserValidator {
 
     if (
       !email ||
-      typeof email !== "string" ||
-      email.trim() === "" ||
+      typeof email !== 'string' ||
+      email.trim() === '' ||
       !this.validateEmail(email)
     ) {
       return {
         isValid: false,
-        error: "Email is required and must be a valid email address.",
+        error:
+          'Электронная почта обязательна и должна быть действительным адресом электронной почты.',
       };
     }
 
-    if (!password || typeof password !== "string" || password.trim() === "") {
+    if (!password || typeof password !== 'string' || password.trim() === '') {
       return {
         isValid: false,
-        error: "Password is required and must not be an empty string.",
+        error: 'Пароль обязателен и не должен быть пустой строкой.',
       };
     }
     return {

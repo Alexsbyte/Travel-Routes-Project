@@ -140,6 +140,8 @@ const userSlice = createSlice({
       })
       .addCase(changeUsernameThunk.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload);
+
         state.user = action.payload.data;
         state.error = null;
       })

@@ -37,7 +37,7 @@ export function FavoriteList(): React.JSX.Element {
           .filter((favorite) => favorite.route)
           .map((favorite) => (
             <div key={favorite.route.id} className={styles.card}>
-              <RouteItem route={favorite.route} />
+              <RouteItem route={favorite.route} selectedRoute={null} />
             </div>
           ))
       )}
