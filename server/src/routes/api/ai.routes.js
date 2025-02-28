@@ -28,13 +28,11 @@ async function aiOperations(text, type) {
           httpsAgent: agent,
         },
       );
-      // console.log(data.results);
 
       return { result: data.results[0].flagged, error: null };
     }
 
     if (type === 'completions') {
-      console.log(text);
       const { data } = await axios.post(
         `https://api.openai.com/v1/chat/${type}`,
         {
@@ -57,7 +55,6 @@ async function aiOperations(text, type) {
           httpsAgent: agent,
         },
       );
-      // console.log(data.choices[0].message.content.length);
       return { result: data.choices[0].message.content, error: null };
     }
     return {

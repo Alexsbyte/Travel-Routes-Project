@@ -148,13 +148,11 @@ export function RouteForm(): React.JSX.Element {
         }),
       ).then((res) => {
         if (res.payload?.data) {
-          console.log(res.payload?.data);
           setModerModalOpened(true);
           setCreateButtonDisabled(false);
           return;
         }
 
-        console.log(res.payload?.data);
 
         const formData = new FormData();
         formData.append('title', values.title);
@@ -215,7 +213,6 @@ export function RouteForm(): React.JSX.Element {
 
     setTextModalOpened(false);
     setPrompt({ prompt: '', length: 100 });
-    console.log(generatedText);
   };
 
   return (

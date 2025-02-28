@@ -11,7 +11,7 @@ export function FavoriteList(): React.JSX.Element {
   const user = useAppSelector((state) => state.user.user);
 
   const { favorites, error } = useAppSelector((state) => state.favorites);
-
+ const navigate = useNavigate()
   // useEffect(() => {
   //   if (user?.id) {
   //     dispatch(getAllUserFavoritesThunk());
@@ -24,19 +24,19 @@ export function FavoriteList(): React.JSX.Element {
     } else if (user.id) {
       dispatch(getAllUserFavoritesThunk());
     }
-<!--   }, [dispatch, user, navigate]);
+// <!--   }, [dispatch, user, navigate]);
 
-  if (!user) {
-    return <></>; // Не рендерим ничего, если редирект происходит
-  }
+//   if (!user) {
+//     return <></>; // Не рендерим ничего, если редирект происходит
+//   }
 
-  if (loading) {
-    return (
-      <div className={styles.spinner}>
-        <Spin size="large" />
-      </div>
-    );
-  } -->
+//   if (loading) {
+//     return (
+//       <div className={styles.spinner}>
+//         <Spin size="large" />
+//       </div>
+//     );
+//   } -->
   }, [dispatch, user?.id, favorites.length]);
 
 

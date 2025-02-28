@@ -118,7 +118,6 @@ class UserController {
   static async verifyEmail(req, res) {
     // const { token } = req.query;
     const { token } = req.params;
-console.log(token, 333333);
 
     if (!token) {
       return res.status(400).json(formatResponse(400, 'Token is required'));
@@ -206,7 +205,6 @@ console.log(token, 333333);
   }
 
   static async signOut(req, res) {
-    console.log(req.cookies);
     try {
       res.clearCookie('refreshToken').json(formatResponse(200, 'Logout successful'));
     } catch ({ message }) {
