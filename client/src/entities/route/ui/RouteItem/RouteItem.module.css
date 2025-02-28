@@ -4,7 +4,7 @@
 } */
 
 
-/* .container {
+.container {
   background-color: var(--on-primary);
   border-radius: 8px;
   padding: 20px;
@@ -16,11 +16,11 @@
   max-width: 400px;
   height: auto;
   overflow: hidden;
-} */
+}
 /* .custom-carousel-control {
   background-color: rgba(0, 0, 0, 0.87);
   opacity: 1;
-} */
+}
 
 
 /* .sharedBy {
@@ -64,15 +64,17 @@
   border-radius: 8px;
 } */
 
-/* 
+
 .description {
   color: var(--on-surface);
   overflow: hidden;
-  height: 100px;
   text-overflow: ellipsis;
   margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Ограничиваем текст тремя строками */
+  -webkit-box-orient: vertical;
 }
-
+/* 
 .title {
   font-size: 18px;
   font-weight: 600;
@@ -88,7 +90,7 @@
   background-color: var(--outline);
   margin: 8px 0;
 }
-
+*/
 .text {
   font-size: 14px;
   line-height: 1.6;
@@ -99,7 +101,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+/* 
 @media (max-width: 768px) {
   .container {
     height: auto;

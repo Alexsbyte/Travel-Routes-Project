@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
 import { createFavoriteThunk, deleteFavoriteThunk } from '@/entities/favorite';
 import { LikeButton } from './LikeButton';
-// import styles from './RouteItem.module.css';
+import styles from './RouteItem.module.css';
 
 
 type Props = {
@@ -82,8 +82,9 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
 
   return (
     <>
-      <Card
-        shadow="sm"
+      <Card 
+      className={styles.container}  
+       shadow="sm"
         padding="lg"
         radius="md"
         withBorder
@@ -104,6 +105,7 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
               mt={21}
               mr={21}
               ml={21}
+              maw={330}
               key={route.id}
               align="start"
               slidesToScroll={1}
@@ -131,7 +133,9 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
           mb="xs"
           style={{ position: 'relative', display: 'flex' }}
         >
-          <Text fw={500} style={{ marginRight: '120px' }}>
+          <Text 
+          className={styles.text} 
+          fw={500} style={{ marginRight: '120px' }}>
             {route.title}
           </Text>
           <div
@@ -150,7 +154,7 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
           </div>
         </Group>
 
-        <Text size="sm" c="dimmed">
+        <Text className={styles.description} size="sm" c="dimmed">
           {route.description}
         </Text>
 
