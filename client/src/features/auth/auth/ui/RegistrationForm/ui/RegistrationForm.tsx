@@ -13,7 +13,10 @@ interface RegFormProps {
   onSwitch: () => void;
 }
 
-export function RegistrationForm({ handleSignUp }: RegFormProps): React.JSX.Element {
+export function RegistrationForm({
+  handleSignUp,
+  onSwitch,
+}: RegFormProps): React.JSX.Element {
   const { register, handleSubmit } = useForm<ISignUpData>();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -87,9 +90,9 @@ export function RegistrationForm({ handleSignUp }: RegFormProps): React.JSX.Elem
       <button className={styles.button} type="submit" disabled={loading}>
         {loading ? 'Загрузка...' : 'Зарегистрироваться'}
       </button>
-      {/* <p className={styles.switchText}>
+      <p className={styles.switchText}>
         Уже зарегистрированы? <span onClick={onSwitch}>Войдите </span>
-      </p> */}
+      </p>
     </form>
   );
 }

@@ -6,6 +6,9 @@ import {
   signInThunk,
   signOutThunk,
   verifyEmailThunk,
+  changeUsernameThunk,
+  changePasswordThunk,
+  changePhotoThunk,
 } from '../api';
 
 type UserState = {
@@ -26,7 +29,7 @@ const initialState: UserState = {
 
 const userSlice = createSlice({
   name: 'user',
-  initialState, 
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -103,6 +106,47 @@ const userSlice = createSlice({
       .addCase(verifyEmailThunk.rejected, (state, action) => {
         state.loading = false;
         state.emailVerified = false;
+        state.error = action.payload ? action.payload!.error : 'Unknown error';
+      })
+
+      .addCase(changePhotoThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changePhotoThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.error = null;
+      })
+      .addCase(changePhotoThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ? action.payload!.error : 'Unknown error';
+      })
+
+      .addCase(changePasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changePasswordThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.error = null;
+      })
+      .addCase(changePasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ? action.payload!.error : 'Unknown error';
+      })
+
+      .addCase(changeUsernameThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changeUsernameThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload);
+
+        state.user = action.payload.data;
+        state.error = null;
+      })
+      .addCase(changeUsernameThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload ? action.payload!.error : 'Unknown error';
       });
   },

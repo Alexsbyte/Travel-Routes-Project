@@ -1,137 +1,142 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Lobster&family=Oleo+Script+Swash+Caps:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('../../../app/colors.css');
 
 .commentSection {
-    padding: 20px;
-    max-width: 1000px; /* Ограничиваем ширину формы */
-    margin: 0 auto;  /* Выравнивание по центру */
+  padding: 20px;
+  max-width: 1000px; /* Ограничиваем ширину формы */
+  margin: 0 auto; /* Выравнивание по центру */
+}
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  max-width: 1500px;
+}
 
-  }
-  .commentForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Выравниваем все элементы по центру */
-    gap: 12px;
-    margin-bottom: 16px;
-    max-width: 1000px;
-  }
+.commentButtonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
 
-  .commentButtonWrapper {
-    width: 90%;
-    display: flex;
-    justify-content: flex-end; /* Выравнивание кнопки по правому краю */
+.commentButtonWrapper button {
+  background: var(--primary);
+  color: var(--on-primary);
+  height: 55px;
+  font-size: 18px;
+}
 
-  }
-  
-  .commentInput {
-    width: 100%;
-    max-width: 800px; /* Ограничение ширины текстового поля */
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    resize: vertical; /* Разрешаем изменение высоты */
-    margin: 0 auto; /* Центрируем поле ввода */
+.commentButtonWrapper button:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  border: 1px solid blue;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}
 
-  }
-  
-  .commentButton {
-     align-content: center;
-    max-width: 200px;  /* Ограничение ширины кнопки */
-  
-  }
-  
-  .commentList {
-    margin-top: 20px;
-  }
-  
-  .commentItem {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 16px;  /* Отступ между комментариями */
-    padding: 16px 0;
-  }
-  
-  .date {
-    color: #6c757d;
-    font-size: 12px;
-    margin-left: 8px; /* Даем небольшой отступ от имени */
-    white-space: nowrap;
-  }
-  
-  .commentHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Распределяем контент по краям */
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;  /* Чтобы изображение не искажалось */
-    margin-right: 10px; /* Немного отступа от имени */
-  }
-  
-  .username .commentHeader {
-    font-weight: bold;
-    font-size: 16px;
-    font-family: 'Exo 2' !important;
-    
-  }
-  
-  .commentText .username {
-    font-size: 15px;
-    line-height: 1.4;
-    color: #333;
-    font-family: 'Verdana', sans-serif;  /* Пример изменения шрифта */
-  }
-  
-  .commentUsername {
-    font-weight: bold;
-    font-size: 16px;
-    font-family: 'Exo 2', sans-serif;
-    margin-right: auto; /* Прижимает к левому краю */
-    color: var(--secondary) !important;
+.commentInput {
+  width: 100%;
+  max-width: 800px; /* Ограничение ширины текстового поля */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical; /* Разрешаем изменение высоты */
+  margin: 0 auto; /* Центрируем поле ввода */
+}
 
-  }
+.commentButton {
+  align-content: center;
+  max-width: 200px; /* Ограничение ширины кнопки */
+}
 
+.commentList {
+  margin-top: 20px;
+}
 
-  .commentDelete {
-    color: rgb(174, 6, 6) !important;
-    font-size: 14px;
-    margin-left: 10px; /* Отделяем кнопку от даты */}
-  
-  .modalButtons  {
-    font-family: 'Exo 2';
-  }
-  
-  .customQuill {
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    min-height: 200px ;
-    padding: 10px ;
-    width: 90%;
-    font-family: 'Exo 2';
-  }
-  
-  .customQuill {
-    min-height: 80px !important;
-    font-size: 16px !important;
-    font-family: 'Exo 2';
-  }
-  
-  .modalText {
-    font-family: 'Exo 2' !important;
-  }
-    
-.title {
-  font-family: 'Exo 2'!important
+.commentItem {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 16px; /* Отступ между комментариями */
+  padding: 16px 0;
+}
+
+.date {
+  color: #6c757d;
+  font-size: 12px;
+  margin-left: 8px; /* Даем небольшой отступ от имени */
+  white-space: nowrap;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Распределяем контент по краям */
+  width: 100%;
+  margin-bottom: 8px;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover; /* Чтобы изображение не искажалось */
+  margin-right: 10px; /* Немного отступа от имени */
+}
+
+.username .commentHeader {
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Exo 2' !important;
+}
+
+.commentText .username {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #333;
+  font-family: 'Verdana', sans-serif; /* Пример изменения шрифта */
+}
+
+.commentUsername {
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Exo 2', sans-serif;
+  margin-right: auto; /* Прижимает к левому краю */
+  color: var(--secondary) !important;
+}
+
+.commentDelete {
+  color: rgb(174, 6, 6) !important;
+  font-size: 14px;
+  margin-left: 10px; /* Отделяем кнопку от даты */
+}
+
+.modalButtons {
+  font-family: 'Exo 2';
+}
+
+.customQuill {
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  min-height: 200px;
+  padding: 10px;
+  width: 90%;
+  font-family: 'Exo 2';
+}
+
+.customQuill {
+  width: 100%;
+  min-height: 100px !important;
+  font-size: 16px !important;
+}
+
+.modalText .title .customQuill {
+  font-family: 'Exo 2' !important;
 }
 
 .commentInfo {
   display: flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
 }

@@ -1,0 +1,44 @@
+@import url('../../../app/colors.css');
+
+.container {
+  /* background: linear-gradient(45deg, rgb(224, 224, 224), rgb(240, 226, 229)); */
+  font-family: 'Exo2' serif;
+}
+.title {
+  align-self: center;
+}
+
+.container .userCard {
+  background: linear-gradient(45deg, rgb(224, 224, 224), rgb(240, 226, 229)) !important;
+}
+
+.container button {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  /* border-color: var(--secondary); /
+  / border-radius: 8px; */
+  font-size: 16px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}
+
+.container button.editButton {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  font-size: 16px;
+  padding: 8px 8px;
+  transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+  background: var(--on-primary);
+  color: #007bff;
+  box-shadow: 5px 8px 13px rgba(71, 43, 5, 0.308);
+}

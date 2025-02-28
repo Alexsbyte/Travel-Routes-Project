@@ -307,6 +307,7 @@ export function RouteForm(): React.JSX.Element {
                 />
               </Input.Wrapper>
               <Space h="md" />
+
               <div className={style.buttonsToAdd}>
                 <Input.Wrapper
                   label="Добавьте до 6 фото"
@@ -326,13 +327,13 @@ export function RouteForm(): React.JSX.Element {
                     }}
                     multiple
                     accept="image/*"
-                    placeholder="Добавить фото"
+                    placeholder="Добавьте файлы"
                   />
                 </Input.Wrapper>
                 <Space h="md" />
 
                 <Button
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   disabled={createButtonDisabled}
@@ -350,7 +351,7 @@ export function RouteForm(): React.JSX.Element {
 
                 <Button
                   className={style.cancel}
-                  w={160}
+                  w={170}
                   h={50}
                   mt={25}
                   bd={'1px solid blue'}

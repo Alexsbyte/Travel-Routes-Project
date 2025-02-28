@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tag } from 'antd';
 import { Carousel } from '@mantine/carousel';
 import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
-import { FavoriteSection } from '@/widgets/FavoriteSection';
+
+// import { FavoriteSection } from '@/widgets/FavoriteSection';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
+import { createFavoriteThunk, deleteFavoriteThunk } from '@/entities/favorite';
+import { LikeButton } from './LikeButton';
+// import styles from './RouteItem.module.css';
+
 
 type Props = {
   route: Route;
-  showFavorite?: boolean;
+  selectedRoute?: Route | null;
+  isFavoriteList: boolean
 };
 
-export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Element {
+export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): React.JSX.Element {
+  const user = useAppSelector((state) => state.user.user);
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -21,7 +29,43 @@ export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Elem
     }
   };
 
-  const slides = route.photos.map((photo, id) => (
+  const [userFavorite, setUserFavorite] = useState(false)
+  const dispatch = useAppDispatch();
+console.log(userFavorite);
+
+
+  const handleLikeClick = async () => {
+    if (!user) return;
+  
+    try {
+      if (userFavorite) {
+        // Удаляем лайк
+        await dispatch(deleteFavoriteThunk(route.id));
+      } else {
+        // Добавляем лайк
+        await dispatch(createFavoriteThunk({ user_id: user.id, route_id: route.id }));
+      }
+  
+      // Только после успешного запроса меняем локальное состояние
+      setUserFavorite(prev => !prev);
+    } catch (error) {
+      console.error('Ошибка при изменении избранного:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (!isFavoriteList) {
+      const userFavoriteRoute = route.favorite?.some(el => el.user_id === user?.id);
+      setUserFavorite(userFavoriteRoute);
+    } else {
+      setUserFavorite(true);
+    }
+  }, [route.favorite, user, isFavoriteList]);
+
+
+
+  const slides = route.photos?.map((photo, id) => (
     <Carousel.Slide key={id}>
       <Image
         style={{
@@ -99,11 +143,11 @@ export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Elem
               zIndex: 10,
             }}
           >
-            {route.category.split(',').map((category, id) => (
-              <Tag key={id} color="blue" style={{ marginRight: '8px' }}>
-                {category}
+           
+              <Tag  color="blue" style={{ marginRight: '8px' }}>
+                {route.category}
               </Tag>
-            ))}
+           
           </div>
         </Group>
 
@@ -111,10 +155,7 @@ export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Elem
           {route.description}
         </Text>
 
-        <div>
-          {/* Показываем лайк только если showFavorite === true */}
-          {showFavorite && <FavoriteSection route_id={route.id}  />}
-        </div>
+
         <Link
           to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
           style={{ textDecoration: 'none' }}
@@ -123,6 +164,7 @@ export function RouteItem({ route, showFavorite = true }: Props): React.JSX.Elem
             Перейти к маршруту
           </Button>
         </Link>
+        <LikeButton handleLikeClick={handleLikeClick} userFavorite={userFavorite} />
       </Card>
     </>
   );

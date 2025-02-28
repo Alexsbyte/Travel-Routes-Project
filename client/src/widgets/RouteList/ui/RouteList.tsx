@@ -27,9 +27,8 @@ export function RouteList({
             className={`${styles.card} ${
               selectedRoute?.id === route.id ? styles.selected : ''
             }`} // Добавляем класс для выделения выбранного маршрута
-            key={route.id}
           >
-            <RouteItem route={route} key={route.id} showFavorite={false} />
+            <RouteItem route={route} key={route.id} selectedRoute={selectedRoute} isFavoriteList={false}/>
           </div>
         ))}
     </div>

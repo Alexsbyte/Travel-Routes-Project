@@ -17,7 +17,7 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
   const dispatch = useAppDispatch();
   const { currentFavorite, loading } = useAppSelector((state) => state.favorites);
   const user = useAppSelector((state) => state.user.user);
-  const [errorState, setErrorState] = useState<string | null>(null);
+  const [errorState] = useState<string | null>(null);
 
   const handleAddFavorite = () => {
     if (!user) {
@@ -35,7 +35,6 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
   };
 
   useEffect(() => {
-    console.log(route_id, currentFavorite);
     if (route_id && !currentFavorite) {
       dispatch(getOneRouteFavoriteThunk(route_id));
     }

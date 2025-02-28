@@ -43,7 +43,9 @@ export const AuthModal: React.FC<ModalProps> = ({
       onClose();
     } catch (error) {
       antMessage.error(
-        error instanceof Error ? error.message : 'Ошибка регистрации, попробуйте снова.',
+        error instanceof Error
+          ? error.message
+          : 'Ошибка при регистрации. Попробуйте снова ',
       );
     }
   };
@@ -51,13 +53,13 @@ export const AuthModal: React.FC<ModalProps> = ({
   const handleSignIn = async (data: ISignInData) => {
     try {
       await dispatch(signInThunk(data)).unwrap();
-      antMessage.success('Авторизация успешна!');
       onClose();
     } catch (error) {
       antMessage.error(
         error instanceof Error
           ? error.message
           : 'Подтвердите, пожалуйста, свой аккаунт. Ссылка для подтверждения отправлена вам на почту.',
+
       );
       onClose();
     }
@@ -67,7 +69,10 @@ export const AuthModal: React.FC<ModalProps> = ({
     <Modal
       display={!isOpen ? 'none' : 'block'}
       opened={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        return authType === 'signin' ? setIsSignUp(false) : setIsSignUp(true);
+      }}
       centered
       overlayProps={{ backgroundOpacity: 0.6, blur: 3 }}
       transitionProps={{ transition: 'fade', duration: 200 }}

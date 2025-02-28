@@ -50,7 +50,7 @@
   border-color: var(--primary-container);
   color: var(--on-primary);
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   padding: 18px;
   transition: background-color 0.3s ease;
 }
@@ -67,7 +67,7 @@
   background: var(--primary);
   color: var(--on-primary);
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   padding: 18px;
   transition: background-color 0.3s ease;
 }
