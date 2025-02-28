@@ -4,12 +4,13 @@ import { Carousel } from '@mantine/carousel';
 import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+
 // import { FavoriteSection } from '@/widgets/FavoriteSection';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
 import { createFavoriteThunk, deleteFavoriteThunk } from '@/entities/favorite';
 import { LikeButton } from './LikeButton';
-// import styles from './RouteItem.module.css';
+import styles from './RouteItem.module.css';
 
 type Props = {
   route: Route;
@@ -33,7 +34,6 @@ export function RouteItem({
 
   const [userFavorite, setUserFavorite] = useState(false);
   const dispatch = useAppDispatch();
- 
 
   const handleLikeClick = async () => {
     if (!user) return;
@@ -81,8 +81,9 @@ export function RouteItem({
 
   return (
     <>
-      <Card
-        shadow="sm"
+      <Card 
+      className={styles.container}  
+       shadow="sm"
         padding="lg"
         radius="md"
         withBorder
@@ -103,6 +104,7 @@ export function RouteItem({
               mt={21}
               mr={21}
               ml={21}
+              maw={330}
               key={route.id}
               align="start"
               slidesToScroll={1}
@@ -130,7 +132,9 @@ export function RouteItem({
           mb="xs"
           style={{ position: 'relative', display: 'flex' }}
         >
-          <Text fw={500} style={{ marginRight: '120px' }}>
+          <Text 
+          className={styles.text} 
+          fw={500} style={{ marginRight: '120px' }}>
             {route.title}
           </Text>
           <div
@@ -147,7 +151,7 @@ export function RouteItem({
           </div>
         </Group>
 
-        <Text size="sm" c="dimmed">
+        <Text className={styles.description} size="sm" c="dimmed">
           {route.description}
         </Text>
         <LikeButton handleLikeClick={handleLikeClick} userFavorite={userFavorite} />

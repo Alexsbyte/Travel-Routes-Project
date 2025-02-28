@@ -6,6 +6,9 @@ const cookiesConfig = require('../config/cookiesConfig');
 const generateTokens = require('../utils/generateTokens');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') }); 
+
 
 class UserController {
   static async refreshTokens(req, res) {
@@ -73,7 +76,8 @@ class UserController {
         verificationTokenExpiry: resetTokenExpiry, // ✅ Сохраняем срок действия
       });
 
-      const confirmLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
+      const confirmLink = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+
 
       const emailSent = await sendEmail(
         email,
@@ -114,8 +118,8 @@ class UserController {
   }
 
   static async verifyEmail(req, res) {
-    const { token } = req.query;
-    // const { token } = req.params;
+    // const { token } = req.query;
+    const { token } = req.params;
 
     if (!token) {
       return res.status(400).json(formatResponse(400, 'Token is required'));
@@ -163,18 +167,18 @@ class UserController {
           .status(404)
           .json(formatResponse(404, 'User with this email not found', null));
       }
-      // if (!user.isVerified) {
-      //   return res
-      //     .status(401)
-      //     .json(
-      //       formatResponse(
-      //         401,
-      //         'Please verify your email first.',
-      //         null,
-      //         'Email not verified',
-      //       ),
-      //     );
-      // }
+      if (!user.isVerified) {
+        return res
+          .status(401)
+          .json(
+            formatResponse(
+              401,
+              'Подтвердите, пожалуйста, почту.',
+              null,
+              'Почта не верифицирована',
+            ),
+          );
+      }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
@@ -203,7 +207,6 @@ class UserController {
   }
 
   static async signOut(req, res) {
-    console.log(req.cookies);
     try {
       res.clearCookie('refreshToken').json(formatResponse(200, 'Logout successful'));
     } catch ({ message }) {

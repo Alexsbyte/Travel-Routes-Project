@@ -4,9 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Route, Comment }) {
       this.hasMany(Route, { foreignKey: 'user_id' });
-      this.hasMany(Comment, {foreignKey: 'user_id',
-        as: 'comments',
-      });
+      this.hasMany(Comment, { foreignKey: 'user_id', as: 'comments' });
     }
   }
   User.init(
@@ -16,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       isAdmin: DataTypes.BOOLEAN,
       isVerified: DataTypes.BOOLEAN,
-      // resetTokenExpiry: DataTypes.DATE,
+      resetTokenExpiry: DataTypes.DATE,
       verificationToken: {
         type: DataTypes.STRING,
         allowNull: true,

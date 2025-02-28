@@ -9,7 +9,7 @@ enum AUTH_API_ROUTES {
   SIGN_UP = 'api/auth/signUp',
   SIGN_IN = 'api/auth/signIn',
   SIGN_OUT = 'api/auth/signOut',
-  VERIFY_EMAIL = 'api/auth/verify-email',
+  VERIFY_EMAIL = 'api/verify-email/',
 }
 
 enum USER_THUNKS_TYPES {
@@ -67,7 +67,6 @@ export const signUpThunk = createAsyncThunk<
     );
 
     setAccessToken(data.data.accessToken);
-    console.log(data);
 
     return data;
   } catch (error) {

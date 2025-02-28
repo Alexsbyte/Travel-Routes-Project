@@ -163,6 +163,7 @@ export function CommentSection(): React.JSX.Element {
             fz={18}
             className={`${styles.modalButtons} ${styles.deleteButton}`}
             onClick={handleDeleteComment}
+            color="red"
           >
             Удалить
           </Button>

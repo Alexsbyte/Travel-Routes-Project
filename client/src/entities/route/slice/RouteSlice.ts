@@ -36,7 +36,7 @@ export const routeSlice = createSlice({
       })
       .addCase(getAllRoutesThunk.fulfilled, (state, action) => {
 
-        state.routes = action.payload.data.sort((a, b) => a.id - b.id);
+        state.routes = action.payload.data.sort((a, b) => b.id - a.id);
         state.loading = false;
         state.error = null;
 
