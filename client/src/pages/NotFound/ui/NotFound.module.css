@@ -1,0 +1,40 @@
+/* src/components/NotFound.module.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .page-404 {
+    text-align: center;
+  }
+  
+  .page-404 img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .page-404 h1 {
+    font-size: 36px;
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .page-404 p {
+    font-size: 18px;
+    color: #666;
+  }
+  

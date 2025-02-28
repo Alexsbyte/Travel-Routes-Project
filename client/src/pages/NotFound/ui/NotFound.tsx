@@ -1,7 +1,7 @@
 export function NotFound(): React.JSX.Element {
   return (
     <div>
-      <img src="/Dasha.jpg" style={{ width: '100%', display: 'block' }} />
+      <img src="/" style={{ width: '100%', display: 'block' }} />
       <h1
         style={{
           position: 'absolute',
@@ -14,8 +14,14 @@ export function NotFound(): React.JSX.Element {
           padding: '10px',
         }}
       >
-        Главную страницу
+      
       </h1>
     </div>
   );
 }
+
+
+
+
+
+
