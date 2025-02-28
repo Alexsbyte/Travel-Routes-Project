@@ -35,10 +35,15 @@ interface UsernameForm {
   newUsername: string;
 }
 
+interface IMessage {
+  text: string;
+  type: 'error' | 'success';
+}
+
 export function ProfilePage(): React.JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState<IMessage>({ text: '', type: 'error' });
   const [showOldPass, setShowOldPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
@@ -64,21 +69,23 @@ export function ProfilePage(): React.JSX.Element {
   });
 
   const changeUsernameHandler = async () => {
-    const newUsername = usernameForm.values.newUsername.trim();
-    if (!newUsername) {
-      setError('Имя пользователя не может быть пустым');
-      open();
-      setUsernameButtonDisabled(false);
-      return;
-    }
-
     try {
+      const newUsername = usernameForm.values.newUsername.trim();
+      if (!newUsername) {
+        setMessage({ text: 'Имя пользователя не может быть пустым', type: 'error' });
+        open();
+        setUsernameButtonDisabled(false);
+        return;
+      }
+
       await dispatch(changeUsernameThunk({ newUsername })).unwrap();
+      setMessage({ text: 'Имя пользователя успешно изменено!', type: 'success' });
+      open();
       usernameForm.reset();
       setUsernameButtonDisabled(false);
     } catch (error) {
       const { message } = error as IApiResponseReject;
-      setError(message);
+      setMessage({ text: message, type: 'error' });
       open();
       setUsernameButtonDisabled(false);
     }
@@ -87,7 +94,7 @@ export function ProfilePage(): React.JSX.Element {
   const changePasswordHandler = async () => {
     const { oldPass, newPass, confirmPass } = passForm.values;
     if (newPass !== confirmPass) {
-      setError('Пароли не совпадают!');
+      setMessage({ text: 'Пароли не совпадают!', type: 'error' });
       open();
 
       setPasswordButtonDisabled(false);
@@ -96,11 +103,13 @@ export function ProfilePage(): React.JSX.Element {
 
     try {
       await dispatch(changePasswordThunk({ oldPass, newPass })).unwrap();
+      setMessage({ text: 'Пароль успешно изменён!', type: 'success' });
+      open();
       passForm.reset();
       setPasswordButtonDisabled(false);
     } catch (error) {
       const { message } = error as IApiResponseReject;
-      setError(message);
+      setMessage({ text: message, type: 'error' });
       open();
       setPasswordButtonDisabled(false);
     }
@@ -108,10 +117,8 @@ export function ProfilePage(): React.JSX.Element {
   const changePhotoHandler = async () => {
     // const file = event.target.files?.[0];
     // if (!file) return;
-
     // const formData = new FormData();
     // formData.append('avatar', file);
-
     // try {
     //   await dispatch(changePhotoThunk(formData)).unwrap();
     // } catch (error) {
@@ -239,8 +246,8 @@ export function ProfilePage(): React.JSX.Element {
               h={55}
               disabled={passwordButtonDisabled}
               onClick={() => {
-                changePasswordHandler();
                 setPasswordButtonDisabled(true);
+                changePasswordHandler();
               }}
             >
               Отправить
@@ -266,8 +273,8 @@ export function ProfilePage(): React.JSX.Element {
               h={55}
               disabled={usernameButtonDisabled}
               onClick={() => {
-                changeUsernameHandler();
                 setUsernameButtonDisabled(true);
+                changeUsernameHandler();
               }}
             >
               Отправить
@@ -279,13 +286,19 @@ export function ProfilePage(): React.JSX.Element {
         opened={opened}
         onClose={() => {
           close();
-          setError('');
+          setMessage({ text: '', type: 'error' });
         }}
         withCloseButton={false}
       >
-        <Text ta={'center'} c={'red'}>
-          {error}
-        </Text>
+        {message.type === 'error' ? (
+          <Text ta={'center'} c={'red'}>
+            {message.text}
+          </Text>
+        ) : (
+          <Text ta={'center'} c={'green'}>
+            {message.text}
+          </Text>
+        )}
       </Modal>
     </Flex>
   );
