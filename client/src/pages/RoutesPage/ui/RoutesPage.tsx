@@ -89,7 +89,7 @@ export function RoutesPage(): React.JSX.Element {
             <Filter onFilterChange={handleFilterChange} />
 
             <Loader loading={loading}>
-              <ScrollArea.Autosize mah={550} maw={500} mx="auto">
+              <ScrollArea.Autosize mah={550} maw={374} mx="auto">
                 {/* Карточки */}
                 <RouteList
                   filteredRoutes={sortedRoutes}
