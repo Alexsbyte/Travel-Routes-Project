@@ -9,14 +9,14 @@ const PointService = require('../services/Point.service');
 class RouteController {
   static async create(req, res) {
     const photos = req.files;
-    const { title, description, category,points } = req.body;
+    const { title, description, category, points } = req.body;
     const { user } = res.locals;
 
     const { isValid, error } = RouteValidator.validateCreate({
       title,
       description,
       category,
-      photos
+      photos,
     });
 
     if (!isValid) {
@@ -37,17 +37,22 @@ class RouteController {
 
       const routeWithUser = await RouteService.getById(newRoute.id);
 
-      const objPoints =  await JSON.parse(points)
-      const pointWithIdRout = objPoints.map(point => ({latitude: point.latitude, longitude: point.longitude,description: point.description, route_id:newRoute.id}))
+      const objPoints = await JSON.parse(points);
+      const pointWithIdRout = objPoints.map((point) => ({
+        latitude: point.latitude,
+        longitude: point.longitude,
+        description: point.description,
+        route_id: newRoute.id,
+      }));
 
-      const allPointsRoute = await PointService.bulkCreate(pointWithIdRout)
+      const allPointsRoute = await PointService.bulkCreate(pointWithIdRout);
 
-      if(!allPointsRoute) {
-        return res.status(400).json(formatResponse(400, 'Failed to create point for route'));
+      if (!allPointsRoute) {
+        return res
+          .status(400)
+          .json(formatResponse(400, 'Failed to create point for route'));
       }
 
-
-      
       const transTitle = transliterate(title);
 
       const photosForDB = photos.map((photo) => ({
@@ -57,8 +62,11 @@ class RouteController {
 
       const newPhotos = await PhotoService.createPhotos(photosForDB);
 
-      res.status(201).json(
-        formatResponse(201, 'Route with photos created successfully', routeWithUser ))
+      res
+        .status(201)
+        .json(
+          formatResponse(201, 'Route with photos created successfully', routeWithUser),
+        );
     } catch ({ message }) {
       res.status(500).json(formatResponse(500, 'Internal server error', null, message));
     }

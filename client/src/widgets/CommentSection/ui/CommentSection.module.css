@@ -140,3 +140,15 @@
   align-items: center;
   gap: 8px;
 }
+
+.deleteButton {
+  background-color: #dc3545 !important; /* Красный фон */
+  color: white !important; /* Белый текст */
+  border: 1px solid #dc3545 !important; /* Красная граница */
+}
+
+.deleteButton:hover {
+  background-color: #c82333 !important; /* Темный красный при наведении */
+  border-color: #bd2130 !important;
+}
+

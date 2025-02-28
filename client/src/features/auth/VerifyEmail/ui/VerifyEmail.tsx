@@ -17,7 +17,6 @@ export function VerifyEmail(): React.JSX.Element {
   const emailVerified = useAppSelector((state) => state.user.emailVerified);
   const loading = useAppSelector((state) => state.user.loading);
   const [error, setError] = useState<string | null>(null);
-  console.log(token);
 
   useEffect(() => {
     if (token) {

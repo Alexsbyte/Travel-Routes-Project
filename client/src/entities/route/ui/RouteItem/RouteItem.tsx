@@ -33,7 +33,7 @@ export function RouteItem({
 
   const [userFavorite, setUserFavorite] = useState(false);
   const dispatch = useAppDispatch();
-  console.log(userFavorite);
+ 
 
   const handleLikeClick = async () => {
     if (!user) return;

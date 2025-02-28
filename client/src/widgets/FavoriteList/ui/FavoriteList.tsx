@@ -15,7 +15,6 @@ export function FavoriteList(): React.JSX.Element {
     }
   }, [dispatch, user?.id, favorites.length]);
 
-  console.log(favorites, "dddddd");
   
   if (error) {
     return <div className={styles.error}>{error}</div>;

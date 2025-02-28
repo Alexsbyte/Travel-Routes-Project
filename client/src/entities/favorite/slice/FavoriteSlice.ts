@@ -57,7 +57,6 @@ export const favoriteSlice = createSlice({
           (route) => {
             return route.favorite[0].id!== action.payload.data.id}
         );
-        console.log(action.payload.data,"<<<<<<<<<<<<<<<<<<<<<<<");
         
         state.loading = false;
         state.error = null;

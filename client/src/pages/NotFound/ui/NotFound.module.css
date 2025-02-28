@@ -1,40 +1,103 @@
-/* src/components/NotFound.module.css */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-  }
-  
-  .wrapper {
+.notFoundContainer {
+    position: relative;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-  }
-  
-  .page-404 {
+    flex-direction: column;
+    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Начальный фон */
+    animation: gradientBackground 3s ease infinite;
     text-align: center;
+    overflow: hidden;
+    transition: background 1s ease; /* Плавное изменение фона */
   }
   
-  .page-404 img {
-    max-width: 100%;
-    height: auto;
+  .notFoundText {
+    font-size: 32px; /* Размер текста, адаптирован для природы */
+    color: white;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 2s;
   }
   
-  .page-404 h1 {
-    font-size: 36px;
-    margin-top: 20px;
-    color: #333;
+  .notFoundSubText {
+    font-size: 30px; /* Уменьшили размер второго текста */
+    color: white;
+    margin-bottom: 30px;
+    animation: fadeIn 2.5s;
   }
   
-  .page-404 p {
+  .notFoundLink {
     font-size: 18px;
-    color: #666;
+    padding: 15px 30px;
+    background-color: #fff;
+    color: #ff6a00;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    animation: fadeIn 3s;
+  }
+  
+  .notFoundLink:hover {
+    background-color: #ff6a00;
+    color: white;
+  }
+  
+  .notFoundTimer {
+    font-size: 48px;
+    color: white;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  
+  @keyframes gradientBackground {
+    0% {
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+    }
+    50% {
+      background: linear-gradient(45deg, #ff6a00, #ffcd00);
+    }
+    100% {
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .notFoundText {
+      font-size: 24px;
+    }
+  
+    .notFoundSubText {
+      font-size: 16px;
+    }
+  
+    .notFoundLink {
+      font-size: 16px;
+      padding: 12px 25px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .notFoundText {
+      font-size: 20px;
+    }
+  
+    .notFoundLink {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
   }
   
