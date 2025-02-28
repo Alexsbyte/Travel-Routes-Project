@@ -67,7 +67,6 @@ export const signUpThunk = createAsyncThunk<
     );
 
     setAccessToken(data.data.accessToken);
-    console.log(data);
 
     return data;
   } catch (error) {

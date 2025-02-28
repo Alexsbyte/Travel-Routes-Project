@@ -31,7 +31,6 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
 
   const [userFavorite, setUserFavorite] = useState(false)
   const dispatch = useAppDispatch();
-console.log(userFavorite);
 
 
   const handleLikeClick = async () => {

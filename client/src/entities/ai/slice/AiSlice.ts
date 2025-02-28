@@ -38,7 +38,6 @@ const aiSlice = createSlice({
       })
       .addCase(checkModerationThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action);
         state.flagged = action.payload.data;
       })
       .addCase(checkModerationThunk.rejected, (state, action) => {
@@ -52,7 +51,6 @@ const aiSlice = createSlice({
       })
       .addCase(generateBeautifullThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action);
         state.generatedText = action.payload.data;
       })
       .addCase(generateBeautifullThunk.rejected, (state, action) => {

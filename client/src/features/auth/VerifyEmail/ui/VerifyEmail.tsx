@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { message as antMessage, Spin } from 'antd';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
@@ -18,7 +18,6 @@ export function VerifyEmail(): React.JSX.Element {
   const emailVerified = useAppSelector((state) => state.user.emailVerified);
   const loading = useAppSelector((state) => state.user.loading);
   const [error, setError] = useState<string | null>(null);
-  console.log(token);
 
   useEffect(() => {
     if (token) {

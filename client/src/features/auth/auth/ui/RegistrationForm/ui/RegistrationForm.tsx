@@ -41,8 +41,6 @@ export function RegistrationForm({
       });
       navigate(CLIENT_ROUTES.HOME);
     } catch (error) {
-      console.log(error);
-
       antMessage.error('Ошибка регистрации, попробуйте снова.');
     }
   };

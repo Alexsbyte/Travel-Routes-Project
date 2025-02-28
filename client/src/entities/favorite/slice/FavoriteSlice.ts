@@ -6,7 +6,6 @@ import {
   getAllUserFavoritesThunk,
   getOneRouteFavoriteThunk,
 } from '../api/FavoriteThunk';
-import { message } from 'antd';
 import { Route } from '@/entities/route';
 
 interface FavoriteState {
@@ -36,11 +35,11 @@ export const favoriteSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createFavoriteThunk.fulfilled, (state, action) => {
+      .addCase(createFavoriteThunk.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
         state.currentFavorite = true;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(createFavoriteThunk.rejected, (state, action) => {
         state.loading = false;
@@ -57,12 +56,11 @@ export const favoriteSlice = createSlice({
           (route) => {
             return route.favorite[0].id!== action.payload.data.id}
         );
-        console.log(action.payload.data,"<<<<<<<<<<<<<<<<<<<<<<<");
         
         state.loading = false;
         state.error = null;
         state.currentFavorite = false;
-        message.success(action.payload.message);
+        // message.success(action.payload.message);
       })
       .addCase(deleteFavoriteThunk.rejected, (state, action) => {
         state.loading = false;
