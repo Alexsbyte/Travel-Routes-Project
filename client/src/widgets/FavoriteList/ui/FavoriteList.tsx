@@ -40,7 +40,6 @@ export function FavoriteList(): React.JSX.Element {
   }, [dispatch, user?.id, favorites.length]);
 
 
-  
   if (error) {
     return <div className={styles.error}>{error}</div>;
   }

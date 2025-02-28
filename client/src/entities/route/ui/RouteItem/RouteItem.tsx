@@ -12,14 +12,17 @@ import { createFavoriteThunk, deleteFavoriteThunk } from '@/entities/favorite';
 import { LikeButton } from './LikeButton';
 import styles from './RouteItem.module.css';
 
-
 type Props = {
   route: Route;
   selectedRoute?: Route | null;
-  isFavoriteList: boolean
+  isFavoriteList: boolean;
 };
 
-export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): React.JSX.Element {
+export function RouteItem({
+  route,
+  selectedRoute,
+  isFavoriteList,
+}: Props): React.JSX.Element {
   const user = useAppSelector((state) => state.user.user);
   const getImageUrl = (url: string): string => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
@@ -29,13 +32,12 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
     }
   };
 
-  const [userFavorite, setUserFavorite] = useState(false)
+  const [userFavorite, setUserFavorite] = useState(false);
   const dispatch = useAppDispatch();
-
 
   const handleLikeClick = async () => {
     if (!user) return;
-  
+
     try {
       if (userFavorite) {
         // Удаляем лайк
@@ -44,25 +46,22 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
         // Добавляем лайк
         await dispatch(createFavoriteThunk({ user_id: user.id, route_id: route.id }));
       }
-  
+
       // Только после успешного запроса меняем локальное состояние
-      setUserFavorite(prev => !prev);
+      setUserFavorite((prev) => !prev);
     } catch (error) {
       console.error('Ошибка при изменении избранного:', error);
     }
   };
-  
 
   useEffect(() => {
     if (!isFavoriteList) {
-      const userFavoriteRoute = route.favorite?.some(el => el.user_id === user?.id);
+      const userFavoriteRoute = route.favorite?.some((el) => el.user_id === user?.id);
       setUserFavorite(userFavoriteRoute);
     } else {
       setUserFavorite(true);
     }
   }, [route.favorite, user, isFavoriteList]);
-
-
 
   const slides = route.photos?.map((photo, id) => (
     <Carousel.Slide key={id}>
@@ -146,18 +145,16 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
               zIndex: 10,
             }}
           >
-           
-              <Tag  color="blue" style={{ marginRight: '8px' }}>
-                {route.category}
-              </Tag>
-           
+            <Tag color="blue" style={{ marginRight: '8px' }}>
+              {route.category}
+            </Tag>
           </div>
         </Group>
 
         <Text className={styles.description} size="sm" c="dimmed">
           {route.description}
         </Text>
-
+        <LikeButton handleLikeClick={handleLikeClick} userFavorite={userFavorite} />
 
         <Link
           to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
@@ -167,7 +164,6 @@ export function RouteItem({ route, selectedRoute, isFavoriteList }: Props): Reac
             Перейти к маршруту
           </Button>
         </Link>
-        <LikeButton handleLikeClick={handleLikeClick} userFavorite={userFavorite} />
       </Card>
     </>
   );

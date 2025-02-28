@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
 
       const transTitle = transliterate(title);
 
-      console.log(transTitle, '<<<<<<<<<<<MULTER');
+     
 
       let preFixDirName = 'avatars';
 

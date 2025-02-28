@@ -161,7 +161,7 @@ export function CommentSection(): React.JSX.Element {
           <Button
             h={40}
             fz={18}
-            className={styles.modalButtons}
+            className={`${styles.modalButtons} ${styles.deleteButton}`}
             onClick={handleDeleteComment}
             color="red"
           >

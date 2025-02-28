@@ -115,6 +115,7 @@ export function ProfilePage(): React.JSX.Element {
     }
   };
   const changePhotoHandler = async () => {
+
     // const file = event.target.files?.[0];
     // if (!file) return;
     // const formData = new FormData();
