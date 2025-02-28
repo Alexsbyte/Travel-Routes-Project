@@ -38,7 +38,7 @@ export function FavoriteSection({ route_id }: RouteFavoriteProps): React.JSX.Ele
     if (route_id && !currentFavorite) {
       dispatch(getOneRouteFavoriteThunk(route_id));
     }
-  }, [dispatch, route_id]);
+  }, [dispatch, route_id, currentFavorite]);
 
   if (loading) {
     return <Spin size="large" />;

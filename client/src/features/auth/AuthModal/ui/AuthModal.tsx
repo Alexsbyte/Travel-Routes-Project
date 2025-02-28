@@ -56,7 +56,10 @@ export const AuthModal: React.FC<ModalProps> = ({
       onClose();
     } catch (error) {
       antMessage.error(
-        error instanceof Error ? error.message : 'Неверный логин или пароль',
+        error instanceof Error
+          ? error.message
+          : 'Подтвердите, пожалуйста, свой аккаунт. Ссылка для подтверждения отправлена вам на почту.',
+
       );
       onClose();
     }

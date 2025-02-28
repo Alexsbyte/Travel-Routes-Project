@@ -4,6 +4,7 @@ import { Carousel } from '@mantine/carousel';
 import { Link } from 'react-router-dom';
 import { Route } from '../../model/RouteTypes';
 import { CLIENT_ROUTES } from '@/shared/enums/client_routes';
+
 // import { FavoriteSection } from '@/widgets/FavoriteSection';
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/reduxHooks';
 import { Button, Card, Group, Text, Image, Box } from '@mantine/core';
@@ -154,7 +155,7 @@ console.log(userFavorite);
           {route.description}
         </Text>
 
-     
+
         <Link
           to={`${CLIENT_ROUTES.ROUTE_PAGE}/${route.id}`}
           style={{ textDecoration: 'none' }}
@@ -163,12 +164,7 @@ console.log(userFavorite);
             Перейти к маршруту
           </Button>
         </Link>
-
-
         <LikeButton handleLikeClick={handleLikeClick} userFavorite={userFavorite} />
-
-
-        
       </Card>
     </>
   );

@@ -6,7 +6,7 @@ class CommentService {
       include: [
         { model: Route, as: 'routeComment' },
         { model: User, as: 'userComment' },
-      ], // Включаем информацию о трассе
+      ], 
     });
   }
 
