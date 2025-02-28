@@ -6,7 +6,9 @@ const cookiesConfig = require('../config/cookiesConfig');
 const generateTokens = require('../utils/generateTokens');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
-const { log } = require('console');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') }); 
+
 
 class UserController {
   static async refreshTokens(req, res) {
